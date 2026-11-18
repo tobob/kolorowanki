@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Colorear",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki guarda en Fotos el dibujo terminado de tu hijo cuando se lo pides."
+  },
+  "android": {
+    "app_name": "Colorear"
+  }
+}

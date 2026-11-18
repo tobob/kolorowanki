@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Coloriages",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki enregistre le dessin fini de votre enfant dans Photos quand vous le demandez."
+  },
+  "android": {
+    "app_name": "Coloriages"
+  }
+}

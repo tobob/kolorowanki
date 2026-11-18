@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Målarbok",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki sparar ditt barns färdiga bild i Bilder när du ber om det."
+  },
+  "android": {
+    "app_name": "Målarbok"
+  }
+}

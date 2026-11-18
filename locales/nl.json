@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Kleurplaten",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki bewaart de klare tekening van je kind in Foto's als je daarom vraagt."
+  },
+  "android": {
+    "app_name": "Kleurplaten"
+  }
+}

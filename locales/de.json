@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Ausmalen",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki sichert das fertige Bild deines Kindes in Fotos, wenn du das möchtest."
+  },
+  "android": {
+    "app_name": "Ausmalen"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Kolorowanki",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki zapisują gotowy obrazek dziecka w Zdjęciach, gdy o to poprosisz."
+  },
+  "android": {
+    "app_name": "Kolorowanki"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Розмальовки",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki зберігає готовий малюнок дитини у Фото, коли ви про це просите."
+  },
+  "android": {
+    "app_name": "Розмальовки"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Boyama",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki, siz istediğinizde çocuğunuzun biten resmini Fotoğraflar'a kaydeder."
+  },
+  "android": {
+    "app_name": "Boyama"
+  }
+}

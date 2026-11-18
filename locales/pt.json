@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Colorir",
+    "NSPhotoLibraryAddUsageDescription": "O Kolorowanki salva em Fotos o desenho pronto da criança quando você pedir."
+  },
+  "android": {
+    "app_name": "Colorir"
+  }
+}

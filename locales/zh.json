@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "涂色",
+    "NSPhotoLibraryAddUsageDescription": "当您需要时，Kolorowanki 会把孩子完成的图画保存到照片。"
+  },
+  "android": {
+    "app_name": "涂色"
+  }
+}

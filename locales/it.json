@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Da colorare",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki salva in Foto il disegno finito di tuo figlio quando lo chiedi."
+  },
+  "android": {
+    "app_name": "Da colorare"
+  }
+}

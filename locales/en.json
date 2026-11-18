@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Coloring",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki saves your child's finished picture to Photos when you ask it to."
+  },
+  "android": {
+    "app_name": "Coloring"
+  }
+}

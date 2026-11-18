@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Kifestő",
+    "NSPhotoLibraryAddUsageDescription": "A Kolorowanki a Fotókba menti a gyermeked kész képét, ha kéred."
+  },
+  "android": {
+    "app_name": "Kifestő"
+  }
+}

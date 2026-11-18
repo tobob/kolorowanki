@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Omaľovánky",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki uloží hotový obrázok vášho dieťaťa do Fotiek, keď o to požiadate."
+  },
+  "android": {
+    "app_name": "Omaľovánky"
+  }
+}

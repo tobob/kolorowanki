@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "ぬりえ",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki は、お子さまのできあがった絵を、ご希望のときに写真に保存します。"
+  },
+  "android": {
+    "app_name": "ぬりえ"
+  }
+}

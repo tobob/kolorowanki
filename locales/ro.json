@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "De colorat",
+    "NSPhotoLibraryAddUsageDescription": "Kolorowanki salvează în Poze desenul terminat al copilului când îi ceri."
+  },
+  "android": {
+    "app_name": "De colorat"
+  }
+}
