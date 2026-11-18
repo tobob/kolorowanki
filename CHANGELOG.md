@@ -8,6 +8,7 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ### Changed
 - Calmer, slower music (soft piano and flute)
+- New app icon and softer splash screen
 
 ## [1.0.1] - 2026-11-18
 
