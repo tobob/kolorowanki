@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
 import { router, useLocalSearchParams } from 'expo-router';
+import { goBack } from '@/shell/nav';
 import { useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
@@ -26,10 +27,10 @@ export default function GrownUps() {
 
   return (
     <Screen tint={TONE.bgAlt} edges={['top', 'left', 'right']}>
-      <TopBar onBack={() => router.back()} />
+      <TopBar onBack={goBack} />
       {!passed ? (
         <View style={styles.gate}>
-          <ParentalGate onPass={() => setPassed(true)} onFail={() => router.back()} />
+          <ParentalGate onPass={() => setPassed(true)} onFail={goBack} />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.content}>

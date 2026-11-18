@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { goBack } from '@/shell/nav';
 import { FlatList, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -36,7 +37,7 @@ export default function LevelScreen() {
 
   return (
     <Screen edges={['top', 'left', 'right']}>
-      <TopBar onBack={() => router.back()}>
+      <TopBar onBack={goBack}>
         <View style={styles.heading}>
           <AppText style={styles.title} numberOfLines={1} adjustsFontSizeToFit>
             {t(`level.${level}`)}

@@ -1,4 +1,5 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
+import { goBack } from '@/shell/nav';
 import { useState } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -37,8 +38,7 @@ function TutorialSteps({ first }: { first: number }) {
 
   const close = () => {
     markTutorialSeen();
-    if (router.canGoBack()) router.back();
-    else router.replace('/');
+    goBack();
   };
 
   return (

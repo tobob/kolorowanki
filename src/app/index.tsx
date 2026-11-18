@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useRootNavigationState } from 'expo-router';
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -28,6 +28,9 @@ const FOOTER = 58;
 const FOOTER_WIDE = 76;
 const HERO_IDS = ['l1-snail', 'l2-kitten-ball', 'l3-beach'];
 
+/** The first-launch tutorial opens at most once per app run (home can mount again later). */
+let tutorialOpened = false;
+
 export default function Home() {
   const t = useT();
   const lang = useLang();
@@ -38,9 +41,13 @@ export default function Home() {
   useMusic('theme');
 
   // First launch: show "how to play" once (it marks itself seen when closed or skipped).
+  // Wait until the root navigator is mounted, and open it only once per app run.
+  const navKey = useRootNavigationState()?.key;
   useEffect(() => {
-    if (!isTutorialSeen()) router.push('/tutorial');
-  }, []);
+    if (!navKey || tutorialOpened || isTutorialSeen()) return;
+    tutorialOpened = true;
+    router.push('/tutorial');
+  }, [navKey]);
 
   const wide = width >= 600;
   const pad = wide ? 40 : 20;
