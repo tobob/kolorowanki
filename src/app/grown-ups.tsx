@@ -15,7 +15,7 @@ import { resetAll } from '@/coloring/store';
 import { LANGS } from '@/coloring/types';
 import { CONTACT, DEVELOPER, PASTELKI, PASTELKI_MUSIC, PRIVACY_URL, REPO } from '@/constants/contact';
 import { RADIUS, TONE } from '@/constants/ui';
-import { setMusicOn, usePrefs } from '@/shell/prefs';
+import { setMusicOn, setVoiceOn, usePrefs } from '@/shell/prefs';
 import { LANG_NAMES, setLangSetting, useDeviceLang, useLangSetting, useT, type LangSetting } from '@/i18n';
 
 export default function GrownUps() {
@@ -37,6 +37,7 @@ export default function GrownUps() {
           <AppText style={styles.h1}>{t('settings.title')}</AppText>
           <LanguageCard />
           <MusicCard />
+          <VoiceCard />
           <Card>
             <AppText style={styles.h2}>{t('home.howTo')}</AppText>
             <SoftButton size={52} radius={RADIUS.pill} style={styles.wideButton} onPress={() => router.push('/tutorial')} accessibilityLabel={t('home.howTo')}>
@@ -50,6 +51,7 @@ export default function GrownUps() {
             <AppText style={styles.p}>{t('about.promise')}</AppText>
             <AppText style={styles.p}>{t('about.credit', { pastelki: PASTELKI })}</AppText>
             <AppText style={styles.p}>{t('about.music', { url: PASTELKI_MUSIC })}</AppText>
+            <AppText style={styles.p}>{t('about.voice')}</AppText>
             <AppText style={styles.p}>{t('about.source', { repo: REPO })}</AppText>
             <AppText style={styles.muted}>{t('about.version', { v: Constants.expoConfig?.version ?? '1.0.0' })}</AppText>
           </Card>
@@ -83,6 +85,21 @@ function MusicCard() {
         <AppText style={[styles.h2, styles.rowLabel]}>{t('music.label')}</AppText>
         <Switch value={music} onValueChange={setMusicOn} trackColor={{ true: TONE.accent }} accessibilityLabel={t('music.label')} />
       </View>
+    </Card>
+  );
+}
+
+/** Edyta the sheep reads the tutorial aloud; separate from music (her voice is not music). */
+function VoiceCard() {
+  const t = useT();
+  const { voice } = usePrefs();
+  return (
+    <Card>
+      <View style={styles.row}>
+        <AppText style={[styles.h2, styles.rowLabel]}>{t('settings.voice')}</AppText>
+        <Switch value={voice} onValueChange={setVoiceOn} trackColor={{ true: TONE.accent }} accessibilityLabel={t('settings.voice')} />
+      </View>
+      <AppText style={styles.muted}>{t('settings.voiceHint')}</AppText>
     </Card>
   );
 }

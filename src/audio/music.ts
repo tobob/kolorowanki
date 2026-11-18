@@ -8,6 +8,9 @@
  *                            then rests in silence; it starts again on the next page.
  *   useMusic(null)         — silence (grown-ups area, tutorial).
  *   <MusicToggle />        — big note button (src/components/music-toggle.tsx); the choice persists.
+ *   duckMusic(true/false)  — while Edyta speaks (src/audio/voice.ts) the music dips to 25 % and comes
+ *                            back softly afterwards. Calls nest (a counter), so overlapping lines are safe.
+ *   initAudio()            — sets up the shared audio session (also used by the voice).
  *
  * Audio session: respects the iOS ring/silent switch (playsInSilentMode false — a muted phone stays quiet),
  * mixes with other audio, never plays in the background (paused at once when the app is left; the
@@ -33,6 +36,10 @@ const FADE_OUT_MS = 700;
 const STEP_MS = 50;
 /** Screens hand over focus in quick succession; wait this long before treating a blur as "silence". */
 const HANDOVER_MS = 200;
+/** Music level while Edyta speaks (× the track's gain), and how fast it dips / returns. */
+const DUCK = 0.25;
+const DUCK_IN_MS = 300;
+const DUCK_OUT_MS = 900;
 
 type Now = { track: MusicTrack; player: AudioPlayer; plays: number; done: boolean; loaded?: boolean; fade?: ReturnType<typeof setInterval> };
 
@@ -42,6 +49,9 @@ let wanted: MusicTrack | null = null;
 let now: Now | null = null;
 let blurTimer: ReturnType<typeof setTimeout> | undefined;
 let focusSeq = 0;
+let ducks = 0;
+
+const level = (track: MusicTrack) => GAIN[track] * (ducks > 0 ? DUCK : 1);
 
 /** Dev builds only: a line per music event in the Metro log (the simulator is hard to hear). */
 const log = (...a: unknown[]) => {
@@ -113,8 +123,8 @@ function start(track: MusicTrack) {
     });
     now = n;
     player.play();
-    log('play', track, `vol → ${GAIN[track]}`);
-    fade(n, GAIN[track], FADE_IN_MS);
+    log('play', track, `vol → ${level(track)}`);
+    fade(n, level(track), FADE_IN_MS);
   });
 }
 
@@ -148,6 +158,25 @@ function onAppState(state: AppStateStatus) {
   }
   // Coming back counts as a new arrival on the current screen.
   arrive(wanted, true);
+}
+
+/** Shared audio session: respects the silent switch, mixes with others, no background, no mic. */
+export function initAudio() {
+  init();
+}
+
+/**
+ * Dip the music while a voice speaks (`true`), bring it back afterwards (`false`). Every `true` must be
+ * matched by one `false`. A track that starts while ducked starts at the ducked level.
+ */
+export function duckMusic(on: boolean) {
+  const was = ducks > 0;
+  ducks = Math.max(0, ducks + (on ? 1 : -1));
+  const is = ducks > 0;
+  if (was === is) return;
+  log(is ? 'duck' : 'unduck');
+  const n = now;
+  if (n) fade(n, level(n.track), is ? DUCK_IN_MS : DUCK_OUT_MS);
 }
 
 function init() {

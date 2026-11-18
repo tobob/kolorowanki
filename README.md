@@ -80,7 +80,7 @@ npm run check-pages # every page is valid: regions, palette, hit map
 src/
 ├── app/                  # Expo Router screens
 │   ├── index.tsx         # home: title + coloured pictures, "keep colouring", four level cards
-│   ├── tutorial.tsx      # animated "how to play" (first launch, "?" button, grown-ups area)
+│   ├── tutorial.tsx      # interactive "how to play" with Edyta the sheep (first launch, "?" button, grown-ups area)
 │   ├── level/[level].tsx # pages of one level
 │   ├── page/[id].tsx     # the colouring screen
 │   └── grown-ups.tsx     # parental gate → language, start again, about, privacy
@@ -88,7 +88,7 @@ src/
 │   ├── types.ts          # shared contract (pages, levels, languages)
 │   └── pages/            # generated page catalogue (do not edit by hand)
 ├── components/           # parental gate, soft buttons, level dots, thumbnails, tutorial demo, …
-├── audio/                # music engine: useMusic(), fades, never endless
+├── audio/                # music engine: useMusic(), fades, never endless; Edyta's voice (voice.ts)
 ├── shell/                # app-shell prefs (tutorial seen, last page) in the local key-value store
 ├── constants/            # calm UI tokens, public contact details
 └── i18n/                 # UI strings for 17 languages
@@ -116,6 +116,25 @@ ImageMagick (`magick`) is used, when present, to flatten the iOS icon to an opaq
 ## Contributing
 
 Bug reports and ideas are welcome as [issues](https://github.com/tobob/kolorowanki/issues). Before you send a change, run `npm run check`, try it in the simulator, and keep the [Pastelki manifest](https://pastelki.marchew.work/en/about#manifest) in mind: gentle, private, no tricks.
+
+## Third-party notices
+
+**Edyta's voice** (the sheep who explains "How to play") is synthetic — computer-generated, not a recorded
+person. It was made offline with `tools/voice/build.sh`; the app only ships the finished clips
+(`assets/voice/edyta/`):
+
+| Used for | Project | Licence |
+|---|---|---|
+| speech in pl, en, de, fr, es, it, pt, nl, sv, tr, ja, zh | [Chatterbox Multilingual](https://github.com/resemble-ai/chatterbox) by Resemble AI ([model](https://huggingface.co/ResembleAI/chatterbox)) | MIT, Copyright (c) 2025 Resemble AI |
+| AI watermark in every Chatterbox clip (imperceptible; marks the audio as AI-generated — we keep it) | [Perth](https://github.com/resemble-ai/Perth) by Resemble AI | MIT |
+| speech in uk, cs, sk, ro, hu | [Piper](https://github.com/OHF-Voice/piper1-gpl) (run on the Pastelki server; only its output is used) with the voices uk_UA ukrainian_tts (tetiana), cs_CZ jirka, sk_SK lili, ro_RO mihai, hu_HU anna from [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) | Piper: GPL-3.0-or-later; voices: CC0 |
+| base model of cs_CZ jirka, sk_SK lili, hu_HU anna | speaker 92 of the Hi-Fi Multi-Speaker English TTS Dataset, [OpenSLR 109](https://www.openslr.org/109/) — Bakhturina, E., Lavrukhin, V., Ginsburg, B., Zhang, Y. (2021), *Hi-Fi Multi-Speaker English TTS Dataset*, arXiv:2104.01497 | CC BY 4.0 |
+| trimming and checking the lines | [Whisper](https://github.com/openai/whisper) by OpenAI | MIT, Copyright (c) 2022 OpenAI |
+| "sheep" voice effect (`sheepify.py` from Pastelki) | [pyworld](https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder) with the [WORLD](https://github.com/mmorise/World) vocoder by Masanori Morise | MIT; WORLD: modified BSD |
+
+Edyta herself, the pictures and the music come from [Pastelki](https://pastelki.marchew.work) (MIT); see its
+[licence and credits](https://pastelki.marchew.work/en/license). The app's own open-source dependencies
+(Expo, React Native and friends) are listed in `package.json` with their licences in `node_modules/*/LICENSE`.
 
 ## License
 
