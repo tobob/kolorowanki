@@ -4,7 +4,7 @@
  *   useMusic('theme')      — home and level screens: the "Ko-lo-ro-wan-ki" theme plays ONCE (volume 0.5,
  *                            1.5 s fade-in) each time the child arrives there (app open, back from a page),
  *                            not again while moving between home and levels.
- *   useMusic('colouring')  — colouring screen: the slow music-box tune (volume 0.35) plays up to 3 times,
+ *   useMusic('colouring')  — colouring screen: the slow flute tune (volume 0.35) plays up to 3 times,
  *                            then rests in silence; it starts again on the next page.
  *   useMusic(null)         — silence (grown-ups area, tutorial).
  *   <MusicToggle />        — big note button (src/components/music-toggle.tsx); the choice persists.
