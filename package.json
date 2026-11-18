@@ -55,7 +55,8 @@
     "brand": "node tools/brand/brand.mjs",
     "build-pages": "tsx tools/pages/build.ts",
     "check-pages": "tsx tools/pages/check.ts",
-    "sync-art": "npx tsx tools/pages/sync.ts"
+    "sync-art": "npx tsx tools/pages/sync.ts",
+    "site": "npx tsx tools/site/gen-site.ts"
   },
   "private": true
 }

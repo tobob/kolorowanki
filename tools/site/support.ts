@@ -1,0 +1,275 @@
+/** Support-page texts per language (site only, not shipped in the app). Button and setting names come from the app's UI strings. */
+import type { Lang } from '../../src/coloring/types';
+import type { Key } from '../../src/i18n/types';
+
+type S = Record<Key, string>;
+
+export type Support = {
+  title: string;
+  /** Heading of the "about the app" card (its text comes from the app's own about strings). */
+  aboutTitle: string;
+  askTitle: string;
+  /** `{link}` is replaced with the issues link. */
+  ask: string;
+  faqTitle: string;
+  faq: (s: S) => [q: string, a: string][];
+  privacy: string;
+};
+
+export const SUPPORT: Record<Lang, Support> = {
+  en: {
+    title: 'Support',
+    aboutTitle: 'About the app',
+    askTitle: 'Questions or problems?',
+    ask: 'Open an issue at {link} (GitHub account needed). We answer within a few days.',
+    faqTitle: 'Frequently asked',
+    faq: (s) => [
+      ['There is no sound.', `The app follows the iPhone silent switch. Turn silent off and raise the volume. Music has its own note button, and Edyta's voice can be switched on or off in "${s['home.grownups']}" → "${s['settings.voice']}".`],
+      [`How do I open "${s['home.grownups']}"?`, 'Tap the small two-people icon in the top-right corner of the home screen, hold the button for 3 seconds, then answer the multiplication question.'],
+      ['Who is Edyta?', `Edyta the sheep shows your child how to color in a short tutorial on the first launch; the "?" button on the home screen opens it again. Her voice is synthetic, pre-recorded and built into the app. Nothing is recorded or sent.`],
+      ['How do I save a picture to Photos?', `Tap "${s['coloring.save']}" on the coloring screen and pass the parental gate. The app asks only for permission to add pictures to Photos and never reads your photo library.`],
+      ['How do I start again?', `"${s['home.grownups']}" → "${s['settings.restart']}", or delete the app.`],
+    ],
+    privacy: 'Privacy Policy',
+  },
+  pl: {
+    title: 'Pomoc',
+    aboutTitle: 'O aplikacji',
+    askTitle: 'Pytania lub problemy?',
+    ask: 'Zgłoś je na {link} (wymaga konta GitHub). Odpowiadamy w ciągu kilku dni.',
+    faqTitle: 'Częste pytania',
+    faq: (s) => [
+      ['Nie ma dźwięku.', `Aplikacja respektuje przełącznik wyciszenia w iPhonie. Wyłącz wyciszenie i zwiększ głośność. Muzykę włącza się przyciskiem z nutką, a głos Edyty – w „${s['home.grownups']}” → „${s['settings.voice']}”.`],
+      [`Jak wejść do „${s['home.grownups']}”?`, 'Stuknij małą ikonkę z dwiema osobami w prawym górnym rogu ekranu startowego, przytrzymaj przycisk przez 3 sekundy i odpowiedz na pytanie o mnożenie.'],
+      ['Kim jest Edyta?', 'Owca Edyta w krótkim samouczku przy pierwszym uruchomieniu pokazuje dziecku, jak kolorować; przycisk „?” na ekranie startowym otwiera go ponownie. Jej głos jest syntetyczny, nagrany wcześniej i wbudowany w aplikację. Nic nie jest nagrywane ani wysyłane.'],
+      ['Jak zapisać obrazek w Zdjęciach?', `Stuknij „${s['coloring.save']}” na ekranie kolorowania i przejdź bramkę rodzicielską. Aplikacja prosi tylko o pozwolenie na dodawanie obrazków do Zdjęć i nigdy nie czyta Twojej biblioteki zdjęć.`],
+      ['Jak zacząć od nowa?', `„${s['home.grownups']}” → „${s['settings.restart']}” albo usuń aplikację.`],
+    ],
+    privacy: 'Polityka prywatności',
+  },
+  de: {
+    title: 'Hilfe',
+    aboutTitle: 'Über die App',
+    askTitle: 'Fragen oder Probleme?',
+    ask: 'Eröffne ein Issue unter {link} (GitHub-Konto nötig). Wir antworten innerhalb weniger Tage.',
+    faqTitle: 'Häufige Fragen',
+    faq: (s) => [
+      ['Es ist kein Ton zu hören.', `Die App folgt dem Stummschalter des iPhones. Schalte den Stummmodus aus und erhöhe die Lautstärke. Die Musik hat eine eigene Noten-Taste, Edytas Stimme lässt sich unter „${s['home.grownups']}“ → „${s['settings.voice']}“ ein- und ausschalten.`],
+      [`Wie öffne ich „${s['home.grownups']}“?`, 'Tippe auf das kleine Symbol mit zwei Personen oben rechts auf dem Startbildschirm, halte die Taste 3 Sekunden lang gedrückt und beantworte dann die Rechenfrage.'],
+      ['Wer ist Edyta?', 'Das Schaf Edyta zeigt deinem Kind beim ersten Start in einer kurzen Anleitung, wie man malt; die Taste „?“ auf dem Startbildschirm öffnet sie wieder. Ihre Stimme ist synthetisch, vorab aufgenommen und in die App eingebaut. Nichts wird aufgenommen oder gesendet.'],
+      ['Wie speichere ich ein Bild in Fotos?', `Tippe auf dem Malbildschirm auf „${s['coloring.save']}“ und löse die Elternsperre. Die App fragt nur nach der Erlaubnis, Bilder zu Fotos hinzuzufügen, und liest deine Fotomediathek nie.`],
+      ['Wie fange ich von vorn an?', `„${s['home.grownups']}“ → „${s['settings.restart']}“ oder die App löschen.`],
+    ],
+    privacy: 'Datenschutzerklärung',
+  },
+  fr: {
+    title: 'Aide',
+    aboutTitle: "À propos de l'app",
+    askTitle: 'Des questions ou un problème ?',
+    ask: 'Ouvrez un ticket sur {link} (compte GitHub nécessaire). Nous répondons sous quelques jours.',
+    faqTitle: 'Questions fréquentes',
+    faq: (s) => [
+      ["Il n'y a pas de son.", `L'app suit le bouton silencieux de l'iPhone. Désactivez le mode silencieux et montez le volume. La musique a son propre bouton avec une note, et la voix d'Edyta s'active ou se coupe dans « ${s['home.grownups']} » → « ${s['settings.voice']} ».`],
+      [`Comment ouvrir « ${s['home.grownups']} » ?`, "Touchez la petite icône à deux personnages en haut à droite de l'écran d'accueil, maintenez le bouton appuyé 3 secondes, puis répondez à la question de multiplication."],
+      ['Qui est Edyta ?', "La brebis Edyta montre à votre enfant comment colorier dans un court tutoriel au premier lancement ; le bouton « ? » de l'écran d'accueil le rouvre. Sa voix est synthétique, enregistrée à l'avance et intégrée à l'app. Rien n'est enregistré ni envoyé."],
+      ['Comment enregistrer un dessin dans Photos ?', `Touchez « ${s['coloring.save']} » sur l'écran de coloriage et passez le contrôle parental. L'app demande seulement l'autorisation d'ajouter des images à Photos et ne lit jamais votre photothèque.`],
+      ['Comment tout recommencer ?', `« ${s['home.grownups']} » → « ${s['settings.restart']} », ou supprimez l'app.`],
+    ],
+    privacy: 'Politique de confidentialité',
+  },
+  es: {
+    title: 'Ayuda',
+    aboutTitle: 'Sobre la app',
+    askTitle: '¿Preguntas o problemas?',
+    ask: 'Abre una incidencia en {link} (se necesita una cuenta de GitHub). Respondemos en pocos días.',
+    faqTitle: 'Preguntas frecuentes',
+    faq: (s) => [
+      ['No hay sonido.', `La app respeta el interruptor de silencio del iPhone. Desactiva el modo silencio y sube el volumen. La música tiene su propio botón con una nota, y la voz de Edyta se activa o desactiva en «${s['home.grownups']}» → «${s['settings.voice']}».`],
+      [`¿Cómo entro en «${s['home.grownups']}»?`, 'Toca el pequeño icono de dos personas en la esquina superior derecha de la pantalla de inicio, mantén presionado el botón durante 3 segundos y responde a la pregunta de multiplicar.'],
+      ['¿Quién es Edyta?', 'La oveja Edyta enseña a tu hijo a colorear en un breve tutorial al abrir la app por primera vez; el botón «?» de la pantalla de inicio lo vuelve a abrir. Su voz es sintética, está grabada de antemano e incluida en la app. No se graba ni se envía nada.'],
+      ['¿Cómo guardo un dibujo en Fotos?', `Toca «${s['coloring.save']}» en la pantalla de colorear y supera el control parental. La app solo pide permiso para añadir imágenes a Fotos y nunca lee tu fototeca.`],
+      ['¿Cómo empiezo de nuevo?', `«${s['home.grownups']}» → «${s['settings.restart']}», o elimina la app.`],
+    ],
+    privacy: 'Política de privacidad',
+  },
+  it: {
+    title: 'Assistenza',
+    aboutTitle: "Informazioni sull'app",
+    askTitle: 'Domande o problemi?',
+    ask: 'Apri una segnalazione su {link} (serve un account GitHub). Rispondiamo entro pochi giorni.',
+    faqTitle: 'Domande frequenti',
+    faq: (s) => [
+      ['Non si sente nessun suono.', `L'app segue l'interruttore silenzioso dell'iPhone. Disattiva il silenzioso e alza il volume. La musica ha il suo pulsante con la nota, e la voce di Edyta si attiva o disattiva in «${s['home.grownups']}» → «${s['settings.voice']}».`],
+      [`Come si apre «${s['home.grownups']}»?`, "Tocca la piccola icona con due persone in alto a destra nella schermata iniziale, tieni premuto il pulsante per 3 secondi e rispondi alla domanda di moltiplicazione."],
+      ['Chi è Edyta?', 'La pecora Edyta mostra al bambino come colorare in un breve tutorial al primo avvio; il pulsante «?» nella schermata iniziale lo riapre. La sua voce è sintetica, registrata in anticipo e inclusa nell\'app. Niente viene registrato né inviato.'],
+      ['Come salvo un disegno in Foto?', `Tocca «${s['coloring.save']}» nella schermata da colorare e supera il controllo parentale. L'app chiede solo il permesso di aggiungere immagini a Foto e non legge mai la tua libreria foto.`],
+      ['Come si ricomincia da capo?', `«${s['home.grownups']}» → «${s['settings.restart']}», oppure elimina l'app.`],
+    ],
+    privacy: 'Informativa sulla privacy',
+  },
+  pt: {
+    title: 'Ajuda',
+    aboutTitle: 'Sobre o app',
+    askTitle: 'Dúvidas ou problemas?',
+    ask: 'Abra uma issue em {link} (é preciso ter uma conta no GitHub). Respondemos em poucos dias.',
+    faqTitle: 'Perguntas frequentes',
+    faq: (s) => [
+      ['Não há som.', `O app respeita a chave de silêncio do iPhone. Desative o modo silencioso e aumente o volume. A música tem o seu próprio botão com uma nota, e a voz da Edyta liga e desliga em “${s['home.grownups']}” → “${s['settings.voice']}”.`],
+      [`Como abrir “${s['home.grownups']}”?`, 'Toque no pequeno ícone de duas pessoas no canto superior direito da tela inicial, mantenha o botão pressionado por 3 segundos e responda à pergunta de multiplicação.'],
+      ['Quem é a Edyta?', 'A ovelha Edyta mostra à criança como colorir num tutorial curto na primeira vez que o app abre; o botão “?” da tela inicial abre-o de novo. A voz dela é sintética, gravada antes e incluída no app. Nada é gravado nem enviado.'],
+      ['Como salvo um desenho em Fotos?', `Toque em “${s['coloring.save']}” na tela de colorir e passe o controle parental. O app só pede permissão para adicionar imagens a Fotos e nunca lê a sua fototeca.`],
+      ['Como começar de novo?', `“${s['home.grownups']}” → “${s['settings.restart']}”, ou exclua o app.`],
+    ],
+    privacy: 'Política de privacidade',
+  },
+  nl: {
+    title: 'Hulp',
+    aboutTitle: 'Over de app',
+    askTitle: 'Vragen of problemen?',
+    ask: 'Maak een issue aan op {link} (GitHub-account nodig). We antwoorden binnen een paar dagen.',
+    faqTitle: 'Veelgestelde vragen',
+    faq: (s) => [
+      ['Er is geen geluid.', `De app volgt de stilteschakelaar van de iPhone. Zet de stille modus uit en zet het volume hoger. Muziek heeft een eigen knop met een muzieknoot, en Edyta’s stem zet je aan of uit in ‘${s['home.grownups']}’ → ‘${s['settings.voice']}’.`],
+      [`Hoe open ik ‘${s['home.grownups']}’?`, 'Tik op het kleine icoon met twee poppetjes rechtsboven op het startscherm, houd de knop 3 seconden ingedrukt en beantwoord daarna de keersom.'],
+      ['Wie is Edyta?', 'Schaap Edyta laat je kind bij de eerste start in een korte uitleg zien hoe kleuren werkt; de knop ‘?’ op het startscherm opent die opnieuw. Haar stem is synthetisch, vooraf opgenomen en zit in de app. Er wordt niets opgenomen of verstuurd.'],
+      ['Hoe bewaar ik een tekening in Foto’s?', `Tik op ‘${s['coloring.save']}’ op het kleurscherm en ga door het ouderslot. De app vraagt alleen toestemming om afbeeldingen aan Foto’s toe te voegen en leest je fotobibliotheek nooit.`],
+      ['Hoe begin ik opnieuw?', `‘${s['home.grownups']}’ → ‘${s['settings.restart']}’, of verwijder de app.`],
+    ],
+    privacy: 'Privacybeleid',
+  },
+  uk: {
+    title: 'Допомога',
+    aboutTitle: 'Про застосунок',
+    askTitle: 'Питання чи проблеми?',
+    ask: 'Створіть issue на {link} (потрібен обліковий запис GitHub). Ми відповідаємо протягом кількох днів.',
+    faqTitle: 'Часті питання',
+    faq: (s) => [
+      ['Немає звуку.', `Застосунок враховує перемикач беззвучного режиму iPhone. Вимкніть беззвучний режим і збільште гучність. Музика має власну кнопку з нотою, а голос Едити вмикається чи вимикається в «${s['home.grownups']}» → «${s['settings.voice']}».`],
+      [`Як відкрити «${s['home.grownups']}»?`, 'Торкніться маленької іконки з двома людьми у правому верхньому куті головного екрана, утримуйте кнопку 3 секунди й дайте відповідь на питання про множення.'],
+      ['Хто така Едита?', 'Овечка Едита в короткому навчанні під час першого запуску показує дитині, як розфарбовувати; кнопка «?» на головному екрані відкриває його знову. Її голос синтетичний, записаний заздалегідь і вбудований у застосунок. Нічого не записується й не надсилається.'],
+      ['Як зберегти малюнок у Фото?', `Торкніться «${s['coloring.save']}» на екрані розфарбовування й пройдіть батьківський бар’єр. Застосунок просить лише дозвіл додавати зображення у Фото й ніколи не читає вашу фототеку.`],
+      ['Як почати все заново?', `«${s['home.grownups']}» → «${s['settings.restart']}» або видаліть застосунок.`],
+    ],
+    privacy: 'Політика конфіденційності',
+  },
+  cs: {
+    title: 'Pomoc',
+    aboutTitle: 'O aplikaci',
+    askTitle: 'Otázky nebo problémy?',
+    ask: 'Založte issue na {link} (je potřeba účet GitHub). Odpovídáme do několika dnů.',
+    faqTitle: 'Časté otázky',
+    faq: (s) => [
+      ['Není slyšet zvuk.', `Aplikace respektuje přepínač tichého režimu na iPhonu. Vypněte tichý režim a zesilte hlasitost. Hudba má vlastní tlačítko s notou a hlas Edyty se zapíná a vypíná v „${s['home.grownups']}“ → „${s['settings.voice']}“.`],
+      [`Jak otevřít „${s['home.grownups']}“?`, 'Klepněte na malou ikonu se dvěma postavami v pravém horním rohu úvodní obrazovky, podržte tlačítko 3 sekundy a odpovězte na otázku s násobením.'],
+      ['Kdo je Edyta?', 'Ovečka Edyta při prvním spuštění v krátkém návodu ukáže dítěti, jak vybarvovat; tlačítko „?“ na úvodní obrazovce ho otevře znovu. Její hlas je syntetický, předem nahraný a zabudovaný v aplikaci. Nic se nenahrává ani neodesílá.'],
+      ['Jak uložit obrázek do Fotek?', `Klepněte na „${s['coloring.save']}“ na obrazovce vybarvování a projděte rodičovským zámkem. Aplikace žádá jen o povolení přidávat obrázky do Fotek a nikdy nečte vaši knihovnu fotek.`],
+      ['Jak začít znovu?', `„${s['home.grownups']}“ → „${s['settings.restart']}“, nebo aplikaci smažte.`],
+    ],
+    privacy: 'Zásady ochrany soukromí',
+  },
+  sk: {
+    title: 'Pomoc',
+    aboutTitle: 'O aplikácii',
+    askTitle: 'Otázky alebo problémy?',
+    ask: 'Založte issue na {link} (treba účet GitHub). Odpovedáme do niekoľkých dní.',
+    faqTitle: 'Časté otázky',
+    faq: (s) => [
+      ['Nie je počuť zvuk.', `Aplikácia rešpektuje prepínač tichého režimu na iPhone. Vypnite tichý režim a zvýšte hlasitosť. Hudba má vlastné tlačidlo s notou a hlas Edyty sa zapína a vypína v „${s['home.grownups']}“ → „${s['settings.voice']}“.`],
+      [`Ako otvoriť „${s['home.grownups']}“?`, 'Ťuknite na malú ikonu s dvoma postavami v pravom hornom rohu úvodnej obrazovky, podržte tlačidlo 3 sekundy a odpovedzte na otázku s násobením.'],
+      ['Kto je Edyta?', 'Ovečka Edyta pri prvom spustení v krátkom návode ukáže dieťaťu, ako vyfarbovať; tlačidlo „?“ na úvodnej obrazovke ho otvorí znova. Jej hlas je syntetický, vopred nahraný a zabudovaný v aplikácii. Nič sa nenahráva ani neodosiela.'],
+      ['Ako uložiť obrázok do Fotiek?', `Ťuknite na „${s['coloring.save']}“ na obrazovke vyfarbovania a prejdite rodičovskou zámkou. Aplikácia žiada len o povolenie pridávať obrázky do Fotiek a nikdy nečíta vašu knižnicu fotiek.`],
+      ['Ako začať odznova?', `„${s['home.grownups']}“ → „${s['settings.restart']}“, alebo aplikáciu vymažte.`],
+    ],
+    privacy: 'Zásady ochrany súkromia',
+  },
+  sv: {
+    title: 'Hjälp',
+    aboutTitle: 'Om appen',
+    askTitle: 'Frågor eller problem?',
+    ask: 'Skapa ett issue på {link} (GitHub-konto behövs). Vi svarar inom några dagar.',
+    faqTitle: 'Vanliga frågor',
+    faq: (s) => [
+      ['Det hörs inget ljud.', `Appen följer iPhonens ljudlös-reglage. Stäng av ljudlöst läge och höj volymen. Musiken har en egen knapp med en not, och Edytas röst slår du på eller av under ”${s['home.grownups']}” → ”${s['settings.voice']}”.`],
+      [`Hur öppnar jag ”${s['home.grownups']}”?`, 'Tryck på den lilla ikonen med två personer uppe till höger på startskärmen, håll in knappen i 3 sekunder och svara sedan på multiplikationsfrågan.'],
+      ['Vem är Edyta?', 'Fåret Edyta visar ditt barn hur man målar i en kort genomgång första gången appen öppnas; knappen ”?” på startskärmen öppnar den igen. Hennes röst är syntetisk, inspelad i förväg och inbyggd i appen. Inget spelas in eller skickas.'],
+      ['Hur sparar jag en bild i Bilder?', `Tryck på ”${s['coloring.save']}” på målarskärmen och passera föräldralåset. Appen ber bara om tillåtelse att lägga till bilder i Bilder och läser aldrig ditt bildbibliotek.`],
+      ['Hur börjar jag om?', `”${s['home.grownups']}” → ”${s['settings.restart']}”, eller radera appen.`],
+    ],
+    privacy: 'Integritetspolicy',
+  },
+  ro: {
+    title: 'Ajutor',
+    aboutTitle: 'Despre aplicație',
+    askTitle: 'Întrebări sau probleme?',
+    ask: 'Deschide un issue pe {link} (este nevoie de un cont GitHub). Răspundem în câteva zile.',
+    faqTitle: 'Întrebări frecvente',
+    faq: (s) => [
+      ['Nu se aude nimic.', `Aplicația respectă comutatorul de silențios al iPhone-ului. Dezactivează modul silențios și dă volumul mai tare. Muzica are propriul buton cu o notă, iar vocea Edytei se pornește sau se oprește în „${s['home.grownups']}” → „${s['settings.voice']}”.`],
+      [`Cum deschid „${s['home.grownups']}”?`, 'Atinge iconița mică cu două persoane din colțul din dreapta sus al ecranului principal, ține apăsat butonul 3 secunde, apoi răspunde la întrebarea de înmulțire.'],
+      ['Cine este Edyta?', 'Oița Edyta îi arată copilului cum să coloreze într-un scurt tutorial la prima pornire; butonul „?” de pe ecranul principal îl deschide din nou. Vocea ei este sintetică, înregistrată dinainte și inclusă în aplicație. Nimic nu este înregistrat sau trimis.'],
+      ['Cum salvez un desen în Poze?', `Atinge „${s['coloring.save']}” pe ecranul de colorat și treci de bariera parentală. Aplicația cere doar permisiunea de a adăuga imagini în Poze și nu îți citește niciodată biblioteca foto.`],
+      ['Cum o iau de la capăt?', `„${s['home.grownups']}” → „${s['settings.restart']}” sau șterge aplicația.`],
+    ],
+    privacy: 'Politica de confidențialitate',
+  },
+  hu: {
+    title: 'Súgó',
+    aboutTitle: 'Az alkalmazásról',
+    askTitle: 'Kérdésed vagy problémád van?',
+    ask: 'Nyiss egy issue-t itt: {link} (GitHub-fiók szükséges). Néhány napon belül válaszolunk.',
+    faqTitle: 'Gyakori kérdések',
+    faq: (s) => [
+      ['Nincs hang.', `Az alkalmazás követi az iPhone némítókapcsolóját. Kapcsold ki a némítást, és hangosítsd fel. A zenének saját, hangjegyes gombja van, Edyta hangját pedig itt lehet be- és kikapcsolni: „${s['home.grownups']}” → „${s['settings.voice']}”.`],
+      [`Hogyan nyitom meg a „${s['home.grownups']}” részt?`, 'Koppints a kezdőképernyő jobb felső sarkában lévő kis, kétszemélyes ikonra, tartsd nyomva a gombot 3 másodpercig, majd válaszolj a szorzásos kérdésre.'],
+      ['Ki az a bárány, Edyta?', 'Edyta, a bárány az első indításkor egy rövid bemutatóban megmutatja a gyereknek, hogyan kell színezni; a kezdőképernyő „?” gombja újra megnyitja. A hangja szintetikus, előre felvett, és az alkalmazásba van építve. Semmit nem rögzít és nem küld el.'],
+      ['Hogyan menthetek el egy képet a Fotókba?', `Koppints a „${s['coloring.save']}” gombra a színező képernyőn, és lépj át a szülői záron. Az alkalmazás csak arra kér engedélyt, hogy képeket adjon a Fotókhoz, a fotókönyvtáradat soha nem olvassa.`],
+      ['Hogyan kezdhetem újra?', `„${s['home.grownups']}” → „${s['settings.restart']}”, vagy töröld az alkalmazást.`],
+    ],
+    privacy: 'Adatvédelmi tájékoztató',
+  },
+  tr: {
+    title: 'Yardım',
+    aboutTitle: 'Uygulama hakkında',
+    askTitle: 'Sorunuz ya da bir sorun mu var?',
+    ask: '{link} adresinde bir issue açın (GitHub hesabı gerekir). Birkaç gün içinde yanıt veririz.',
+    faqTitle: 'Sık sorulanlar',
+    faq: (s) => [
+      ['Ses gelmiyor.', `Uygulama iPhone’un sessiz anahtarına uyar. Sessiz modu kapatın ve sesi açın. Müziğin nota simgeli kendi düğmesi vardır; Edyta’nın sesi “${s['home.grownups']}” → “${s['settings.voice']}” bölümünden açılıp kapatılır.`],
+      [`“${s['home.grownups']}” bölümünü nasıl açarım?`, 'Ana ekranın sağ üst köşesindeki iki kişili küçük simgeye dokunun, düğmeyi 3 saniye basılı tutun, ardından çarpma sorusunu yanıtlayın.'],
+      ['Edyta kim?', 'Koyun Edyta, ilk açılışta kısa bir öğreticide çocuğunuza nasıl boyanacağını gösterir; ana ekrandaki “?” düğmesi onu yeniden açar. Sesi sentetiktir, önceden kaydedilmiştir ve uygulamanın içindedir. Hiçbir şey kaydedilmez ya da gönderilmez.'],
+      ['Bir resmi Fotoğraflar’a nasıl kaydederim?', `Boyama ekranında “${s['coloring.save']}” düğmesine dokunun ve ebeveyn kilidini geçin. Uygulama yalnızca Fotoğraflar’a resim ekleme izni ister ve fotoğraf arşivinizi asla okumaz.`],
+      ['Nasıl baştan başlarım?', `“${s['home.grownups']}” → “${s['settings.restart']}” ya da uygulamayı silin.`],
+    ],
+    privacy: 'Gizlilik Politikası',
+  },
+  ja: {
+    title: 'サポート',
+    aboutTitle: 'このアプリについて',
+    askTitle: 'ご質問・不具合',
+    ask: '{link} で issue を作成してください（GitHub アカウントが必要です）。数日以内にお返事します。',
+    faqTitle: 'よくある質問',
+    faq: (s) => [
+      ['音が出ません。', `アプリは iPhone の消音スイッチに従います。消音を解除して音量を上げてください。音楽は音符のボタンで切り替えられ、エディタの声は「${s['home.grownups']}」→「${s['settings.voice']}」でオン・オフできます。`],
+      [`「${s['home.grownups']}」はどう開きますか？`, 'ホーム画面右上の小さな二人のアイコンをタップし、ボタンを3秒間押し続けてから、かけ算の質問に答えてください。'],
+      ['エディタって誰？', 'ひつじのエディタは、初めて起動したときの短いチュートリアルで、ぬりかたをお子さまに教えます。ホーム画面の「?」ボタンでもう一度開けます。声は合成音声で、あらかじめ録音されアプリに入っています。何も録音・送信されません。'],
+      ['絵を写真に保存するには？', `ぬりえ画面で「${s['coloring.save']}」をタップし、保護者向けのロックを解除してください。アプリが求めるのは写真に絵を追加する許可だけで、フォトライブラリを読むことはありません。`],
+      ['最初からやり直すには？', `「${s['home.grownups']}」→「${s['settings.restart']}」、またはアプリを削除してください。`],
+    ],
+    privacy: 'プライバシーポリシー',
+  },
+  zh: {
+    title: '帮助',
+    aboutTitle: '关于本应用',
+    askTitle: '有问题或遇到故障？',
+    ask: '请在 {link} 提交 issue（需要 GitHub 账户）。我们会在几天内回复。',
+    faqTitle: '常见问题',
+    faq: (s) => [
+      ['没有声音。', `应用会遵循 iPhone 的静音开关。请关闭静音并调高音量。音乐有自己的音符按钮，伊迪塔的声音可在“${s['home.grownups']}”→“${s['settings.voice']}”中开关。`],
+      [`如何打开“${s['home.grownups']}”？`, '点按主屏幕右上角两个人的小图标，按住按钮3秒，然后回答乘法问题。'],
+      ['伊迪塔是谁？', '小羊伊迪塔会在首次启动时的简短教程里教孩子怎么涂色；主屏幕上的“?”按钮可以再次打开。她的声音是合成的，预先录制并内置在应用中。不会录音，也不会发送任何内容。'],
+      ['如何把图画保存到“照片”？', `在涂色界面点按“${s['coloring.save']}”，并通过家长门槛。应用只请求向“照片”添加图片的权限，从不读取你的照片图库。`],
+      ['如何重新开始？', `“${s['home.grownups']}”→“${s['settings.restart']}”，或删除应用。`],
+    ],
+    privacy: '隐私政策',
+  },
+};

@@ -6,7 +6,9 @@
 
 <p align="center">
   Gentle colouring pages for children aged 2–6. Offline, no ads, no purchases, no data collected.<br/>
-  <a href="docs/PRIVACY.md">Privacy</a> ·
+  <a href="https://tobob.github.io/kolorowanki-site/">Website</a> ·
+  <a href="https://tobob.github.io/kolorowanki-site/privacy/">Privacy</a> ·
+  <a href="https://tobob.github.io/kolorowanki-site/terms/">Terms</a> ·
   <a href="https://pastelki.marchew.work">Pictures from Pastelki</a>
 </p>
 
@@ -95,7 +97,8 @@ src/
 locales/                  # localized app name (home screen) per language
 tools/
 ├── pages/                # Pastelki → colouring pages pipeline
-└── brand/                # app icon, splash and favicon generator
+├── brand/                # app icon, splash and favicon generator
+└── site/                 # website: support, privacy and terms in 17 languages
 docs/                     # architecture, store compliance, store listings, privacy policy
 store.config.json         # App Store listing (EAS Metadata)
 ```
@@ -112,6 +115,12 @@ npm run brand -- --fetch   # refresh those SVGs from the Pastelki API first
 ```
 
 ImageMagick (`magick`) is used, when present, to flatten the iOS icon to an opaque PNG.
+
+**The website** ([tobob.github.io/kolorowanki-site](https://tobob.github.io/kolorowanki-site/)) is generated from the same texts as the app, so the privacy policy on the web and in the app always match. Pass the path to a checkout of `tobob/kolorowanki-site`:
+
+```bash
+npm run site -- ../kolorowanki-site
+```
 
 ## Contributing
 
