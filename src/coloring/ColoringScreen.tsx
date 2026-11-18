@@ -25,7 +25,7 @@ import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import {
   GestureDetector,
   useCompetingGestures,
@@ -52,7 +52,8 @@ import { getPage, pagesOfLevel } from './pages';
 import { PaletteRing } from './PaletteRing';
 import { isHintDone, loadFills, loadLastColor, markHintDone, saveFills, saveLastColor } from './store';
 import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from './types';
-import { BackIcon, FONT, HandIcon, MOTION, NextIcon, RoundButton, SaveIcon, SHADOW, TONE, UndoIcon } from './ui';
+import { BackButton, Toolbar, toolbarSizes, UndoButton } from './Toolbar';
+import { FONT, HandIcon, MOTION, NextIcon, RoundButton, SaveIcon, SHADOW, TONE } from './ui';
 import { PaletteTray } from './PaletteTray';
 import { DoneCard } from './DoneCard';
 import { useSavePicture } from './SavePicture';
@@ -98,15 +99,10 @@ export function ColoringScreen({ pageId }: { pageId: string }) {
 }
 
 function Missing() {
-  const t = useT();
   const insets = useSafeAreaInsets();
-  return (
-    <View style={[styles.toolbar, { paddingTop: insets.top + 8 }]}>
-      <RoundButton accessibilityLabel={t('coloring.back')} onPress={goBack}>
-        <BackIcon />
-      </RoundButton>
-    </View>
-  );
+  const { width } = useWindowDimensions();
+  const bar = toolbarSizes(width);
+  return <Toolbar sizes={bar} inset={insets} left={<BackButton size={bar.big} onPress={goBack} />} />;
 }
 
 /** Clamp a translation so the page never leaves the area (centred while smaller than the area). */
@@ -388,42 +384,35 @@ function Coloring({ page }: { page: Page }) {
   const crispStyle = useAnimatedStyle(() => ({ opacity: crispOpacity.get() }));
 
   const g = area?.geo;
-  // Top bar: left [Back][Undo] · right [Music][Save][Next]. Sizes follow the width so the two groups never meet
-  // (worst case iPhone SE 375 pt: 2×52 + 46 + 42 + 52 + 3 gaps ≈ 290 of 343 pt).
   const w = screen.w || 390;
-  const roomy = w >= 600;
-  const big = roomy ? 68 : w < 400 ? 52 : 60;
-  const music = roomy ? 60 : w < 400 ? 46 : 52;
-  const save = roomy ? 52 : w < 400 ? 42 : 46;
-  const gap = roomy ? 18 : w < 400 ? 10 : 14;
-  const side = Math.max(16, roomy ? 28 : 16);
+  const bar = toolbarSizes(w);
   return (
     <View style={styles.root} onLayout={(e) => setScreen({ w: e.nativeEvent.layout.width, h: e.nativeEvent.layout.height })}>
-      <View
-        style={[styles.toolbar, { paddingTop: insets.top + 8, paddingLeft: insets.left + side, paddingRight: insets.right + side }]}
+      <Toolbar
+        sizes={bar}
+        inset={insets}
         onLayout={(e) => setAreaTop(e.nativeEvent.layout.y + e.nativeEvent.layout.height)}
-      >
-        <View style={[styles.group, { gap }]}>
-          <RoundButton accessibilityLabel={t('coloring.back')} onPress={goBack} size={big}>
-            <BackIcon size={big * 0.5} />
-          </RoundButton>
-          <RoundButton accessibilityLabel={t('coloring.undo')} onPress={undo} disabled={history.length === 0} size={big}>
-            <UndoIcon size={big * 0.5} />
-          </RoundButton>
-        </View>
-        <View style={[styles.group, { gap }]}>
-          <MusicToggle size={music} />
-          {/* grown-ups action: smaller and quieter, opens the parental gate */}
-          <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={save} color="#F3EEFF">
-            <SaveIcon size={save * 0.5} />
-          </RoundButton>
-          {page.id !== 'sample' && (
-            <RoundButton accessibilityLabel={t('coloring.next')} onPress={goNext} size={big}>
-              <NextIcon size={big * 0.5} />
+        left={
+          <>
+            <BackButton size={bar.big} onPress={goBack} />
+            <UndoButton size={bar.big} onPress={undo} disabled={history.length === 0} />
+          </>
+        }
+        right={
+          <>
+            <MusicToggle size={bar.music} />
+            {/* grown-ups action: smaller and quieter, opens the parental gate */}
+            <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={bar.save} color="#F3EEFF">
+              <SaveIcon size={bar.save * 0.5} />
             </RoundButton>
-          )}
-        </View>
-      </View>
+            {page.id !== 'sample' && (
+              <RoundButton accessibilityLabel={t('coloring.next')} onPress={goNext} size={bar.big}>
+                <NextIcon size={bar.big * 0.5} />
+              </RoundButton>
+            )}
+          </>
+        }
+      />
 
       <GestureDetector gesture={gesture}>
         <View style={styles.area} onLayout={onAreaLayout} collapsable={false}>
@@ -478,7 +467,7 @@ function Coloring({ page }: { page: Page }) {
           onClose={closeRing}
           label={(n) => t('coloring.color', { n })}
           closeLabel={t('coloring.back')}
-          scale={roomy ? 1.25 : 1}
+          scale={w >= 600 ? 1.25 : 1}
         />
       )}
 
@@ -538,16 +527,6 @@ function FirstHint({ text }: { text: string }) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: TONE.bg },
-  toolbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 6,
-    backgroundColor: TONE.bg,
-    zIndex: 1,
-  },
-  group: { flexDirection: 'row', alignItems: 'center' },
   area: { flex: 1, overflow: 'hidden' },
   page: {
     position: 'absolute',

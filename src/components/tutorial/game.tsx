@@ -8,7 +8,11 @@
  *   hold → press and hold (the leaf) → ring  → holdPick: tap a colour in the ring · "Ale pięknie!"
  *   bg   → tap the background, it fills       · "Cudownie!"
  *   undo → tap the undo arrow                 · "Widzisz? Nic się nie stało!"
- *   done → "Umiesz już kolorować! … Beee!" + the big "Let's colour!" button
+ *   done → "Umiesz już kolorować! …" + the big "Let's colour!" button
+ *
+ * The top bar is the colouring screen's own (src/coloring/Toolbar.tsx): Back and, from the undo step, Undo
+ * sit exactly where they will be on every page; Skip for grown-ups on the right. The tray stays under the
+ * picture (at the bottom of the screen Edyta would cover it), so Edyta says "under the picture".
  *
  * Kind to a two-year-old: anything close enough counts (a tap anywhere on the picture colours the apple,
  * any tap in the background step colours the background); after ~8 s of nothing, or a touch somewhere
@@ -43,7 +47,8 @@ import { getPage, pagesOfLevel } from '@/coloring/pages';
 import { PaletteRing } from '@/coloring/PaletteRing';
 import { PaletteTray, traySwatchSize } from '@/coloring/PaletteTray';
 import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from '@/coloring/types';
-import { HandIcon, RoundButton, UndoIcon } from '@/coloring/ui';
+import { BackButton, Toolbar, toolbarHeight, toolbarSizes, undoCenter, UndoButton } from '@/coloring/Toolbar';
+import { HandIcon } from '@/coloring/ui';
 import { RADIUS, SHADOW, TONE } from '@/constants/ui';
 import { useLang, useT } from '@/i18n';
 import { usePrefs } from '@/shell/prefs';
@@ -61,6 +66,7 @@ const HINT_AFTER_MS = 8000;
 const NEXT_AFTER_MS = 1000;
 const TAIL = 18;
 const PAD = 16;
+const NO_INSET = { top: 0, left: 0, right: 0 };
 
 const EASE = { easing: Easing.inOut(Easing.quad), reduceMotion: ReduceMotion.System };
 /** The bubble appears with a gentle pop: fade + a small scale, eased, no overshoot. */
@@ -137,7 +143,9 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
   const measured = Object.values(textH);
   const bubbleH = (measured.length ? Math.max(...measured) : lineH * 3) + 2 * 16;
   const bubbleTop = H - bottomRow - TAIL - bubbleH;
-  const topBar = 52;
+  // inside the tutorial's SafeAreaView: the insets are already applied
+  const bar = toolbarSizes(W);
+  const topBar = toolbarHeight(bar, NO_INSET);
   const trayW = Math.min(W, 720);
   const ts = traySwatchSize(trayW, page.palette.length);
   const trayInner = Math.round(ts * 0.22) + 4;
@@ -156,7 +164,6 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
   });
   const k = size / PAGE_W;
   const onPic = (p: { x: number; y: number }) => ({ x: picLeft + p.x * k, y: picTop + p.y * k });
-  const undoBox = { left: picLeft + size - 60, top: picTop + 10, size: 50 };
   const eye = { x: 6 + E * 0.51, y: H - bottomPad - E * 0.46 };
 
   // ----- colouring state -----
@@ -282,7 +289,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
       case 'bg':
         return onPic(role.bgAt);
       case 'undo':
-        return { x: undoBox.left + undoBox.size / 2, y: undoBox.top + undoBox.size / 2 };
+        return undoCenter(bar, NO_INSET);
       default:
         return null;
     }
@@ -415,13 +422,26 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
           </Svg>
         </Pressable>
       </View>
-      {phase === 'undo' || phase === 'done' ? (
-        <Animated.View entering={FadeIn.duration(400)} style={{ position: 'absolute', left: undoBox.left, top: undoBox.top }}>
-          <RoundButton size={undoBox.size} onPress={onUndo} accessibilityLabel={t('coloring.undo')}>
-            <UndoIcon size={undoBox.size * 0.5} />
-          </RoundButton>
-        </Animated.View>
-      ) : null}
+      {/* the colouring screen's top bar: same Back and Undo, same place */}
+      <Toolbar
+        sizes={bar}
+        inset={NO_INSET}
+        left={
+          <>
+            <BackButton size={bar.big} onPress={onFinish} />
+            {phase === 'undo' || phase === 'done' ? (
+              <Animated.View entering={FadeIn.duration(400)}>
+                <UndoButton size={bar.big} onPress={onUndo} />
+              </Animated.View>
+            ) : null}
+          </>
+        }
+        right={
+          <Pressable onPress={onFinish} accessibilityRole="button" hitSlop={12} style={styles.skip}>
+            <AppText style={styles.skipText}>{t('tutorial.skip')}</AppText>
+          </Pressable>
+        }
+      />
 
       {/* the real colour tray */}
       <View style={{ position: 'absolute', left: trayLeft, top: trayTop, width: trayW }}>
@@ -525,7 +545,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
 
 const styles = StyleSheet.create({
   pic: { position: 'absolute', borderRadius: RADIUS.tile, overflow: 'hidden', backgroundColor: PAPER, boxShadow: SHADOW.lifted },
-  pointer: { position: 'absolute', width: 0, height: 0 },
+  pointer: { position: 'absolute', width: 0, height: 0, zIndex: 2 },
   glow: { position: 'absolute', backgroundColor: '#FCE3A0', borderWidth: 3, borderColor: '#F6C945' },
   bubble: { position: 'absolute', borderRadius: 28, backgroundColor: TONE.card, boxShadow: SHADOW.lifted },
   bubbleInner: { flex: 1, justifyContent: 'center', paddingHorizontal: 18, paddingRight: 18 + 30 },
@@ -553,4 +573,6 @@ const styles = StyleSheet.create({
   dotOn: { backgroundColor: TONE.accent, width: 28 },
   go: { paddingHorizontal: 28, width: 'auto', minWidth: 160 },
   goText: { fontWeight: '700' },
+  skip: { paddingVertical: 10, paddingHorizontal: 16, borderRadius: RADIUS.pill, backgroundColor: 'rgba(255,255,255,0.7)' },
+  skipText: { fontSize: 17, color: TONE.muted, fontWeight: '600' },
 });
