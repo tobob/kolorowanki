@@ -24,7 +24,7 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import {
   GestureDetector,
@@ -36,13 +36,14 @@ import {
   useSimultaneousGestures,
   useTapGesture,
 } from 'react-native-gesture-handler';
-import Animated, { FadeIn, FadeOut, makeMutable, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, makeMutable, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { ClipPath, Defs, G, Rect } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { MusicToggle } from '@/components/music-toggle';
 import { useT } from '@/i18n';
+import { goBack } from '@/shell/nav';
 
 import { samplePage } from './__fixtures__/sample-page';
 import { regionAt, warmHitMap } from './hit';
@@ -51,9 +52,15 @@ import { getPage, pagesOfLevel } from './pages';
 import { PaletteRing } from './PaletteRing';
 import { isHintDone, loadFills, loadLastColor, markHintDone, saveFills, saveLastColor } from './store';
 import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from './types';
-import { BackIcon, FONT, MOTION, NextIcon, RoundButton, SaveIcon, SHADOW, TONE, UndoIcon } from './ui';
+import { BackIcon, FONT, HandIcon, MOTION, NextIcon, RoundButton, SaveIcon, SHADOW, TONE, UndoIcon } from './ui';
+import { PaletteTray } from './PaletteTray';
 import { DoneCard } from './DoneCard';
 import { useSavePicture } from './SavePicture';
+
+/** Wall-clock ms (event handlers only). */
+function nowMs() {
+  return Date.now();
+}
 
 const MAX_ZOOM = 5;
 const MARGIN = 14;
@@ -67,10 +74,6 @@ function resolvePage(pageId: string): Page | undefined {
   return undefined;
 }
 
-function goBack() {
-  if (router.canGoBack()) router.back();
-  else router.replace('/');
-}
 
 /** The next page of the same level, or null on the last one (and for the dev sample). */
 function nextPageOf(page: Page): Page | null {
@@ -131,7 +134,9 @@ function Coloring({ page }: { page: Page }) {
   // ----- state -----
   const [fills, setFills] = useState<Fills>(() => loadFills(page.id));
   const [history, setHistory] = useState<Fills[]>([]);
-  const [lastColor, setLastColor] = useState<string | null>(() => loadLastColor(page.id));
+  // The tray always has a selection: the last colour used on this page, else the first palette colour, so the
+  // very first tap on the picture already does something visible.
+  const [lastColor, setLastColor] = useState<string>(() => loadLastColor(page.id) ?? page.palette[0]);
   const [showHint, setShowHint] = useState(() => !isHintDone());
   const [fade, setFade] = useState<Fade | null>(null);
   const [highlight, setHighlight] = useState<Highlight | null>(null);
@@ -213,6 +218,10 @@ function Coloring({ page }: { page: Page }) {
     setFills(next);
     saveFills(page.id, next);
     if (isComplete(page, next) && !isComplete(page, fills)) setDone(true);
+    if (showHint) {
+      markHintDone();
+      setShowHint(false);
+    }
     progress.set(withTiming(1, { duration: 380, easing: MOTION.easing, reduceMotion: MOTION.reduce }));
     return true;
   };
@@ -222,10 +231,10 @@ function Coloring({ page }: { page: Page }) {
    * recognisers underneath, so page taps/holds are ignored while the ring is open and briefly after it closes.
    */
   const suppressUntil = useRef(0);
-  const suppressed = () => ring !== null || Date.now() < suppressUntil.current;
+  const suppressed = () => ring !== null || nowMs() < suppressUntil.current;
 
   const onTap = (px: number, py: number) => {
-    if (suppressed() || !lastColor) return;
+    if (suppressed()) return;
     const r = regionAt(page, px, py);
     if (r === null) return;
     if (fill(r, lastColor)) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft).catch(() => {});
@@ -243,24 +252,31 @@ function Coloring({ page }: { page: Page }) {
   };
 
   const closeRing = () => {
-    suppressUntil.current = Date.now() + 450;
+    suppressUntil.current = nowMs() + 450;
     highlight?.progress.set(withTiming(0, { duration: 200, easing: MOTION.easing }));
     setRing(null);
   };
 
   const pick = (color: string) => {
     if (!ring) return;
-    suppressUntil.current = Date.now() + 450;
+    suppressUntil.current = nowMs() + 450;
     fill(ring.r, color);
-    setLastColor(color);
-    saveLastColor(page.id, color);
-    if (showHint) {
-      markHintDone();
-      setShowHint(false);
-    }
+    choose(color);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft).catch(() => {});
     highlight?.progress.set(withTiming(0, { duration: 300, easing: MOTION.easing }));
     setRing(null);
+  };
+
+  /** Select a colour (tray or ring). */
+  const choose = (color: string) => {
+    setLastColor(color);
+    saveLastColor(page.id, color);
+  };
+
+  const selectFromTray = (color: string) => {
+    if (color === lastColor) return;
+    choose(color);
+    Haptics.selectionAsync().catch(() => {});
   };
 
   const undo = () => {
@@ -372,41 +388,45 @@ function Coloring({ page }: { page: Page }) {
   const crispStyle = useAnimatedStyle(() => ({ opacity: crispOpacity.get() }));
 
   const g = area?.geo;
-  // narrow phones (SE, mini) get slightly smaller buttons so the whole toolbar fits in one row
-  const compact = screen.w > 0 && screen.w < 400;
-  const big = compact ? 50 : 60;
-  const small = compact ? 44 : 52;
-  const gap = compact ? 7 : 12;
+  // Top bar: left [Back][Undo] · right [Music][Save][Next]. Sizes follow the width so the two groups never meet
+  // (worst case iPhone SE 375 pt: 2×52 + 46 + 42 + 52 + 3 gaps ≈ 290 of 343 pt).
+  const w = screen.w || 390;
+  const roomy = w >= 600;
+  const big = roomy ? 68 : w < 400 ? 52 : 60;
+  const music = roomy ? 60 : w < 400 ? 46 : 52;
+  const save = roomy ? 52 : w < 400 ? 42 : 46;
+  const gap = roomy ? 18 : w < 400 ? 10 : 14;
+  const side = Math.max(16, roomy ? 28 : 16);
   return (
     <View style={styles.root} onLayout={(e) => setScreen({ w: e.nativeEvent.layout.width, h: e.nativeEvent.layout.height })}>
       <View
-        style={[styles.toolbar, { paddingTop: insets.top + 8, paddingLeft: insets.left + 16, paddingRight: insets.right + 16 }]}
+        style={[styles.toolbar, { paddingTop: insets.top + 8, paddingLeft: insets.left + side, paddingRight: insets.right + side }]}
         onLayout={(e) => setAreaTop(e.nativeEvent.layout.y + e.nativeEvent.layout.height)}
       >
-        <View style={[styles.toolbarRight, { gap: gap }]}>
+        <View style={[styles.group, { gap }]}>
           <RoundButton accessibilityLabel={t('coloring.back')} onPress={goBack} size={big}>
-            <BackIcon />
+            <BackIcon size={big * 0.5} />
           </RoundButton>
-          <MusicToggle size={small} />
-        </View>
-        <View style={[styles.toolbarRight, { gap: gap }]}>
-          <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={small}>
-            <SaveIcon size={26} />
-          </RoundButton>
-          <CurrentSwatch color={lastColor} label={t('coloring.palette')} />
           <RoundButton accessibilityLabel={t('coloring.undo')} onPress={undo} disabled={history.length === 0} size={big}>
-            <UndoIcon />
+            <UndoIcon size={big * 0.5} />
+          </RoundButton>
+        </View>
+        <View style={[styles.group, { gap }]}>
+          <MusicToggle size={music} />
+          {/* grown-ups action: smaller and quieter, opens the parental gate */}
+          <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={save} color="#F3EEFF">
+            <SaveIcon size={save * 0.5} />
           </RoundButton>
           {page.id !== 'sample' && (
             <RoundButton accessibilityLabel={t('coloring.next')} onPress={goNext} size={big}>
-              <NextIcon />
+              <NextIcon size={big * 0.5} />
             </RoundButton>
           )}
         </View>
       </View>
 
       <GestureDetector gesture={gesture}>
-        <View style={[styles.area, { marginBottom: insets.bottom }]} onLayout={onAreaLayout} collapsable={false}>
+        <View style={styles.area} onLayout={onAreaLayout} collapsable={false}>
           {g && (
             <>
               <Animated.View style={[styles.page, { left: g.ox, top: g.oy, width: g.pw, height: g.ph }, pageStyle]}>
@@ -421,15 +441,31 @@ function Coloring({ page }: { page: Page }) {
               )}
             </>
           )}
-          {showHint && (
-            <Animated.View pointerEvents="none" style={styles.hintWrap} entering={FadeIn.duration(400)} exiting={FadeOut.duration(400)}>
-              <Text style={styles.hint} numberOfLines={2}>
-                {t('coloring.hint')}
-              </Text>
-            </Animated.View>
-          )}
+          {showHint && <FirstHint text={t('coloring.hint')} />}
         </View>
       </GestureDetector>
+
+      {/* When the picture is finished the "All done!" card takes the tray's place (never covering the picture). */}
+      {done && !ring ? (
+        <DoneCard
+          page={page}
+          fills={fills}
+          bottomInset={insets.bottom}
+          hasNext={next !== null}
+          onNext={goNext}
+          onSave={saver.ask}
+          onKeep={() => setDone(false)}
+        />
+      ) : (
+        <PaletteTray
+          colors={page.palette}
+          selected={lastColor}
+          onSelect={selectFromTray}
+          width={w - insets.left - insets.right}
+          bottomInset={insets.bottom}
+          label={(n) => t('coloring.color', { n })}
+        />
+      )}
 
       {ring && (
         <PaletteRing
@@ -442,20 +478,10 @@ function Coloring({ page }: { page: Page }) {
           onClose={closeRing}
           label={(n) => t('coloring.color', { n })}
           closeLabel={t('coloring.back')}
+          scale={roomy ? 1.25 : 1}
         />
       )}
 
-      {done && !ring && (
-        <DoneCard
-          page={page}
-          fills={fills}
-          bottom={insets.bottom}
-          hasNext={next !== null}
-          onNext={goNext}
-          onSave={saver.ask}
-          onKeep={() => setDone(false)}
-        />
-      )}
       {saver.element}
     </View>
   );
@@ -482,9 +508,31 @@ function CrispLayer({ page, fills, fade, highlight, geo, view }: { page: Page; f
   );
 }
 
-function CurrentSwatch({ color, label }: { color: string | null; label: string }): ReactNode {
+/**
+ * First-use hint, picture-first: a small hand glides up from the colour tray towards the picture twice
+ * (slow, soft, then it rests), above one short line of text. Disappears after the first fill.
+ */
+function FirstHint({ text }: { text: string }) {
+  const p = useSharedValue(0);
+  useEffect(() => {
+    const leg = { duration: 1300, easing: MOTION.easing, reduceMotion: MOTION.reduce };
+    p.set(withDelay(500, withRepeat(withSequence(withTiming(1, leg), withTiming(0, { ...leg, duration: 700 })), 2, false)));
+  }, [p]);
+  const hand = useAnimatedStyle(() => ({
+    opacity: 1 - Math.max(0, (p.get() - 0.7) / 0.3) * 0.7,
+    transform: [{ translateY: 18 - p.get() * 46 }, { rotate: `${-8 + p.get() * 8}deg` }],
+  }));
   return (
-    <View accessible accessibilityLabel={label} style={[styles.current, color ? { backgroundColor: color } : styles.currentEmpty]} />
+    <Animated.View pointerEvents="none" style={styles.hintWrap} entering={FadeIn.duration(500)} exiting={FadeOut.duration(400)}>
+      <View style={styles.hintRow}>
+        <Animated.View style={hand}>
+          <HandIcon size={40} />
+        </Animated.View>
+        <Text style={styles.hint} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          {text}
+        </Text>
+      </View>
+    </Animated.View>
   );
 }
 
@@ -499,16 +547,7 @@ const styles = StyleSheet.create({
     backgroundColor: TONE.bg,
     zIndex: 1,
   },
-  toolbarRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  current: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 4,
-    borderColor: TONE.card,
-    boxShadow: SHADOW.soft,
-  },
-  currentEmpty: { backgroundColor: TONE.card, borderColor: TONE.dot, borderStyle: 'dashed', borderWidth: 3, boxShadow: undefined },
+  group: { flexDirection: 'row', alignItems: 'center' },
   area: { flex: 1, overflow: 'hidden' },
   page: {
     position: 'absolute',
@@ -522,20 +561,26 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 24,
     right: 24,
-    bottom: 22,
+    bottom: 8,
     alignItems: 'center',
+  },
+  hintRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    maxWidth: '100%',
+    backgroundColor: 'rgba(255,255,255,0.94)',
+    borderRadius: 999,
+    paddingLeft: 8,
+    paddingRight: 16,
+    paddingVertical: 4,
+    boxShadow: SHADOW.soft,
   },
   hint: {
     fontFamily: FONT,
-    fontSize: 18,
-    lineHeight: 24,
+    fontSize: 17,
+    lineHeight: 22,
     color: TONE.text,
-    textAlign: 'center',
-    backgroundColor: 'rgba(255,255,255,0.92)',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 999,
-    overflow: 'hidden',
-    boxShadow: SHADOW.soft,
+    flexShrink: 1,
   },
 });

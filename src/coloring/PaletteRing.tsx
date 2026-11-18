@@ -25,22 +25,24 @@ type Props = {
   onClose: () => void;
   label: (n: number) => string;
   closeLabel: string;
+  /** size factor (tablets: 1.2) */
+  scale?: number;
 };
 
-export function ringCenter(x: number, y: number, b: Props['bounds']) {
-  const half = RING_R + SWATCH / 2 + EDGE;
+export function ringCenter(x: number, y: number, b: Props['bounds'], k = 1) {
+  const half = (RING_R + SWATCH / 2) * k + EDGE;
   const cx = Math.min(Math.max(x, b.left + half), b.right - half);
   const cy = Math.min(Math.max(y, b.top + half), b.bottom - half);
   return { cx, cy };
 }
 
-export function PaletteRing({ x, y, colors, current, bounds, onPick, onClose, label, closeLabel }: Props) {
+export function PaletteRing({ x, y, colors, current, bounds, onPick, onClose, label, closeLabel, scale = 1 }: Props) {
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.set(withTiming(1, { duration: 280, easing: MOTION.easeOut, reduceMotion: MOTION.reduce }));
   }, [progress]);
 
-  const { cx, cy } = ringCenter(x, y, bounds);
+  const { cx, cy } = ringCenter(x, y, bounds, scale);
   // The finger may sit off-centre when the ring had to be nudged on-screen; swatches start at the finger.
   const fx = x - cx;
   const fy = y - cy;
@@ -57,8 +59,9 @@ export function PaletteRing({ x, y, colors, current, bounds, onPick, onClose, la
               key={i}
               color={c}
               selected={c === current}
-              tx={Math.cos(a) * RING_R}
-              ty={Math.sin(a) * RING_R}
+              tx={Math.cos(a) * RING_R * scale}
+              ty={Math.sin(a) * RING_R * scale}
+              scale={scale}
               fx={fx}
               fy={fy}
               progress={progress}
@@ -82,8 +85,10 @@ function Swatch(props: {
   progress: SharedValue<number>;
   onPress: () => void;
   label: string;
+  scale: number;
 }) {
-  const { color, selected, tx, ty, fx, fy, progress, onPress, label } = props;
+  const { color, selected, tx, ty, fx, fy, progress, onPress, label, scale } = props;
+  const d = SWATCH * scale;
   const anim = useAnimatedStyle(() => {
     const p = progress.get();
     return {
@@ -96,9 +101,9 @@ function Swatch(props: {
     };
   });
   return (
-    <Animated.View style={[styles.swatchWrap, anim]}>
-      <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} hitSlop={4} style={styles.hit}>
-        <View style={[styles.swatch, { backgroundColor: color }, selected && styles.selected]} />
+    <Animated.View style={[styles.swatchWrap, { left: -d / 2, top: -d / 2, width: d, height: d }, anim]}>
+      <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} hitSlop={4} style={{ width: d, height: d }}>
+        <View style={[styles.swatch, { width: d, height: d, borderRadius: d / 2, backgroundColor: color }, selected && styles.selected]} />
       </Pressable>
     </Animated.View>
   );
@@ -107,12 +112,8 @@ function Swatch(props: {
 const styles = StyleSheet.create({
   layer: { zIndex: 30, elevation: 30 },
   center: { position: 'absolute', width: 0, height: 0 },
-  swatchWrap: { position: 'absolute', left: -SWATCH / 2, top: -SWATCH / 2, width: SWATCH, height: SWATCH },
-  hit: { width: SWATCH, height: SWATCH },
+  swatchWrap: { position: 'absolute' },
   swatch: {
-    width: SWATCH,
-    height: SWATCH,
-    borderRadius: SWATCH / 2,
     borderWidth: 4,
     borderColor: TONE.card,
     boxShadow: SHADOW.lifted,

@@ -131,3 +131,19 @@ export function SaveIcon({ size = 28 }: { size?: number }) {
     </Svg>
   );
 }
+
+/** A small pointing hand (finger up), for the first-use hint. */
+export function HandIcon({ size = 44 }: { size?: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 48 48">
+      <Path
+        d="M19 22 V9 A3.5 3.5 0 0 1 26 9 V21 M26 19 A3.5 3.5 0 0 1 33 19 V22 M33 21 A3.5 3.5 0 0 1 40 21 V30 C40 38 35 43 28 43 H25 C20 43 17 40 14 36 L8.5 28.5 A3.3 3.3 0 0 1 13.5 24.5 L19 30 V22"
+        fill="#FFFFFF"
+        stroke={OUTLINE}
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
