@@ -34,7 +34,26 @@
       "bundleIdentifier": "com.tobob.kolorowanki",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleAllowMixedLocalizations": true
+        "CFBundleAllowMixedLocalizations": true,
+        "CFBundleLocalizations": [
+          "pl",
+          "en",
+          "de",
+          "fr",
+          "es",
+          "it",
+          "pt",
+          "nl",
+          "uk",
+          "cs",
+          "sk",
+          "sv",
+          "ro",
+          "hu",
+          "tr",
+          "ja",
+          "zh"
+        ]
       },
       "privacyManifests": {
         "NSPrivacyTracking": false,
@@ -82,7 +101,10 @@
       "package": "com.tobob.kolorowanki",
       "permissions": [
         "android.permission.VIBRATE",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
       ],
       "blockedPermissions": [
         "android.permission.RECORD_AUDIO",
@@ -186,6 +208,16 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "owner": "tobobu"
+    "owner": "tobobu",
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "4f4b817a-daa4-48cb-82ad-8ae8a4bd6183"
+      }
+    }
   }
 }
