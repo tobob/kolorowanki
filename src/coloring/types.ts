@@ -23,11 +23,14 @@ export const PAPER = '#FFFFFF';
  * One shape, drawn in painter's order (later shapes cover earlier ones — this is what hides the
  * outlines of parts that sit behind other parts, so render them in order, never "all fills then all lines").
  * `d` is an absolute path in page coordinates (transforms, circles, ellipses, rects and arcs already baked in).
- * - `r` set   → a colourable region: fill = the child's colour for region r (or PAPER), stroke = OUTLINE.
+ * - `r` set   → a colourable region: fill = the child's colour for region r (or PAPER), stroke = OUTLINE if `sw` > 0
+ *              (the page background is a full-page region with sw 0 — no border line).
  * - `r` unset → a fixed detail (eyes, nose, a line): fill = `fill` (or none), stroke = OUTLINE if `sw` > 0.
+ * - `paint: 'stroke'` (regions only) → the region's colour (or PAPER) is the STROKE colour, width `sw`, fill none
+ *   (e.g. the coloured core of a tail drawn as a thick line).
  * Lines use round caps and joins.
  */
-export type Shape = { d: string; r?: number; fill?: string; sw?: number };
+export type Shape = { d: string; r?: number; fill?: string; sw?: number; paint?: 'stroke' };
 
 export type Page = {
   /** stable id, e.g. "l1-apple", "l3-farm-1" — saved colourings are keyed by it */
