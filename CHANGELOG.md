@@ -6,6 +6,8 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-18
+
 ### Added
 - Interactive spoken tutorial with Edyta the sheep: the child taps a colour, taps the apple, holds the leaf, colours the background and taps undo, while Edyta talks (synthetic voice, 17 languages) and praises each step.
 - "Edyta's voice" switch in the grown-ups area.

@@ -1,27 +1,29 @@
 {
   "_doc": "Store \"What's New\" per store locale (keys = apple.info locales in store.config.json). Edit 'unreleased'; studio build/release moves it to versions[x.y.z] and into store.config.json releaseNotes. Short, friendly, for parents; max 500 characters (Google Play), 4000 (Apple).",
-  "unreleased": {
-    "en-US": "New: Edyta the sheep shows your child how to color. In a short, gentle tutorial your child taps, holds and colors along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
-    "en-GB": "New: Edyta the sheep shows your child how to colour. In a short, gentle tutorial your child taps, holds and colours along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
-    "pl": "Nowość: owca Edyta pokazuje dziecku, jak kolorować. W krótkim, spokojnym samouczku dziecko samo stuka, przytrzymuje i koloruje, a Edyta mówi w jego języku i je chwali. Głos Edyty można wyłączyć w części „Dla dorosłych”.",
-    "de-DE": "Neu: Edyta, das Schaf, zeigt Ihrem Kind, wie das Ausmalen geht. In einer kurzen, ruhigen Anleitung tippt, hält und malt Ihr Kind selbst mit, während Edyta in seiner Sprache spricht und es lobt. Edytas Stimme lässt sich unter „Für Erwachsene“ ausschalten.",
-    "fr-FR": "Nouveau : Edyta la brebis montre à votre enfant comment colorier. Dans un court tutoriel tout en douceur, votre enfant touche, maintient le doigt et colorie lui-même, pendant qu’Edyta lui parle dans sa langue et l’encourage. Sa voix peut être coupée dans « Pour les grands ».",
-    "fr-CA": "Nouveau : Edyta la brebis montre à votre enfant comment colorier. Dans un court tutoriel tout en douceur, votre enfant touche, maintient le doigt et colorie lui-même, pendant qu’Edyta lui parle dans sa langue et l’encourage. Sa voix peut être coupée dans « Pour les grands ».",
-    "es-ES": "Novedad: la oveja Edyta enseña a tu hijo a colorear. En un tutorial breve y tranquilo, tu hijo toca, mantiene pulsado y colorea por sí mismo mientras Edyta le habla en su idioma y lo anima. Su voz se puede desactivar en «Para adultos».",
-    "es-MX": "Novedad: la oveja Edyta le enseña a tu hijo a colorear. En un tutorial breve y tranquilo, tu hijo toca, mantiene presionado y colorea por sí mismo mientras Edyta le habla en su idioma y lo anima. Su voz se puede desactivar en “Para adultos”.",
-    "it": "Novità: la pecora Edyta mostra al tuo bambino come colorare. In un breve tutorial tranquillo il bambino tocca, tiene premuto e colora da solo, mentre Edyta gli parla nella sua lingua e lo incoraggia. La sua voce si può disattivare in «Per i grandi».",
-    "pt-BR": "Novidade: a ovelha Edyta ensina seu filho a colorir. Em um tutorial curto e tranquilo, a criança toca, segura o dedo e colore sozinha, enquanto a Edyta fala no idioma dela e a incentiva. A voz da Edyta pode ser desligada em “Para adultos”.",
-    "pt-PT": "Novidade: a ovelha Edyta ensina o seu filho a colorir. Num tutorial curto e tranquilo, a criança toca, mantém o dedo e pinta sozinha, enquanto a Edyta fala na língua dela e a incentiva. A voz da Edyta pode ser desligada em «Para adultos».",
-    "nl-NL": "Nieuw: Edyta het schaap laat je kind zien hoe kleuren werkt. In een korte, rustige uitleg tikt, houdt en kleurt je kind zelf mee, terwijl Edyta in zijn of haar taal praat en aanmoedigt. Haar stem kun je uitzetten bij ‘Voor grote mensen’.",
-    "uk": "Новинка: вівця Едита показує дитині, як розфарбовувати. У короткому спокійному навчанні дитина сама торкається, утримує палець і розфарбовує, а Едита говорить її мовою та підбадьорює. Голос Едити можна вимкнути в розділі «Для дорослих».",
-    "cs": "Novinka: ovečka Edyta ukáže dítěti, jak vybarvovat. V krátkém klidném návodu dítě samo ťuká, drží prst a vybarvuje, zatímco Edyta mluví jeho jazykem a chválí ho. Hlas Edyty lze vypnout v části „Pro dospělé“.",
-    "sk": "Novinka: ovečka Edyta ukáže dieťaťu, ako vyfarbovať. V krátkom pokojnom návode dieťa samo ťuká, drží prst a vyfarbuje, kým Edyta hovorí jeho jazykom a chváli ho. Hlas Edyty sa dá vypnúť v časti „Pre dospelých“.",
-    "sv": "Nytt: fåret Edyta visar ditt barn hur man färglägger. I en kort, lugn guide trycker, håller och färglägger barnet själv medan Edyta pratar på barnets språk och berömmer. Edytas röst kan stängas av under ”För vuxna”.",
-    "ro": "Nou: oița Edyta îi arată copilului cum să coloreze. Într-un tutorial scurt și liniștit, copilul atinge, ține degetul apăsat și colorează singur, în timp ce Edyta vorbește în limba lui și îl laudă. Vocea Edytei poate fi oprită în secțiunea „Pentru adulți”.",
-    "hu": "Újdonság: Edyta, a bárány megmutatja a gyereknek, hogyan kell színezni. Egy rövid, nyugodt bemutatóban a gyerek maga koppint, nyomva tartja az ujját és színez, Edyta pedig a gyerek nyelvén beszél és dicséri. Edyta hangja kikapcsolható a „Felnőtteknek” részben.",
-    "tr": "Yeni: Koyun Edyta çocuğunuza nasıl boyanacağını gösteriyor. Kısa ve sakin bir eğitimde çocuğunuz kendisi dokunur, parmağını basılı tutar ve boyar; Edyta da onun dilinde konuşup onu över. Edyta'nın sesi “Büyükler için” bölümünden kapatılabilir.",
-    "ja": "新しく、ひつじのエディタがぬりえのしかたを教えてくれるようになりました。短くておだやかなチュートリアルで、お子さまが自分でタップしたり長押ししたりしながらぬっていき、エディタがお子さまの言語で話しかけ、ほめてくれます。エディタの声は「おとなのかたへ」でオフにできます。",
-    "zh-Hans": "新功能：小羊伊迪塔教孩子怎么涂色。在简短、轻松的引导中，孩子亲手点一点、按住、涂颜色，伊迪塔会用孩子的语言说话并夸奖他。可以在“家长专区”关闭伊迪塔的声音。"
-  },
-  "versions": {}
+  "unreleased": {},
+  "versions": {
+    "1.0.1": {
+      "en-US": "New: Edyta the sheep shows your child how to color. In a short, gentle tutorial your child taps, holds and colors along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
+      "en-GB": "New: Edyta the sheep shows your child how to colour. In a short, gentle tutorial your child taps, holds and colours along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
+      "pl": "Nowość: owca Edyta pokazuje dziecku, jak kolorować. W krótkim, spokojnym samouczku dziecko samo stuka, przytrzymuje i koloruje, a Edyta mówi w jego języku i je chwali. Głos Edyty można wyłączyć w części „Dla dorosłych”.",
+      "de-DE": "Neu: Edyta, das Schaf, zeigt Ihrem Kind, wie das Ausmalen geht. In einer kurzen, ruhigen Anleitung tippt, hält und malt Ihr Kind selbst mit, während Edyta in seiner Sprache spricht und es lobt. Edytas Stimme lässt sich unter „Für Erwachsene“ ausschalten.",
+      "fr-FR": "Nouveau : Edyta la brebis montre à votre enfant comment colorier. Dans un court tutoriel tout en douceur, votre enfant touche, maintient le doigt et colorie lui-même, pendant qu’Edyta lui parle dans sa langue et l’encourage. Sa voix peut être coupée dans « Pour les grands ».",
+      "fr-CA": "Nouveau : Edyta la brebis montre à votre enfant comment colorier. Dans un court tutoriel tout en douceur, votre enfant touche, maintient le doigt et colorie lui-même, pendant qu’Edyta lui parle dans sa langue et l’encourage. Sa voix peut être coupée dans « Pour les grands ».",
+      "es-ES": "Novedad: la oveja Edyta enseña a tu hijo a colorear. En un tutorial breve y tranquilo, tu hijo toca, mantiene pulsado y colorea por sí mismo mientras Edyta le habla en su idioma y lo anima. Su voz se puede desactivar en «Para adultos».",
+      "es-MX": "Novedad: la oveja Edyta le enseña a tu hijo a colorear. En un tutorial breve y tranquilo, tu hijo toca, mantiene presionado y colorea por sí mismo mientras Edyta le habla en su idioma y lo anima. Su voz se puede desactivar en “Para adultos”.",
+      "it": "Novità: la pecora Edyta mostra al tuo bambino come colorare. In un breve tutorial tranquillo il bambino tocca, tiene premuto e colora da solo, mentre Edyta gli parla nella sua lingua e lo incoraggia. La sua voce si può disattivare in «Per i grandi».",
+      "pt-BR": "Novidade: a ovelha Edyta ensina seu filho a colorir. Em um tutorial curto e tranquilo, a criança toca, segura o dedo e colore sozinha, enquanto a Edyta fala no idioma dela e a incentiva. A voz da Edyta pode ser desligada em “Para adultos”.",
+      "pt-PT": "Novidade: a ovelha Edyta ensina o seu filho a colorir. Num tutorial curto e tranquilo, a criança toca, mantém o dedo e pinta sozinha, enquanto a Edyta fala na língua dela e a incentiva. A voz da Edyta pode ser desligada em «Para adultos».",
+      "nl-NL": "Nieuw: Edyta het schaap laat je kind zien hoe kleuren werkt. In een korte, rustige uitleg tikt, houdt en kleurt je kind zelf mee, terwijl Edyta in zijn of haar taal praat en aanmoedigt. Haar stem kun je uitzetten bij ‘Voor grote mensen’.",
+      "uk": "Новинка: вівця Едита показує дитині, як розфарбовувати. У короткому спокійному навчанні дитина сама торкається, утримує палець і розфарбовує, а Едита говорить її мовою та підбадьорює. Голос Едити можна вимкнути в розділі «Для дорослих».",
+      "cs": "Novinka: ovečka Edyta ukáže dítěti, jak vybarvovat. V krátkém klidném návodu dítě samo ťuká, drží prst a vybarvuje, zatímco Edyta mluví jeho jazykem a chválí ho. Hlas Edyty lze vypnout v části „Pro dospělé“.",
+      "sk": "Novinka: ovečka Edyta ukáže dieťaťu, ako vyfarbovať. V krátkom pokojnom návode dieťa samo ťuká, drží prst a vyfarbuje, kým Edyta hovorí jeho jazykom a chváli ho. Hlas Edyty sa dá vypnúť v časti „Pre dospelých“.",
+      "sv": "Nytt: fåret Edyta visar ditt barn hur man färglägger. I en kort, lugn guide trycker, håller och färglägger barnet själv medan Edyta pratar på barnets språk och berömmer. Edytas röst kan stängas av under ”För vuxna”.",
+      "ro": "Nou: oița Edyta îi arată copilului cum să coloreze. Într-un tutorial scurt și liniștit, copilul atinge, ține degetul apăsat și colorează singur, în timp ce Edyta vorbește în limba lui și îl laudă. Vocea Edytei poate fi oprită în secțiunea „Pentru adulți”.",
+      "hu": "Újdonság: Edyta, a bárány megmutatja a gyereknek, hogyan kell színezni. Egy rövid, nyugodt bemutatóban a gyerek maga koppint, nyomva tartja az ujját és színez, Edyta pedig a gyerek nyelvén beszél és dicséri. Edyta hangja kikapcsolható a „Felnőtteknek” részben.",
+      "tr": "Yeni: Koyun Edyta çocuğunuza nasıl boyanacağını gösteriyor. Kısa ve sakin bir eğitimde çocuğunuz kendisi dokunur, parmağını basılı tutar ve boyar; Edyta da onun dilinde konuşup onu över. Edyta'nın sesi “Büyükler için” bölümünden kapatılabilir.",
+      "ja": "新しく、ひつじのエディタがぬりえのしかたを教えてくれるようになりました。短くておだやかなチュートリアルで、お子さまが自分でタップしたり長押ししたりしながらぬっていき、エディタがお子さまの言語で話しかけ、ほめてくれます。エディタの声は「おとなのかたへ」でオフにできます。",
+      "zh-Hans": "新功能：小羊伊迪塔教孩子怎么涂色。在简短、轻松的引导中，孩子亲手点一点、按住、涂颜色，伊迪塔会用孩子的语言说话并夸奖他。可以在“家长专区”关闭伊迪塔的声音。"
+    }
+  }
 }
