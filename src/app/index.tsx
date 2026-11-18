@@ -78,7 +78,7 @@ export default function Home() {
       </View>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad, gap }]} showsVerticalScrollIndicator={false}>
         <View style={[styles.hero, { width: content, height: hero }]}>
-          <AppText style={[styles.title, wide && styles.titleWide]} numberOfLines={2} adjustsFontSizeToFit>
+          <AppText style={[styles.title, wide && styles.titleWide]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6}>
             {t('app.name')}
           </AppText>
           <HeroFan h={hero - 12} />
