@@ -30,7 +30,11 @@
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,
-      "icon": "./assets/images/icon.png",
+      "icon": {
+        "light": "./assets/images/icon.png",
+        "dark": "./assets/images/ios-icon-dark.png",
+        "tinted": "./assets/images/ios-icon-tinted.png"
+      },
       "bundleIdentifier": "com.tobob.kolorowanki",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -134,7 +138,7 @@
         {
           "backgroundColor": "#FFF8EE",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 240
+          "imageWidth": 220
         }
       ],
       [

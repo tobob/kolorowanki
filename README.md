@@ -107,14 +107,13 @@ store.config.json         # App Store listing (EAS Metadata)
 
 **Colouring pages** are generated from the Pastelki library by `tools/pages` (see `docs/ARCHITECTURE.md`).
 
-**The app icon, adaptive icon, splash mark and favicon** are composed from two Pastelki pictures (a half-coloured butterfly and a crayon) and rendered with [resvg](https://github.com/yisibl/resvg-js):
+**The app icon** (light, dark and tinted on iOS), **adaptive icon, splash mark and favicon** are composed from Pastelki pictures, never redrawn: the kitten colouring page from `tools/pages/svgs`, half coloured, with the Pastelki crayon, on a white disc and a soft paint splash. They are rendered with [resvg](https://github.com/yisibl/resvg-js) and [ImageMagick](https://imagemagick.org) (`magick`):
 
 ```bash
-npm run brand              # render from the pinned SVGs in tools/brand/art/
-npm run brand -- --fetch   # refresh those SVGs from the Pastelki API first
+npm run brand                    # render the chosen design into assets/images/
+npm run brand -- --candidates    # also render the other designs to tools/brand/out/candidates/
+npm run brand -- --fetch         # refresh the pinned crayon (tools/brand/art/) from the Pastelki API first
 ```
-
-ImageMagick (`magick`) is used, when present, to flatten the iOS icon to an opaque PNG.
 
 **The website** ([tobob.github.io/kolorowanki-site](https://tobob.github.io/kolorowanki-site/)) is generated from the same texts as the app, so the privacy policy on the web and in the app always match. Pass the path to a checkout of `tobob/kolorowanki-site`:
 
