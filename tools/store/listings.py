@@ -10,8 +10,19 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 REPO_LINE = "Kolorowanki is open source: github.com/tobob/kolorowanki"
-SUPPORT_URL = "https://github.com/tobob/kolorowanki"
-PRIVACY_URL = "https://github.com/tobob/kolorowanki/blob/main/docs/PRIVACY.md"
+SITE_URL = "https://tobob.github.io/kolorowanki-site/"
+SUPPORT_URL = SITE_URL
+PRIVACY_URL = SITE_URL + "privacy/"
+MARKETING_URL = "https://github.com/tobob/kolorowanki"
+# Languages the site (tools/site/gen-site.ts) has; English lives at the root.
+SITE_LANGS = {"pl", "en", "de", "fr", "es", "it", "pt", "nl", "uk", "cs", "sk", "sv", "ro", "hu", "tr", "ja", "zh"}
+
+
+def site_url(key, page=""):
+    """Site page in the listing's language (store key like "pt-BR" -> /pt/), English at the root."""
+    lang = key.split("-")[0]
+    prefix = "" if lang == "en" or lang not in SITE_LANGS else lang + "/"
+    return SITE_URL + prefix + page
 
 # Each language: name, subtitle, keywords, promo, short (Play), and body sections.
 # body = (intro, how, inside_title, inside[], calm_title, calm, parents_title, parents[], credit)
@@ -564,7 +575,7 @@ ADVISORY = {
     "koreaAgeRatingOverride": "NONE", "developerAgeRatingInfoUrl": None,
 }
 
-REVIEW_NOTES = """Kolorowanki is a calm, fully offline colouring book for children aged 2-6 (Made for Kids, 5 and under). Free, no in-app purchases, no ads, no accounts, no network requests, no data collection, no permission prompts.
+REVIEW_NOTES = """Kolorowanki is a calm, fully offline colouring book for children aged 2-6 (Made for Kids, 5 and under). Free, no in-app purchases, no ads, no accounts, no network requests, no data collection. The only permission prompt is add-only Photos access, shown when a grown-up saves a picture behind the parental gate.
 
 NO LOGIN NEEDED
 Launch the app. The home screen shows four large cards (one big picture / a few friends / a little scene / a busy page). Tap a card, then tap a picture.
@@ -596,8 +607,8 @@ def main():
         info[loc] = {
             "title": c["name"], "subtitle": c["subtitle"], "description": description(c),
             "keywords": c["keywords"].split(","), "promoText": c["promo"],
-            "supportUrl": SUPPORT_URL, "privacyPolicyUrl": PRIVACY_URL,
-            "marketingUrl": "https://github.com/tobob/kolorowanki",
+            "supportUrl": site_url(key), "privacyPolicyUrl": site_url(key, "privacy/"),
+            "marketingUrl": MARKETING_URL,
         }
     config = {
         "configVersion": 0,
