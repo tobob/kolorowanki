@@ -41,6 +41,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { ClipPath, Defs, G, Rect } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { MusicToggle } from '@/components/music-toggle';
 import { useT } from '@/i18n';
 
 import { samplePage } from './__fixtures__/sample-page';
@@ -371,25 +372,33 @@ function Coloring({ page }: { page: Page }) {
   const crispStyle = useAnimatedStyle(() => ({ opacity: crispOpacity.get() }));
 
   const g = area?.geo;
+  // narrow phones (SE, mini) get slightly smaller buttons so the whole toolbar fits in one row
+  const compact = screen.w > 0 && screen.w < 400;
+  const big = compact ? 50 : 60;
+  const small = compact ? 44 : 52;
+  const gap = compact ? 7 : 12;
   return (
     <View style={styles.root} onLayout={(e) => setScreen({ w: e.nativeEvent.layout.width, h: e.nativeEvent.layout.height })}>
       <View
         style={[styles.toolbar, { paddingTop: insets.top + 8, paddingLeft: insets.left + 16, paddingRight: insets.right + 16 }]}
         onLayout={(e) => setAreaTop(e.nativeEvent.layout.y + e.nativeEvent.layout.height)}
       >
-        <RoundButton accessibilityLabel={t('coloring.back')} onPress={goBack} size={60}>
-          <BackIcon />
-        </RoundButton>
-        <View style={styles.toolbarRight}>
-          <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={52}>
+        <View style={[styles.toolbarRight, { gap: gap }]}>
+          <RoundButton accessibilityLabel={t('coloring.back')} onPress={goBack} size={big}>
+            <BackIcon />
+          </RoundButton>
+          <MusicToggle size={small} />
+        </View>
+        <View style={[styles.toolbarRight, { gap: gap }]}>
+          <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={small}>
             <SaveIcon size={26} />
           </RoundButton>
           <CurrentSwatch color={lastColor} label={t('coloring.palette')} />
-          <RoundButton accessibilityLabel={t('coloring.undo')} onPress={undo} disabled={history.length === 0} size={60}>
+          <RoundButton accessibilityLabel={t('coloring.undo')} onPress={undo} disabled={history.length === 0} size={big}>
             <UndoIcon />
           </RoundButton>
           {page.id !== 'sample' && (
-            <RoundButton accessibilityLabel={t('coloring.next')} onPress={goNext} size={60}>
+            <RoundButton accessibilityLabel={t('coloring.next')} onPress={goNext} size={big}>
               <NextIcon />
             </RoundButton>
           )}
