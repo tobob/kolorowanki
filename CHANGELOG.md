@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Changed
+- Calmer, slower music (soft piano and flute)
+
 ## [1.0.1] - 2026-11-18
 
 ### Added
