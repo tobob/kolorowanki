@@ -20,7 +20,27 @@ const LEVELS: Level[] = [1, 2, 3, 4];
 
 const difficulty = (p: Page) => p.regions * 1000 + p.shapes.length;
 
+/** --use-revise: build every page from the published AND the proposed tagged SVGs (in memory only) and
+ *  write assets/revise-before-after.png for the pages that change. Nothing in src/ is touched. */
+async function beforeAfter() {
+  const before = new Library(false);
+  const after = new Library(false, true);
+  await before.load();
+  await after.load();
+  const changed: Page[] = [];
+  for (const level of LEVELS)
+    for (const spec of SCENES[level]) {
+      const a = (await buildPage(before, level, spec)).page;
+      const b = (await buildPage(after, level, spec)).page;
+      if (JSON.stringify(a.shapes) === JSON.stringify(b.shapes)) continue;
+      changed.push({ ...a, id: `${a.id} BEFORE` }, { ...b, id: `${b.id} AFTER` });
+    }
+  contactSheet(changed, join(ROOT, 'assets/revise-before-after.png'), { mode: 'outlines', cols: 8, tile: 240 });
+  console.log(`${changed.length / 2} pages change with the tagged SVGs → assets/revise-before-after.png`);
+}
+
 async function main() {
+  if (process.argv.includes('--use-revise')) return beforeAfter();
   const refresh = process.argv.includes('--refresh');
   const lib = new Library(refresh);
   await lib.load();

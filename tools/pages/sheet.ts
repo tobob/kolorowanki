@@ -21,8 +21,8 @@ function debugColour(r: number): string {
  * mode 'review' (default): each page twice — outlines, then original colours (+ palette dots).
  * mode 'regions': each page once, every region in its own random pastel, to check the segmentation.
  */
-export function contactSheet(pages: Page[], file: string, opts: { cols?: number; tile?: number; mode?: 'review' | 'regions' } = {}) {
-  const views = opts.mode === 'regions' ? ['regions'] : ['outline', 'original'];
+export function contactSheet(pages: Page[], file: string, opts: { cols?: number; tile?: number; mode?: 'review' | 'regions' | 'outlines' } = {}) {
+  const views = opts.mode === 'regions' ? ['regions'] : opts.mode === 'outlines' ? ['outline'] : ['outline', 'original'];
   const cols = opts.cols ?? 6; // tiles per row (each page = 2 tiles)
   const tw = opts.tile ?? 300;
   const sc = tw / PAGE_W;

@@ -22,12 +22,19 @@ export type Prim = {
   matKey: string;
   /** produced by clipping (geometry is already the visible area) */
   clipped?: boolean;
+  /** source position of the element (offset of its `<tag`), its tag name and its own id attribute */
+  at: number;
+  tag: string;
+  ownId?: string;
 };
 
-type Node = { tag: string; attrs: Record<string, string>; kids: Node[] };
+type Node = { tag: string; attrs: Record<string, string>; kids: Node[]; at: number };
+
+/** Pastelki source convention: decorative elements (only for the colour picture) carry these id prefixes. */
+export const DECOR_ID = /^pk-(shine|shade)/;
 
 function parse(svg: string): Node {
-  const root: Node = { tag: '#root', attrs: {}, kids: [] };
+  const root: Node = { tag: '#root', attrs: {}, kids: [], at: 0 };
   const stack = [root];
   const re = /<(\/?)([a-zA-Z]+)((?:\s+[a-zA-Z:-]+\s*=\s*"[^"]*")*)\s*(\/?)>|<!--[\s\S]*?-->/g;
   let m: RegExpExecArray | null;
@@ -45,7 +52,7 @@ function parse(svg: string): Node {
       const [k, v] = kv.split(':').map((s) => s.trim());
       if (k && v) attrs[k] = v;
     }
-    const node: Node = { tag: m[2], attrs, kids: [] };
+    const node: Node = { tag: m[2], attrs, kids: [], at: m.index };
     stack[stack.length - 1].kids.push(node);
     if (!m[4]) stack.push(node);
   }
@@ -137,6 +144,8 @@ export function readSvg(svg: string): { prims: Prim[]; dropped: string[] } {
   const walk = (n: Node, m: Mat, st: Style, gid?: string, clip?: MultiPolygon) => {
     const a = n.attrs;
     if (n.tag === 'defs' || n.tag === 'clipPath' || n.tag === 'mask' || n.tag === 'title' || n.tag === 'desc') return;
+    // tagged decoration (shine / shading) belongs to the colour picture only — never to line art
+    if (a.id && DECOR_ID.test(a.id)) return;
     if (a.mask || a.filter) {
       dropped.push(`${n.tag}#${a.id ?? gid ?? '?'} (mask/filter)`);
       return;
@@ -173,7 +182,7 @@ export function readSvg(svg: string): { prims: Prim[]; dropped: string[] } {
       // fill ∩ clip keeps its stroke (the clip edge lies under the parent's outline anyway);
       // a stroke-only element becomes the filled area its stroke paints ∩ clip
       const path = toSegs(d, mm);
-      const base = { opacity: s.opacity, id, key: `clip:${prims.length}`, matKey: '', clipped: true };
+      const base = { opacity: s.opacity, id, key: `clip:${prims.length}`, matKey: '', clipped: true, at: n.at, tag: n.tag, ownId: a.id };
       try {
         if (s.fill && !isLine) {
           const g = intersect(pathToMulti(path), clip);
@@ -196,6 +205,9 @@ export function readSvg(svg: string): { prims: Prim[]; dropped: string[] } {
       opacity: s.opacity,
       id,
       key: d.replace(/\s+/g, ' ').trim(),
+      at: n.at,
+      tag: n.tag,
+      ownId: a.id,
       matKey: mm.map((v) => v.toFixed(3)).join(','),
     });
   };

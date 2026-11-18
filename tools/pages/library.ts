@@ -46,7 +46,11 @@ export class Library {
   items = new Map<string, LibItem>();
   private svgs = new Map<string, string>();
   used = new Set<string>();
-  constructor(private refresh: boolean) {}
+  /** @param revise prefer the proposed tagged copies in tools/pages/revise/ (see revise.ts) */
+  constructor(
+    private refresh: boolean,
+    private revise = false,
+  ) {}
 
   async load() {
     let raw: { items: LibItem[] } | undefined;
@@ -95,7 +99,9 @@ export class Library {
     const committed = join(SVGS, `${slug}.svg`);
     const cached = join(CACHE_SVG, `${slug}-v${it.version}.svg`);
     let svg: string;
-    if (!this.refresh && existsSync(committed)) svg = readFileSync(committed, 'utf8');
+    const revised = join(HERE, 'revise', `${slug}.svg`);
+    if (this.revise && existsSync(revised)) svg = readFileSync(revised, 'utf8');
+    else if (!this.refresh && existsSync(committed)) svg = readFileSync(committed, 'utf8');
     else if (existsSync(cached)) svg = readFileSync(cached, 'utf8');
     else {
       mkdirSync(CACHE_SVG, { recursive: true });
