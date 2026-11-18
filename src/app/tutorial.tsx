@@ -9,7 +9,7 @@ import { useMusic } from '@/audio/music';
 import { AppText } from '@/components/app-text';
 import { Screen } from '@/components/screen';
 import { SoftButton } from '@/components/soft-button';
-import { TutorialDemo } from '@/components/tutorial/demo';
+import { demoTrayHeight, TutorialDemo } from '@/components/tutorial/demo';
 import { RADIUS, TONE } from '@/constants/ui';
 import { useT, type Key } from '@/i18n';
 import { markTutorialSeen } from '@/shell/prefs';
@@ -34,7 +34,8 @@ function TutorialSteps({ first }: { first: number }) {
 
   // Demo picture: as large as fits above the text and buttons (3:4 page).
   const avail = height - insets.top - insets.bottom - 64 - 230;
-  const size = Math.floor(Math.max(180, Math.min(width - 64, (avail * 3) / 4, width >= 600 ? 640 : 460)));
+  const rough = Math.min(width - 64, width >= 600 ? 640 : 460);
+  const size = Math.floor(Math.max(180, Math.min(rough, ((avail - demoTrayHeight(rough)) * 3) / 4)));
 
   const close = () => {
     markTutorialSeen();

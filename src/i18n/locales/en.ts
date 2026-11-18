@@ -5,7 +5,7 @@ const strings = {
   // Coloring screen (used by src/coloring)
   "coloring.back": "Back",
   "coloring.undo": "Undo",
-  "coloring.hint": "Hold your finger on the picture to pick a color",
+  "coloring.hint": "Tap a color, then tap the picture",
   "coloring.palette": "Colors",
   "coloring.color": "Color {n}",
   // Home and levels
@@ -58,8 +58,8 @@ const strings = {
   "tutorial.skip": "Skip",
   "tutorial.next": "Next",
   "tutorial.start": "Let's color!",
-  "tutorial.step1": "Press and hold a finger on the picture. A ring of colors appears.",
-  "tutorial.step2": "Tap a color, and that part of the picture fills with it. A quick tap uses the same color again.",
+  "tutorial.step1": "Tap a color in the tray at the bottom, then tap a part of the picture. It fills with that color.",
+  "tutorial.step2": "The quick way: press and hold a finger on the picture, and a ring of colors appears right there. Tap one.",
   "tutorial.step3": "You can color the background too. Pinch with two fingers to zoom in on small parts.",
   "tutorial.step4": "Tap the arrow to undo. Everything saves by itself, and a grown-up can save a finished picture to Photos.",
   "tutorial.a11y": "How to play, step {n} of 4",

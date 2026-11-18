@@ -1,7 +1,9 @@
 /**
  * Animated "how to play" demo on a real page (PageView + a pipeline page): a soft fingertip shows
  * each gesture in a slow loop. Fills change by passing new `fills` to PageView, exactly like the app.
- * Steps: 0 hold → ring of colours · 1 tap a colour → fill (and quick tap reuses it)
+ * The page's real colour tray (PaletteTray) sits under the picture, like on the colouring screen.
+ * Steps: 0 tap a colour in the tray → tap the picture → it fills
+ *        1 the quick way: press and hold → ring of colours → tap one → it fills (a quick tap reuses it)
  *        2 the background too + pinch to zoom · 3 undo.
  * Calm: 300–700 ms eased moves, long pauses, nothing flashes; respects Reduce Motion (ReduceMotion.System).
  */
@@ -20,6 +22,7 @@ import Svg, { Path } from 'react-native-svg';
 import { hitGrid } from '@/coloring/hit';
 import { getPage, pagesOfLevel } from '@/coloring/pages';
 import { PageView } from '@/coloring/PageView';
+import { PaletteTray, traySwatchSize } from '@/coloring/PaletteTray';
 import { OUTLINE, PAGE_H, PAGE_W, type Fills, type Page } from '@/coloring/types';
 import { RADIUS, SHADOW, TONE } from '@/constants/ui';
 
@@ -88,6 +91,14 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
   const bgColor = page.palette[page.palette.length - 1] ?? '#DCEAF7';
   const [fills, setFills] = useState<Fills>({});
   const [ringAt, setRingAt] = useState<Pt>(a.main.p);
+  const colors = page.palette.slice(0, 7);
+  const [sel, setSel] = useState<string>(colors[0]);
+  // Tray geometry (mirrors PaletteTray's layout) so the fingertip lands on a real swatch.
+  const [trayY, setTrayY] = useState(height + 8);
+  const ts = traySwatchSize(size, colors.length);
+  const rowW = colors.length * (ts + 6) + 2 * 7;
+  const trayCentreY = trayY + 6 + Math.round(ts * 0.22) + 4 + ts / 2;
+  const trayPos = (i: number): Pt => ({ x: (size - rowW) / 2 + 7 + i * (ts + 6) + 3 + ts / 2, y: trayCentreY });
 
   const fx = useSharedValue(a.main.p.x * k);
   const fy = useSharedValue(a.main.p.y * k);
@@ -137,23 +148,34 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
     };
 
     const loops: Record<number, () => Promise<void>> = {
-      // 0: press and hold → the ring of colours appears.
+      // 0: tap a colour in the tray, then tap the picture → it fills.
       0: async () => {
         setFills({});
+        setSel(colors[pickIndex === 0 ? 1 : 0]);
+        fx.set(size * 0.5);
+        fy.set(trayCentreY - 40);
         tween(finger, 1, 400);
-        await holdAt(a.main.p);
-        await wait(1600);
-        tween(ring, 0, 400);
+        await wait(500);
+        await moveTo(trayPos(pickIndex), 700);
+        await tap();
+        setSel(pick);
+        await wait(700);
+        await moveTo({ x: a.main.p.x * k, y: a.main.p.y * k }, 900);
+        await tap();
+        setFills({ [a.main.r]: pick });
+        await wait(1800);
         tween(finger, 0, 400);
-        await wait(1000);
+        await wait(900);
       },
-      // 1: tap a colour → the part fills; a quick tap elsewhere reuses it.
+      // 1: the quick way: hold → ring → tap a colour → the part fills; a quick tap elsewhere reuses it.
       1: async () => {
         setFills({});
+        setSel(colors[pickIndex === 0 ? 1 : 0]);
         tween(finger, 1, 400);
         await holdAt(a.main.p);
         await pickSwatch(pickIndex, a.main.p);
         tween(ring, 0, 300);
+        setSel(pick);
         setFills({ [a.main.r]: pick });
         await wait(900);
         if (a.second) {
@@ -168,10 +190,12 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
       // 2: hold on the empty paper → colour the background; then pinch to zoom.
       2: async () => {
         setFills({ [a.main.r]: pick });
+        setSel(pick);
         tween(finger, 1, 400);
         await holdAt(a.bg.p);
         await pickSwatch(6, a.bg.p);
         tween(ring, 0, 300);
+        setSel(bgColor);
         setFills({ [a.main.r]: pick, [a.bg.r]: bgColor });
         await wait(900);
         tween(finger, 0, 300);
@@ -190,6 +214,7 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
       // 3: undo takes the last colour back.
       3: async () => {
         setFills({ [a.main.r]: pick, [a.bg.r]: bgColor });
+        setSel(bgColor);
         fx.set(size * 0.6);
         fy.set(height * 0.6);
         tween(finger, 1, 400);
@@ -252,6 +277,7 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
   const sw = SWATCH * size;
 
   return (
+    <View style={{ width: size }}>
     <View style={[styles.frame, { width: size, height }]}>
       <Animated.View style={pageStyle}>
         <PageView page={page} fills={fills} size={size} />
@@ -284,6 +310,11 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
           <UndoGlyph />
         </Animated.View>
       ) : null}
+    </View>
+
+      <View pointerEvents="none" style={styles.trayBox} onLayout={(e) => setTrayY(e.nativeEvent.layout.y)}>
+        <PaletteTray colors={colors} selected={sel} onSelect={() => {}} width={size} bottomInset={0} label={(n) => String(n)} />
+      </View>
 
       <Animated.View pointerEvents="none" style={[styles.halo, haloStyle]} />
       <Animated.View pointerEvents="none" style={[styles.finger, fingerStyle]} />
@@ -291,6 +322,12 @@ function Demo({ page, step, size }: { page: Page; step: number; size: number }) 
       <Animated.View pointerEvents="none" style={[styles.finger, pinchB]} />
     </View>
   );
+}
+
+/** Height the demo needs under the picture for its tray (for layout in the tutorial screen). */
+export function demoTrayHeight(size: number) {
+  const ts = traySwatchSize(size, 7);
+  return 8 + 6 + 2 * (Math.round(ts * 0.22) + 4) + ts + 10;
 }
 
 /** Keep the ring inside the frame (same idea as the real PaletteRing). */
@@ -317,6 +354,7 @@ function UndoGlyph() {
 const styles = StyleSheet.create({
   frame: { borderRadius: RADIUS.tile, overflow: 'hidden', backgroundColor: '#FFFFFF', boxShadow: SHADOW.lifted },
   ring: { position: 'absolute', left: 0, top: 0 },
+  trayBox: { marginTop: 8, marginHorizontal: -12 },
   swatch: { position: 'absolute', borderWidth: 3, borderColor: '#FFFFFF', boxShadow: SHADOW.soft },
   undo: {
     position: 'absolute',
