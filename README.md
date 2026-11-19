@@ -24,7 +24,7 @@ A calm colouring book. A short, animated "how to play" opens on the first launch
   - Pastel colours, slow eased motion, nothing flashing and no loud sounds.
   - No timers, no streaks, no scores and no rewards for playing longer.
   - Nothing can be coloured "wrong".
-  - Quiet music: the theme plays once on the home screen, the colouring tune a few times and then rests. A big note button turns it off.
+  - Quiet music: the theme plays once on the home screen, while colouring one of 11 calm tunes picked at random, up to 3 in a row, then it rests (the next page keeps the tune going). A big note button turns it off.
 - **Made for kids:**
   - Fully offline, with no network requests, no analytics and no accounts. Colourings stay on the device.
   - Settings, the about page, the privacy policy and sharing a picture sit behind a parental gate: hold for 3 seconds, then answer a multiplication written in words.

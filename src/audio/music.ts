@@ -4,8 +4,12 @@
  *   useMusic('theme')      — home and level screens: the "Ko-lo-ro-wan-ki" theme plays ONCE (volume 0.5,
  *                            1.5 s fade-in) each time the child arrives there (app open, back from a page),
  *                            not again while moving between home and levels.
- *   useMusic('colouring')  — colouring screen: the slow flute tune (volume 0.35) plays up to 3 times,
- *                            then rests in silence; it starts again on the next page.
+ *   useMusic('colouring')  — colouring screen: one of 11 slow, drum-free tunes (piano, flute, music box;
+ *                            assets/audio/colouring/, rendered with the Pastelki music engine) picked at
+ *                            random, never the one just played (volume 0.35). When it ends another one
+ *                            follows, up to 3 tunes (~3 min), then the music rests in silence. Moving to the
+ *                            next page keeps the current tune playing; after a rest, or when coming back from
+ *                            home/levels, the next page starts a new tune.
  *   useMusic(null)         — silence (grown-ups area, tutorial).
  *   <MusicToggle />        — big note button (src/components/music-toggle.tsx); the choice persists.
  *   duckMusic(true/false)  — while Edyta speaks (src/audio/voice.ts) the music dips to 25 % and comes
@@ -25,12 +29,35 @@ import { isMusicOn, subscribePrefs } from '@/shell/prefs';
 
 export type MusicTrack = 'theme' | 'colouring';
 
-const SOURCES: Record<MusicTrack, number> = {
-  theme: require('@/assets/audio/theme.m4a'),
-  colouring: require('@/assets/audio/colouring.m4a'),
+const SOURCES: Record<MusicTrack, number[]> = {
+  theme: [require('@/assets/audio/theme.m4a')],
+  colouring: [
+    require('@/assets/audio/colouring/calm-00.m4a'),
+    require('@/assets/audio/colouring/calm-01.m4a'),
+    require('@/assets/audio/colouring/calm-02.m4a'),
+    require('@/assets/audio/colouring/calm-03.m4a'),
+    require('@/assets/audio/colouring/calm-04.m4a'),
+    require('@/assets/audio/colouring/calm-05.m4a'),
+    require('@/assets/audio/colouring/calm-06.m4a'),
+    require('@/assets/audio/colouring/calm-07.m4a'),
+    require('@/assets/audio/colouring/calm-08.m4a'),
+    require('@/assets/audio/colouring/calm-09.m4a'),
+    require('@/assets/audio/colouring/calm-10.m4a'),
+  ],
 };
 const GAIN: Record<MusicTrack, number> = { theme: 0.5, colouring: 0.35 };
+/** How many tunes in a row before the music rests (theme: once; colouring: 3 different tunes). */
 const PLAYS: Record<MusicTrack, number> = { theme: 1, colouring: 3 };
+
+/** The last tune played per track, so a random pick never repeats it straight away. */
+const lastPick: Partial<Record<MusicTrack, number>> = {};
+function pickSource(track: MusicTrack) {
+  const all = SOURCES[track];
+  let i = Math.floor(Math.random() * all.length);
+  if (all.length > 1 && i === lastPick[track]) i = (i + 1 + Math.floor(Math.random() * (all.length - 1))) % all.length;
+  lastPick[track] = i;
+  return all[i]!;
+}
 const FADE_IN_MS = 1500;
 const FADE_OUT_MS = 700;
 const STEP_MS = 50;
@@ -100,7 +127,7 @@ function stop(ms = FADE_OUT_MS) {
 function start(track: MusicTrack) {
   stop();
   safe(() => {
-    const player = createAudioPlayer(SOURCES[track]);
+    const player = createAudioPlayer(pickSource(track));
     player.loop = false;
     player.volume = 0;
     const n: Now = { track, player, plays: 1, done: false };
@@ -113,10 +140,11 @@ function start(track: MusicTrack) {
       log('finished', track, `play ${n.plays}/${PLAYS[track]}`);
       if (n.plays < PLAYS[track]) {
         n.plays += 1;
-        player
-          .seekTo(0)
-          .catch(() => {})
-          .finally(() => safe(() => player.play()));
+        safe(() => {
+          if (SOURCES[track].length > 1) player.replace(pickSource(track));
+          else player.seekTo(0).catch(() => {});
+          player.play();
+        });
       } else {
         n.done = true; // rests in silence until the next arrival
       }
@@ -134,7 +162,7 @@ function arrive(track: MusicTrack | null, fresh: boolean) {
     stop();
     return;
   }
-  if (now?.track === track && !fresh) return; // e.g. home → level: let the theme carry on (or rest)
+  if (now?.track === track && !fresh) return; // home → level, or page → next page: let it carry on (or rest)
   start(track);
 }
 
@@ -205,9 +233,10 @@ export function useMusic(track: MusicTrack | null) {
       init();
       if (blurTimer) clearTimeout(blurTimer);
       const mine = ++focusSeq;
-      // Every colouring-page open starts its tune afresh; the theme only on arrival from elsewhere
-      // (app open, back from a page or the grown-ups area), not when moving between home and levels.
-      const fresh = track === 'colouring' || wanted !== track;
+      // A track starts afresh only on arrival from elsewhere (app open, home ↔ page, grown-ups), not when
+      // moving between home and levels or from page to page. A colouring tune that has finished its round
+      // and rests starts a new tune on the next page.
+      const fresh = wanted !== track || (track === 'colouring' && !!now?.done);
       wanted = track;
       arrive(track, fresh);
       return () => {
