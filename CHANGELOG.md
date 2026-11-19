@@ -11,6 +11,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 - Save picture saves straight to Photos; sharing is still for grown-ups
 - Edyta has a new, warmer and calmer voice
 
+### Fixed
+- Share after the grown-up check now opens the share sheet, and the first tap on the answer always counts
+
 ## [1.0.2] - 2026-11-19
 
 ### Added
