@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * App icon family, splash mark and favicon, composed from Pastelki pictures (MIT,
- * https://pastelki.marchew.work). Nothing is redrawn: the subject is one of the app's own pages
+ * https://pastelki.club). Nothing is redrawn: the subject is one of the app's own pages
  * (tools/pages/svgs, synced from Pastelki), shown half coloured (its Pastelki colours on one side,
  * white paper with a few crayon strokes on the other), with the Pastelki crayon doing the colouring
  * and a soft paint splash behind. The only non-Pastelki shapes are the splash blob and the hatch.
@@ -29,7 +29,7 @@ const outDir = path.join(here, 'out');
 const assets = path.join(root, 'assets/images');
 fs.mkdirSync(outDir, { recursive: true });
 
-const API = 'https://pastelki.marchew.work';
+const API = 'https://pastelki.club';
 
 /** The design that ships. See CANDIDATES below for the others. */
 const CHOSEN = 'kitten';

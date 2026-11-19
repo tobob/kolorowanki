@@ -1,6 +1,6 @@
 /**
  * Edyta the sheep (a Pastelki persona: kind, a bit forgetful, says "Beee!") — the speaking guide of the
- * tutorial. Drawn from the Pastelki "sheep" picture (https://pastelki.marchew.work, MIT; groups pk-head,
+ * tutorial. Drawn from the Pastelki "sheep" picture (https://pastelki.club, MIT; groups pk-head,
  * pk-eye-*, pk-mouth kept as in the source).
  *
  *   <Edyta size={180} mouth={…} look={{ x, y }} hop={…} tilt={…} />   (all reanimated shared values)

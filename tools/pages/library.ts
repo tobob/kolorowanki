@@ -10,7 +10,7 @@ import { join } from 'node:path';
 
 import { LANGS, type Localized } from '../../src/coloring/types';
 
-export const SOURCE = process.env.PASTELKI_URL ?? 'https://pastelki.marchew.work';
+export const SOURCE = process.env.PASTELKI_URL ?? 'https://pastelki.club';
 const HERE = __dirname;
 const CACHE = join(HERE, 'cache');
 const CACHE_SVG = join(CACHE, 'svg');
