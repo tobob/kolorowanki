@@ -57,6 +57,9 @@ const pathOf = (lang: Lang, kind: Kind) => (lang === DEFAULT ? '' : `${lang}/`) 
 /** Relative link from page `from` to page `to` (works on GitHub Pages and from a local folder). */
 const rel = (from: string, to: string) => '../'.repeat(from.split('/').filter(Boolean).length) + to || './';
 
+/** utm tag for links from this site to pastelki.club */
+const PASTELKI_UTM = 'utm_source=kolorowanki&utm_medium=site';
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 /** Our own addresses (repo, issues, Pastelki, this site) become links. Runs on escaped text. */
 const linkify = (html: string) =>
@@ -64,7 +67,10 @@ const linkify = (html: string) =>
     /(?:https?:\/\/)?(?:github\.com\/tobob\/kolorowanki(?:\/issues)?|pastelki\.club(?:\/[\w/#-]*)?|tobob\.github\.io\/kolorowanki-site\/[\w/-]*)/g,
     (m) => {
       const url = m.replace(/[.,]$/, '');
-      return `<a href="${url.startsWith('http') ? url : `https://${url}`}">${url}</a>${m.slice(url.length)}`;
+      const abs = url.startsWith('http') ? url : `https://${url}`;
+      // links to Pastelki carry where the visit came from (Pastelki's visit log, Admin → Wizyty)
+      const href = /pastelki\.club/.test(abs) && !abs.includes('#') ? `${abs}${abs.includes('?') ? '&' : '?'}${PASTELKI_UTM}` : abs;
+      return `<a href="${href}">${url}</a>${m.slice(url.length)}`;
     },
   );
 const rich = (lang: Lang, text: string) =>
