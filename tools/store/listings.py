@@ -13,7 +13,7 @@ REPO_LINE = "Kolorowanki is open source: github.com/tobob/kolorowanki"
 SITE_URL = "https://tobob.github.io/kolorowanki-site/"
 SUPPORT_URL = SITE_URL
 PRIVACY_URL = SITE_URL + "privacy/"
-MARKETING_URL = "https://github.com/tobob/kolorowanki"
+MARKETING_URL = "https://pastelki.club/?utm_source=kolorowanki&utm_medium=appstore"
 # Languages the site (tools/site/gen-site.ts) has; English lives at the root.
 SITE_LANGS = {"pl", "en", "de", "fr", "es", "it", "pt", "nl", "uk", "cs", "sk", "sv", "ro", "hu", "tr", "ja", "zh"}
 
@@ -575,30 +575,46 @@ ADVISORY = {
     "koreaAgeRatingOverride": "NONE", "developerAgeRatingInfoUrl": None,
 }
 
-REVIEW_NOTES = """Kolorowanki is a calm, fully offline colouring book for children aged 2-6 (Made for Kids, 5 and under). Free, no in-app purchases, no ads, no accounts, no network requests, no data collection. The only permission prompt is iOS add-only Photos access, shown once, the first time "Save picture" is tapped.
+REVIEW_NOTES = """SCREEN RECORDING (attached): physical iPhone, latest iOS. Starts at app launch: tutorial, colouring, parental gate, grown-ups area, language switch, save to Photos, share after the gate. No accounts, login, user content or paid content.
+
+PURPOSE AND AUDIENCE
+A calm first colouring book for children aged 2-6: big simple pictures, one tap fills a space, no reading, no time pressure, no failure. Made for Kids (5 and under). No in-app purchases, ads, accounts or data collection, and the app makes no network requests. The only permission prompt is iOS add-only Photos access, shown once, the first time "Save picture" is tapped.
 
 NO LOGIN NEEDED
-Launch the app. The home screen shows four large cards (one big picture / a few friends / a little scene / a busy page). Tap a card, then tap a picture.
+On first launch a short interactive tutorial opens: Edyta the sheep (a drawn character with a pre-recorded synthetic voice bundled in the app) asks the child to tap a colour, tap the apple, hold the leaf, colour the background and tap undo. "Skip" closes it; the "?" button on the home screen opens it again. The home screen shows four large cards (one big picture / a few friends / a little scene / a busy page). Tap a card, then a picture.
 
 HOW TO COLOUR
-- Press and hold a spot on the picture: a ring of 7 soft colours appears around the finger. Tap a colour: the whole region under the finger fills with it.
-- After that, a quick tap fills with the last colour used.
-- Pinch to zoom, drag to move, the arrow button undoes the last fill, the back button returns to the list. Everything saves automatically; thumbnails show the child's colouring.
-- No timers, no scores, no streaks, no rewards, no failure state.
+- Tap a colour in the tray at the bottom, then tap any space (including the background): it fills.
+- Or press and hold a spot: a ring of the same 7 colours appears; tap one to fill that space.
+- Pinch to zoom, drag to move. Top bar: Back, Undo | Music, Save, Next. Everything saves automatically. No timers, scores, streaks, rewards or failure state.
 
 PARENTAL GATE / GROWN-UPS AREA
-- On the home screen tap the small two-people icon in the top-right corner.
-- Press and hold the button for 3 seconds, then answer a multiplication written in words (e.g. "What is seven times four?") by tapping one of 4 numbers. The question is random each time. A wrong answer returns to the home screen.
-- Inside: language (follows the device by default; 17 languages can be chosen), "Start all pages again" (with a confirmation), About (including the credit for the Pastelki picture library, MIT) and the full privacy policy shown in-app. There are no links out of the app.
+- Tap the small two-people icon in the top-right corner of the home screen.
+- Hold the button for 3 seconds, then answer a multiplication written in words (e.g. "What is seven times four?") by tapping one of 4 numbers; random each time. A wrong answer returns home.
+- Inside: music and Edyta's voice on/off, language (17), "Start all pages again" (with confirmation), About, the full privacy policy and, at the bottom, rating and feedback.
+
+RATING AND FEEDBACK (grown-ups area only)
+- "Rate Kolorowanki on the App Store" opens the App Store write-review page.
+- "Send us feedback" opens our own feedback form on pastelki.club in Safari (not a web view). The app sends nothing itself; version, build, platform and UI language are only part of that link.
+- On the 3rd entry into the grown-ups area (once; at most once more 180 days later if unanswered) a small card asks the parent "Do you like Kolorowanki?". Yes: the system rating prompt (SKStoreReviewController; iOS decides whether it appears). Not really: "Tell us what could be better" (the same form) and "Rate on the App Store" side by side, so rating is offered either way. "Not now" closes it. Children never see this.
 
 AUDIO
-Soft music: the theme plays once on the home screen. On the colouring screen one of 11 calm tunes is picked at random; when it ends a different one follows, up to 3 tunes in a row (about 3 minutes), then silence. Moving to the next page keeps the current tune playing. The note button (home screen and colouring toolbar) and a switch in the grown-ups area turn it off. Audio follows the ring/silent switch and stops when the app goes to the background. No microphone, no background audio.
+Soft music: a theme on the home screen; on the colouring screen up to 3 of 11 calm tunes in a row (about 3 minutes), then silence. The note button and a grown-ups switch turn it off. Follows the silent switch, stops in the background. No microphone, no background audio.
 
 OFFLINE / PRIVACY
-The app works entirely in airplane mode. Colourings and the language choice are stored only on the device (local key-value storage). "Save picture" (colouring toolbar and the "All done!" card) adds the picture straight to Photos with no gate, so a child can keep their own picture; the app asks only for add-only Photos access (once, on the first save) and never reads the photo library. Share, which opens the system share sheet and leads out of the app, is always behind the parental gate: it is offered on the result card and opens only after the gate is passed. If Photos access is denied, the card explains how to allow it in Settings and offers Share; if saving fails for another reason, the parental gate opens and then the share sheet. No external links, web views, purchases, review prompts, notifications or social features anywhere in the app."""
+Works entirely in airplane mode (only the two links above need a connection, and they open outside the app). Colourings and settings are stored only on the device. "Save picture" adds the picture straight to Photos with no gate, so a child can keep it (add-only access; the library is never read). Share (system share sheet) is always behind the parental gate. If Photos access is denied, the card explains how to allow it and offers Share. No web views, purchases, notifications or social features; the only links out of the app are the two above, both behind the gate.
+
+EXTERNAL SERVICES, REGIONS, REGULATION
+No third-party services, SDKs, analytics or payments; the app contacts no server. Same in every region (only the UI language changes); not a regulated industry."""
+assert len(REVIEW_NOTES) <= 4000, f"review notes {len(REVIEW_NOTES)}/4000"
 
 
 def main():
+    # What's New per locale is written by `studio build` (store/whats-new.json); keep it.
+    try:
+        prev = json.loads((ROOT / "store.config.json").read_text())["apple"]["info"]
+    except (OSError, ValueError, KeyError):
+        prev = {}
     for k, c in L.items():
         check(k, c)
     info = {}
@@ -610,6 +626,8 @@ def main():
             "supportUrl": site_url(key), "privacyPolicyUrl": site_url(key, "privacy/"),
             "marketingUrl": MARKETING_URL,
         }
+        if prev.get(loc, {}).get("releaseNotes"):
+            info[loc]["releaseNotes"] = prev[loc]["releaseNotes"]
     config = {
         "configVersion": 0,
         "apple": {
