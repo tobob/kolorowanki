@@ -15,7 +15,6 @@ import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
 
 import { AppText } from '@/components/app-text';
 import { BackIcon } from '@/components/icons';
@@ -50,13 +49,16 @@ export function ParentalGate({ onPass, onFail }: { onPass: () => void; onFail: (
 
   const startHold = () => {
     hold.set(
-      withTiming(1, { duration: HOLD_MS * (1 - hold.get()), easing: Easing.linear }, (finished) => {
-        if (finished) scheduleOnRN(setStage, 'question');
-      }),
+      withTiming(1, { duration: HOLD_MS * (1 - hold.get()), easing: Easing.linear }),
     );
   };
+  // The question appears when the finger lifts after a full hold, not while it is still down: unmounting the
+  // pressed hold button mid-touch left the responder stuck, so the first tap on an answer did nothing.
   const stopHold = () => {
-    if (hold.get() >= 1) return;
+    if (hold.get() >= 1) {
+      setStage('question');
+      return;
+    }
     cancelAnimation(hold);
     hold.set(withTiming(0, { duration: 300 }));
   };
@@ -98,10 +100,30 @@ export function ParentalGate({ onPass, onFail }: { onPass: () => void; onFail: (
   );
 }
 
-export function ParentalGateModal({ visible, onPass, onCancel }: { visible: boolean; onPass: () => void; onCancel: () => void }) {
+/**
+ * `onClosed` runs once the modal has fully closed (iOS: Modal onDismiss; Android: right away). Present anything
+ * native from there (share sheet, mail…): iOS silently drops a share sheet opened while this modal is still
+ * closing.
+ */
+export function ParentalGateModal({
+  visible,
+  onPass,
+  onCancel,
+  onClosed,
+}: {
+  visible: boolean;
+  onPass: () => void;
+  onCancel: () => void;
+  onClosed?: () => void;
+}) {
   const t = useT();
   return (
-    <Modal visible={visible} animationType="fade" onRequestClose={onCancel} supportedOrientations={['portrait', 'landscape']}>
+    <Modal
+      visible={visible}
+      animationType="fade"
+      onRequestClose={onCancel}
+      onDismiss={onClosed}
+      supportedOrientations={['portrait', 'landscape']}>
       <SafeAreaView style={styles.modal}>
         <View style={styles.modalBar}>
           <SoftButton onPress={onCancel} size={52} accessibilityLabel={t('coloring.back')}>
