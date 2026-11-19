@@ -1,8 +1,8 @@
 /**
  * Site-only texts (not shipped in the app): navigation labels, the facts on the home page and the Terms of Use.
  * `{eula}` in a terms body becomes a link to Apple's Standard EULA; addresses are linkified by gen-site.
- * Facts must stay true to docs/PRIVACY.md and docs/STORE_COMPLIANCE.md. The app is free with no in-app
- * purchases *today*: say "currently", never "forever" (the Pastelki manifest allows paid extras for grown-ups later).
+ * Facts must stay true to docs/PRIVACY.md and docs/STORE_COMPLIANCE.md. Never promise "no purchases" or "free forever"
+ * (the Pastelki manifest allows paid extras for grown-ups later); the License paragraph may state today's fact ("currently").
  */
 import type { Lang } from '../../src/coloring/types';
 import { CONTACT, DEVELOPER } from '../../src/constants/contact';
@@ -39,7 +39,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Support', privacy: 'Privacy', terms: 'Terms' },
     language: 'Language',
     tagline: 'A calm coloring book for children aged 2–6',
-    facts: ['No ads', 'No in-app purchases', 'No accounts', 'Works offline', 'No data collected'],
+    facts: ['No ads', 'No accounts', 'Works offline', 'No data collected'],
     footer: 'Made with care for small children.',
     updated: 'Last updated: 19 November 2026',
     terms: {
@@ -60,7 +60,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Pomoc', privacy: 'Prywatność', terms: 'Warunki' },
     language: 'Język',
     tagline: 'Spokojna kolorowanka dla dzieci w wieku 2–6 lat',
-    facts: ['Bez reklam', 'Bez zakupów w aplikacji', 'Bez kont', 'Działa offline', 'Nie zbiera danych'],
+    facts: ['Bez reklam', 'Bez kont', 'Działa offline', 'Nie zbiera danych'],
     footer: 'Zrobione z myślą o najmłodszych.',
     updated: 'Ostatnia aktualizacja: 19 listopada 2026',
     terms: {
@@ -81,7 +81,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Hilfe', privacy: 'Datenschutz', terms: 'Nutzungsbedingungen' },
     language: 'Sprache',
     tagline: 'Ein ruhiges Malbuch für Kinder von 2 bis 6 Jahren',
-    facts: ['Keine Werbung', 'Keine In-App-Käufe', 'Kein Konto', 'Funktioniert offline', 'Keine Datenerfassung'],
+    facts: ['Keine Werbung', 'Kein Konto', 'Funktioniert offline', 'Keine Datenerfassung'],
     footer: 'Mit Sorgfalt für kleine Kinder gemacht.',
     updated: 'Zuletzt aktualisiert: 19. November 2026',
     terms: {
@@ -102,7 +102,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Aide', privacy: 'Confidentialité', terms: "Conditions d'utilisation" },
     language: 'Langue',
     tagline: 'Un cahier de coloriage tout en douceur pour les enfants de 2 à 6 ans',
-    facts: ['Sans publicité', 'Sans achats intégrés', 'Sans compte', 'Fonctionne hors ligne', 'Aucune donnée collectée'],
+    facts: ['Sans publicité', 'Sans compte', 'Fonctionne hors ligne', 'Aucune donnée collectée'],
     footer: 'Fait avec soin pour les tout-petits.',
     updated: 'Dernière mise à jour : 19 novembre 2026',
     terms: {
@@ -123,7 +123,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Ayuda', privacy: 'Privacidad', terms: 'Condiciones de uso' },
     language: 'Idioma',
     tagline: 'Un libro para colorear tranquilo para niños de 2 a 6 años',
-    facts: ['Sin anuncios', 'Sin compras dentro de la app', 'Sin cuentas', 'Funciona sin conexión', 'No recopila datos'],
+    facts: ['Sin anuncios', 'Sin cuentas', 'Funciona sin conexión', 'No recopila datos'],
     footer: 'Hecho con cariño para los más pequeños.',
     updated: 'Última actualización: 19 de noviembre de 2026',
     terms: {
@@ -144,7 +144,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Assistenza', privacy: 'Privacy', terms: "Condizioni d'uso" },
     language: 'Lingua',
     tagline: 'Un album da colorare tranquillo per bambini dai 2 ai 6 anni',
-    facts: ['Niente pubblicità', 'Niente acquisti in-app', 'Nessun account', 'Funziona offline', 'Nessun dato raccolto'],
+    facts: ['Niente pubblicità', 'Nessun account', 'Funziona offline', 'Nessun dato raccolto'],
     footer: 'Fatto con cura per i più piccoli.',
     updated: 'Ultimo aggiornamento: 19 novembre 2026',
     terms: {
@@ -165,7 +165,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Ajuda', privacy: 'Privacidade', terms: 'Termos de uso' },
     language: 'Idioma',
     tagline: 'Um livro de colorir tranquilo para crianças de 2 a 6 anos',
-    facts: ['Sem anúncios', 'Sem compras no app', 'Sem contas', 'Funciona offline', 'Não coleta dados'],
+    facts: ['Sem anúncios', 'Sem contas', 'Funciona offline', 'Não coleta dados'],
     footer: 'Feito com carinho para os pequenos.',
     updated: 'Última atualização: 19 de novembro de 2026',
     terms: {
@@ -186,7 +186,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Hulp', privacy: 'Privacy', terms: 'Gebruiksvoorwaarden' },
     language: 'Taal',
     tagline: 'Een rustig kleurboek voor kinderen van 2 tot 6 jaar',
-    facts: ['Geen reclame', 'Geen in-app-aankopen', 'Geen account', 'Werkt offline', 'Verzamelt geen gegevens'],
+    facts: ['Geen reclame', 'Geen account', 'Werkt offline', 'Verzamelt geen gegevens'],
     footer: 'Met zorg gemaakt voor kleine kinderen.',
     updated: 'Laatst bijgewerkt: 19 november 2026',
     terms: {
@@ -207,7 +207,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Допомога', privacy: 'Конфіденційність', terms: 'Умови' },
     language: 'Мова',
     tagline: 'Спокійна розмальовка для дітей 2–6 років',
-    facts: ['Без реклами', 'Без покупок у застосунку', 'Без облікових записів', 'Працює офлайн', 'Не збирає даних'],
+    facts: ['Без реклами', 'Без облікових записів', 'Працює офлайн', 'Не збирає даних'],
     footer: 'Зроблено з турботою про малюків.',
     updated: 'Останнє оновлення: 19 листопада 2026 р.',
     terms: {
@@ -228,7 +228,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Pomoc', privacy: 'Soukromí', terms: 'Podmínky' },
     language: 'Jazyk',
     tagline: 'Klidné omalovánky pro děti od 2 do 6 let',
-    facts: ['Bez reklam', 'Bez nákupů v aplikaci', 'Bez účtů', 'Funguje offline', 'Nesbírá data'],
+    facts: ['Bez reklam', 'Bez účtů', 'Funguje offline', 'Nesbírá data'],
     footer: 'Vytvořeno s péčí pro malé děti.',
     updated: 'Naposledy aktualizováno: 19. listopadu 2026',
     terms: {
@@ -249,7 +249,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Pomoc', privacy: 'Súkromie', terms: 'Podmienky' },
     language: 'Jazyk',
     tagline: 'Pokojné omaľovánky pre deti od 2 do 6 rokov',
-    facts: ['Bez reklám', 'Bez nákupov v aplikácii', 'Bez účtov', 'Funguje offline', 'Nezbiera údaje'],
+    facts: ['Bez reklám', 'Bez účtov', 'Funguje offline', 'Nezbiera údaje'],
     footer: 'Vytvorené s láskou pre malé deti.',
     updated: 'Naposledy aktualizované: 19. novembra 2026',
     terms: {
@@ -270,7 +270,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Hjälp', privacy: 'Integritet', terms: 'Villkor' },
     language: 'Språk',
     tagline: 'En lugn målarbok för barn 2–6 år',
-    facts: ['Ingen reklam', 'Inga köp i appen', 'Inga konton', 'Fungerar offline', 'Samlar inte in data'],
+    facts: ['Ingen reklam', 'Inga konton', 'Fungerar offline', 'Samlar inte in data'],
     footer: 'Gjord med omsorg för små barn.',
     updated: 'Senast uppdaterad: 19 november 2026',
     terms: {
@@ -291,7 +291,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Ajutor', privacy: 'Confidențialitate', terms: 'Condiții' },
     language: 'Limba',
     tagline: 'O carte de colorat liniștită pentru copii de 2–6 ani',
-    facts: ['Fără reclame', 'Fără achiziții în aplicație', 'Fără conturi', 'Funcționează offline', 'Nu colectează date'],
+    facts: ['Fără reclame', 'Fără conturi', 'Funcționează offline', 'Nu colectează date'],
     footer: 'Făcută cu grijă pentru cei mici.',
     updated: 'Ultima actualizare: 19 noiembrie 2026',
     terms: {
@@ -312,7 +312,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Súgó', privacy: 'Adatvédelem', terms: 'Feltételek' },
     language: 'Nyelv',
     tagline: 'Nyugodt kifestő 2–6 éves gyerekeknek',
-    facts: ['Nincs reklám', 'Nincs alkalmazáson belüli vásárlás', 'Nincs fiók', 'Offline működik', 'Nem gyűjt adatot'],
+    facts: ['Nincs reklám', 'Nincs fiók', 'Offline működik', 'Nem gyűjt adatot'],
     footer: 'Gondossággal készült a legkisebbeknek.',
     updated: 'Utolsó frissítés: 2026. november 19.',
     terms: {
@@ -333,7 +333,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'Yardım', privacy: 'Gizlilik', terms: 'Koşullar' },
     language: 'Dil',
     tagline: '2–6 yaş çocuklar için sakin bir boyama kitabı',
-    facts: ['Reklam yok', 'Uygulama içi satın alma yok', 'Hesap yok', 'Çevrimdışı çalışır', 'Veri toplamaz'],
+    facts: ['Reklam yok', 'Hesap yok', 'Çevrimdışı çalışır', 'Veri toplamaz'],
     footer: 'Küçük çocuklar için özenle yapıldı.',
     updated: 'Son güncelleme: 19 Kasım 2026',
     terms: {
@@ -354,7 +354,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: 'サポート', privacy: 'プライバシー', terms: '利用規約' },
     language: '言語',
     tagline: '2〜6歳の子どものための、おだやかなぬりえ',
-    facts: ['広告なし', 'アプリ内課金なし', 'アカウント不要', 'オフラインで動作', 'データを収集しません'],
+    facts: ['広告なし', 'アカウント不要', 'オフラインで動作', 'データを収集しません'],
     footer: '小さな子どもたちのために、心をこめて。',
     updated: '最終更新日：2026年11月19日',
     terms: {
@@ -375,7 +375,7 @@ export const SITE: Record<Lang, SiteText> = {
     nav: { support: '帮助', privacy: '隐私', terms: '使用条款' },
     language: '语言',
     tagline: '为2到6岁孩子设计的安静涂色书',
-    facts: ['无广告', '无应用内购买', '无需账户', '离线可用', '不收集数据'],
+    facts: ['无广告', '无需账户', '离线可用', '不收集数据'],
     footer: '用心为小朋友制作。',
     updated: '最后更新：2026年11月19日',
     terms: {

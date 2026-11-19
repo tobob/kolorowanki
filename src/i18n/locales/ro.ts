@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Toate paginile sunt din nou albe.",
     "about.title": "Despre Kolorowanki",
     "about.body": "O carte de colorat liniștită pentru copii între 2 și 6 ani. Ține un deget pe desen și apar culorile, apoi atinge una ca să umpli forma. Cu două degete poți mări. Totul se salvează singur.",
-    "about.promise": "Fără reclame, cumpărături, conturi sau internet. Nimic nu părăsește acest dispozitiv.",
+    "about.promise": "Fără reclame, conturi sau internet. Nimic nu părăsește acest dispozitiv.",
     "about.credit": "Desenele vin din Pastelki ({pastelki}), o bibliotecă gratuită de ilustrații blânde pentru copii mici, sub licența MIT.",
     "about.source": "Kolorowanki are cod sursă deschis: {repo}",
     "about.version": "Versiunea {v}",

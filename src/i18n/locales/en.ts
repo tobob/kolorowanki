@@ -33,7 +33,7 @@ const strings = {
   "settings.restartDone": "All pages are white again.",
   "about.title": "About Kolorowanki",
   "about.body": "A calm coloring book for children aged 2 to 6. Hold a finger on the picture to see the colors, then tap one to fill the shape. Pinch to zoom in. Everything is saved by itself.",
-  "about.promise": "No ads, no purchases, no accounts and no internet. Nothing leaves this device.",
+  "about.promise": "No ads, no accounts and no internet. Nothing leaves this device.",
   "about.credit": "The pictures come from Pastelki ({pastelki}), a free library of gentle illustrations for small children, shared under the MIT license.",
   "about.source": "Kolorowanki is open source: {repo}",
   "about.version": "Version {v}",

@@ -21,7 +21,7 @@ Kolorowanki – Calm Coloring
 A calm coloring book for kids aged 2 to 6. Offline, no ads, no tricks.
 ```
 
-**Full description** (1311/4000)
+**Full description** (1287/4000)
 ```
 Kolorowanki is a calm coloring book for children aged 2 to 6.
 
@@ -36,7 +36,7 @@ CALM BY DESIGN
 No timers, no scores, no streaks and no rewards for playing longer. Nothing flashes and nothing is loud. There is no wrong way to color.
 
 FOR PARENTS
-• No ads and no in-app purchases.
+• No ads.
 • Works fully offline.
 • We collect no data. Colorings stay on the device.
 • Settings and the privacy policy are behind a parental gate. There you can pick one of 17 languages or start all pages again.
@@ -58,7 +58,7 @@ Kolorowanki – dla maluchów
 Spokojna kolorowanka dla dzieci od 2 do 6 lat. Offline, bez reklam i sztuczek.
 ```
 
-**Full description** (1438/4000)
+**Full description** (1412/4000)
 ```
 Kolorowanki to spokojna kolorowanka dla dzieci w wieku od 2 do 6 lat.
 
@@ -73,7 +73,7 @@ SPOKOJNIE, BEZ POŚPIECHU
 Nie ma limitu czasu, punktów, serii ani nagród za dłuższą zabawę. Nic nie miga i nic nie jest głośne. Nie da się pokolorować źle.
 
 DLA RODZICÓW
-• Bez reklam i bez zakupów w aplikacji.
+• Bez reklam.
 • Działa całkowicie offline.
 • Nie zbieramy żadnych danych. Kolorowanki zostają na urządzeniu.
 • Ustawienia i polityka prywatności są za bramką rodzicielską. Możesz tam wybrać jeden z 17 języków albo zacząć wszystkie strony od nowa.
@@ -95,7 +95,7 @@ Kolorowanki – Ausmalbilder
 Ein ruhiges Malbuch für Kinder von 2 bis 6. Offline, ohne Werbung und Tricks.
 ```
 
-**Full description** (1477/4000)
+**Full description** (1454/4000)
 ```
 Kolorowanki ist ein ruhiges Malbuch für Kinder von 2 bis 6 Jahren.
 
@@ -110,7 +110,7 @@ RUHIG GESTALTET
 Keine Zeitlimits, keine Punkte, keine Serien und keine Belohnungen fürs längere Spielen. Nichts blinkt und nichts ist laut. Man kann nichts falsch ausmalen.
 
 FÜR ELTERN
-• Keine Werbung und keine In-App-Käufe.
+• Keine Werbung.
 • Funktioniert komplett offline.
 • Wir erheben keine Daten. Die Bilder bleiben auf dem Gerät.
 • Einstellungen und Datenschutzerklärung liegen hinter einer Elternsperre. Dort lässt sich eine von 17 Sprachen wählen oder alles neu beginnen.
@@ -132,7 +132,7 @@ Kolorowanki – Coloriage doux
 Un coloriage tout doux pour les enfants de 2 à 6 ans. Hors ligne, sans pub.
 ```
 
-**Full description** (1555/4000)
+**Full description** (1531/4000)
 ```
 Kolorowanki est un livre de coloriage tout doux pour les enfants de 2 à 6 ans.
 
@@ -147,7 +147,7 @@ PENSÉ POUR LE CALME
 Pas de chrono, pas de score, pas de séries ni de récompenses pour jouer plus longtemps. Rien ne clignote et rien n'est bruyant. On ne peut pas mal colorier.
 
 POUR LES PARENTS
-• Sans publicité et sans achats intégrés.
+• Sans publicité.
 • Fonctionne entièrement hors ligne.
 • Nous ne collectons aucune donnée. Les coloriages restent sur l'appareil.
 • Les réglages et la politique de confidentialité sont protégés par un contrôle parental. On peut y choisir l'une des 17 langues ou tout recommencer.
@@ -169,7 +169,7 @@ Kolorowanki – Colorear
 Un libro de colorear tranquilo para niños de 2 a 6 años. Sin anuncios.
 ```
 
-**Full description** (1445/4000)
+**Full description** (1414/4000)
 ```
 Kolorowanki es un libro de colorear tranquilo para niños de 2 a 6 años.
 
@@ -184,7 +184,7 @@ PENSADO PARA LA CALMA
 Sin tiempo límite, sin puntos, sin rachas y sin premios por jugar más rato. Nada parpadea y nada suena fuerte. No hay forma de colorear mal.
 
 PARA MADRES Y PADRES
-• Sin anuncios y sin compras dentro de la app.
+• Sin anuncios.
 • Funciona totalmente sin conexión.
 • No recogemos ningún dato. Los dibujos se quedan en el dispositivo.
 • Los ajustes y la política de privacidad están protegidos por un control parental. Allí puedes elegir uno de 17 idiomas o empezar todo de nuevo.
@@ -206,7 +206,7 @@ Kolorowanki – Da colorare
 Un album da colorare tranquillo per bambini dai 2 ai 6 anni. Offline.
 ```
 
-**Full description** (1432/4000)
+**Full description** (1407/4000)
 ```
 Kolorowanki è un album da colorare tranquillo per bambini dai 2 ai 6 anni.
 
@@ -221,7 +221,7 @@ PENSATO PER LA CALMA
 Niente timer, punteggi, serie o premi per giocare più a lungo. Niente lampeggia e niente è rumoroso. Non si può colorare male.
 
 PER I GENITORI
-• Niente pubblicità e niente acquisti in-app.
+• Niente pubblicità.
 • Funziona completamente offline.
 • Non raccogliamo alcun dato. I disegni restano sul dispositivo.
 • Le impostazioni e l'informativa sulla privacy sono protette da un controllo per adulti. Lì puoi scegliere una di 17 lingue o ricominciare tutto.
@@ -243,7 +243,7 @@ Kolorowanki – Colorir
 Um livro de colorir tranquilo para crianças de 2 a 6 anos. Offline.
 ```
 
-**Full description** (1426/4000)
+**Full description** (1405/4000)
 ```
 Kolorowanki é um livro de colorir tranquilo para crianças de 2 a 6 anos.
 
@@ -258,7 +258,7 @@ FEITO PARA ACALMAR
 Sem cronômetro, sem pontos, sem sequências e sem prêmios por jogar mais tempo. Nada pisca e nada é barulhento. Não existe jeito errado de colorir.
 
 PARA PAIS E MÃES
-• Sem anúncios e sem compras no app.
+• Sem anúncios.
 • Funciona totalmente offline.
 • Não coletamos nenhum dado. Os desenhos ficam no aparelho.
 • As configurações e a política de privacidade ficam atrás de um controle para adultos. Lá você escolhe um de 17 idiomas ou recomeça tudo.
@@ -280,7 +280,7 @@ Kolorowanki – Colorir
 Um livro de colorir tranquilo para crianças dos 2 aos 6 anos. Offline.
 ```
 
-**Full description** (1453/4000)
+**Full description** (1432/4000)
 ```
 Kolorowanki é um livro de colorir tranquilo para crianças dos 2 aos 6 anos.
 
@@ -295,7 +295,7 @@ FEITO PARA ACALMAR
 Sem cronómetro, sem pontos, sem sequências e sem prémios por jogar mais tempo. Nada pisca e nada é barulhento. Não há forma errada de colorir.
 
 PARA OS PAIS
-• Sem anúncios e sem compras na app.
+• Sem anúncios.
 • Funciona totalmente offline.
 • Não recolhemos nenhum dado. Os desenhos ficam no dispositivo.
 • As definições e a política de privacidade estão protegidas por um controlo para adultos. Aí podes escolher um de 17 idiomas ou recomeçar tudo.
@@ -317,7 +317,7 @@ Kolorowanki – Kleurplaten
 Een rustig kleurboek voor kinderen van 2 tot 6 jaar. Offline, geen reclame.
 ```
 
-**Full description** (1431/4000)
+**Full description** (1407/4000)
 ```
 Kolorowanki is een rustig kleurboek voor kinderen van 2 tot 6 jaar.
 
@@ -332,7 +332,7 @@ RUSTIG ONTWORPEN
 Geen tijdslimiet, geen punten, geen reeksen en geen beloningen voor langer spelen. Niets knippert en niets is luid. Je kunt niet verkeerd kleuren.
 
 VOOR OUDERS
-• Geen reclame en geen in-app-aankopen.
+• Geen reclame.
 • Werkt volledig offline.
 • We verzamelen geen gegevens. De kleurplaten blijven op het apparaat.
 • Instellingen en het privacybeleid zitten achter een ouderslot. Daar kies je een van 17 talen of begin je alles opnieuw.
@@ -354,7 +354,7 @@ Kolorowanki – розмальовки
 Спокійна розмальовка для дітей від 2 до 6 років. Офлайн, без реклами.
 ```
 
-**Full description** (1360/4000)
+**Full description** (1332/4000)
 ```
 Kolorowanki — спокійна розмальовка для дітей від 2 до 6 років.
 
@@ -369,7 +369,7 @@ Kolorowanki — спокійна розмальовка для дітей від
 Немає таймерів, балів, серій чи нагород за довшу гру. Ніщо не блимає і ніщо не гучне. Розмалювати неправильно неможливо.
 
 ДЛЯ БАТЬКІВ
-• Без реклами та без покупок у застосунку.
+• Без реклами.
 • Працює повністю офлайн.
 • Ми не збираємо жодних даних. Розмальовки залишаються на пристрої.
 • Налаштування та політика конфіденційності захищені батьківським замком. Там можна вибрати одну з 17 мов або почати все заново.
@@ -391,7 +391,7 @@ Kolorowanki – omalovánky
 Klidné omalovánky pro děti od 2 do 6 let. Offline, bez reklam a triků.
 ```
 
-**Full description** (1270/4000)
+**Full description** (1246/4000)
 ```
 Kolorowanki jsou klidné omalovánky pro děti od 2 do 6 let.
 
@@ -406,7 +406,7 @@ KLIDNĚ A BEZ SPĚCHU
 Žádný časový limit, body, série ani odměny za delší hraní. Nic nebliká a nic není hlasité. Vybarvit se nedá špatně.
 
 PRO RODIČE
-• Bez reklam a bez nákupů v aplikaci.
+• Bez reklam.
 • Funguje úplně offline.
 • Nesbíráme žádná data. Omalovánky zůstávají v zařízení.
 • Nastavení a zásady ochrany soukromí jsou za rodičovským zámkem. Tam vyberete jeden ze 17 jazyků nebo začnete vše znovu.
@@ -428,7 +428,7 @@ Kolorowanki – omaľovánky
 Pokojné omaľovánky pre deti od 2 do 6 rokov. Offline, bez reklám a trikov.
 ```
 
-**Full description** (1305/4000)
+**Full description** (1279/4000)
 ```
 Kolorowanki sú pokojné omaľovánky pre deti od 2 do 6 rokov.
 
@@ -443,7 +443,7 @@ POKOJNE A BEZ PONÁHĽANIA
 Žiadny časový limit, body, série ani odmeny za dlhšie hranie. Nič nebliká a nič nie je hlasné. Vyfarbiť sa nedá zle.
 
 PRE RODIČOV
-• Bez reklám a bez nákupov v aplikácii.
+• Bez reklám.
 • Funguje úplne offline.
 • Nezbierame žiadne údaje. Omaľovánky zostávajú v zariadení.
 • Nastavenia a zásady ochrany súkromia sú za rodičovským zámkom. Tam vyberiete jeden zo 17 jazykov alebo začnete všetko odznova.
@@ -465,7 +465,7 @@ Kolorowanki – Målarbok
 En lugn målarbok för barn mellan 2 och 6 år. Offline, ingen reklam.
 ```
 
-**Full description** (1328/4000)
+**Full description** (1307/4000)
 ```
 Kolorowanki är en lugn målarbok för barn mellan 2 och 6 år.
 
@@ -480,7 +480,7 @@ LUGN SOM GRUNDTANKE
 Inga tidsgränser, inga poäng, inga serier och inga belöningar för att spela längre. Ingenting blinkar och ingenting låter högt. Det går inte att måla fel.
 
 FÖR FÖRÄLDRAR
-• Ingen reklam och inga köp i appen.
+• Ingen reklam.
 • Fungerar helt offline.
 • Vi samlar inte in några data. Målningarna stannar på enheten.
 • Inställningar och integritetspolicy ligger bakom ett föräldralås. Där kan du välja ett av 17 språk eller börja om alla sidor.
@@ -502,7 +502,7 @@ Kolorowanki – De colorat
 O carte de colorat liniștită pentru copii între 2 și 6 ani. Fără reclame.
 ```
 
-**Full description** (1451/4000)
+**Full description** (1418/4000)
 ```
 Kolorowanki este o carte de colorat liniștită pentru copii între 2 și 6 ani.
 
@@ -517,7 +517,7 @@ GÂNDIT PENTRU LINIȘTE
 Fără cronometru, puncte, serii sau recompense pentru joc mai lung. Nimic nu clipește și nimic nu e zgomotos. Nu poți colora greșit.
 
 PENTRU PĂRINȚI
-• Fără reclame și fără cumpărături în aplicație.
+• Fără reclame.
 • Funcționează complet offline.
 • Nu colectăm niciun fel de date. Desenele rămân pe dispozitiv.
 • Setările și politica de confidențialitate sunt protejate de o barieră pentru părinți. Acolo poți alege una din 17 limbi sau poți lua totul de la capăt.
@@ -539,7 +539,7 @@ Kolorowanki – Kifestő
 Nyugodt kifestő 2–6 éves gyerekeknek. Offline, reklám és trükkök nélkül.
 ```
 
-**Full description** (1395/4000)
+**Full description** (1357/4000)
 ```
 A Kolorowanki nyugodt kifestő 2–6 éves gyerekeknek.
 
@@ -554,7 +554,7 @@ NYUGALOMRA TERVEZVE
 Nincs időkorlát, pontszám, sorozat és jutalom a hosszabb játékért. Semmi sem villog és semmi sem hangos. Rosszul színezni nem lehet.
 
 SZÜLŐKNEK
-• Nincs reklám és nincs alkalmazáson belüli vásárlás.
+• Nincs reklám.
 • Teljesen offline működik.
 • Semmilyen adatot nem gyűjtünk. A színezések az eszközön maradnak.
 • A beállítások és az adatvédelmi tájékoztató szülői zár mögött vannak. Ott 17 nyelv közül választhatsz, vagy újrakezdheted az összes oldalt.
@@ -576,7 +576,7 @@ Kolorowanki – Boyama
 2-6 yaş arası çocuklar için sakin bir boyama kitabı. Çevrimdışı, reklamsız.
 ```
 
-**Full description** (1419/4000)
+**Full description** (1392/4000)
 ```
 Kolorowanki, 2-6 yaş arası çocuklar için sakin bir boyama kitabıdır.
 
@@ -591,7 +591,7 @@ SAKİNLİK İÇİN TASARLANDI
 Süre sınırı, puan, seri ya da daha uzun oynamak için ödül yok. Hiçbir şey yanıp sönmez, hiçbir şey yüksek sesli değildir. Yanlış boyamak diye bir şey yok.
 
 EBEVEYNLER İÇİN
-• Reklam ve uygulama içi satın alma yok.
+• Reklam yok.
 • Tamamen çevrimdışı çalışır.
 • Hiçbir veri toplamıyoruz. Boyamalar cihazda kalır.
 • Ayarlar ve gizlilik politikası bir ebeveyn kilidinin arkasındadır. Orada 17 dilden birini seçebilir ya da tüm sayfalara yeniden başlayabilirsiniz.
@@ -613,7 +613,7 @@ Kolorowanki – やさしいぬりえ
 2〜6歳向けのおだやかなぬりえ。オフライン、広告なし。
 ```
 
-**Full description** (734/4000)
+**Full description** (727/4000)
 ```
 Kolorowanki は、2〜6歳の子どものための、おだやかなぬりえアプリです。
 
@@ -628,7 +628,7 @@ Kolorowanki は、2〜6歳の子どものための、おだやかなぬりえア
 タイマー、点数、連続記録、長く遊ぶほどもらえるごほうびはありません。点滅するものも、大きな音もありません。ぬりかたに正解・不正解はありません。
 
 保護者の方へ
-• 広告もアプリ内課金もありません。
+• 広告はありません。
 • 完全にオフラインで動作します。
 • データは一切収集しません。ぬりえは端末の中だけに保存されます。
 • 設定とプライバシーポリシーは保護者向けのロックの先にあります。17の言語から選んだり、すべてのページを最初からやり直したりできます。
@@ -650,7 +650,7 @@ Kolorowanki – 安静涂色
 给 2 到 6 岁孩子的安静涂色书。离线使用，没有广告。
 ```
 
-**Full description** (521/4000)
+**Full description** (513/4000)
 ```
 Kolorowanki 是一本给 2 到 6 岁孩子的安静涂色书。
 
@@ -665,7 +665,7 @@ Kolorowanki 是一本给 2 到 6 岁孩子的安静涂色书。
 没有计时，没有分数，没有连续打卡，也没有玩得越久奖励越多。没有闪烁，没有吵闹的声音。怎么涂都不会错。
 
 写给家长
-• 没有广告，没有应用内购买。
+• 没有广告。
 • 完全离线使用。
 • 我们不收集任何数据。涂色作品只保存在设备上。
 • 设置和隐私政策在家长验证之后。您可以在那里选择 17 种语言之一，或让所有页面重新开始。

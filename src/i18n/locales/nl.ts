@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Alle bladzijden zijn weer wit.",
     "about.title": "Over Kolorowanki",
     "about.body": "Een rustig kleurboek voor kinderen van 2 tot 6 jaar. Houd een vinger op de tekening om de kleuren te zien en tik er een aan om het vlak te kleuren. Met twee vingers zoom je in. Alles wordt vanzelf bewaard.",
-    "about.promise": "Geen reclame, geen aankopen, geen accounts en geen internet. Niets verlaat dit apparaat.",
+    "about.promise": "Geen reclame, geen accounts en geen internet. Niets verlaat dit apparaat.",
     "about.credit": "De tekeningen komen uit Pastelki ({pastelki}), een gratis verzameling zachte illustraties voor jonge kinderen, met een MIT-licentie.",
     "about.source": "Kolorowanki is open source: {repo}",
     "about.version": "Versie {v}",

@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Tüm sayfalar yeniden beyaz.",
     "about.title": "Kolorowanki hakkında",
     "about.body": "2-6 yaş arası çocuklar için sakin bir boyama kitabı. Parmağını resmin üzerinde tut, renkler belirsin; sonra birine dokunarak şekli doldur. İki parmakla yakınlaştırabilirsin. Her şey kendiliğinden kaydedilir.",
-    "about.promise": "Reklam, satın alma, hesap ve internet yok. Hiçbir şey bu cihazdan dışarı çıkmaz.",
+    "about.promise": "Reklam, hesap ve internet yok. Hiçbir şey bu cihazdan dışarı çıkmaz.",
     "about.credit": "Resimler, küçük çocuklar için yumuşak çizimlerden oluşan ücretsiz ve MIT lisanslı Pastelki ({pastelki}) kütüphanesinden geliyor.",
     "about.source": "Kolorowanki açık kaynaklıdır: {repo}",
     "about.version": "Sürüm {v}",

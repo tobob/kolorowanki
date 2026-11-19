@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Tutte le pagine sono di nuovo bianche.",
     "about.title": "Informazioni su Kolorowanki",
     "about.body": "Un album da colorare tranquillo per bambini dai 2 ai 6 anni. Tieni un dito sul disegno per vedere i colori, poi toccane uno per riempire la forma. Con due dita puoi ingrandire. Tutto si salva da solo.",
-    "about.promise": "Niente pubblicità, acquisti, account o internet. Nulla esce da questo dispositivo.",
+    "about.promise": "Niente pubblicità, account o internet. Nulla esce da questo dispositivo.",
     "about.credit": "I disegni vengono da Pastelki ({pastelki}), una raccolta gratuita di illustrazioni delicate per bambini piccoli, con licenza MIT.",
     "about.source": "Kolorowanki è open source: {repo}",
     "about.version": "Versione {v}",

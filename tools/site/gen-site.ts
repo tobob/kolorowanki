@@ -61,7 +61,7 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 /** Our own addresses (repo, issues, Pastelki, this site) become links. Runs on escaped text. */
 const linkify = (html: string) =>
   html.replace(
-    /(?:https?:\/\/)?(?:github\.com\/tobob\/kolorowanki(?:\/issues)?|pastelki\.marchew\.work(?:\/[\w/#-]*)?|tobob\.github\.io\/kolorowanki-site\/[\w/-]*)/g,
+    /(?:https?:\/\/)?(?:github\.com\/tobob\/kolorowanki(?:\/issues)?|pastelki\.club(?:\/[\w/#-]*)?|tobob\.github\.io\/kolorowanki-site\/[\w/-]*)/g,
     (m) => {
       const url = m.replace(/[.,]$/, '');
       return `<a href="${url.startsWith('http') ? url : `https://${url}`}">${url}</a>${m.slice(url.length)}`;

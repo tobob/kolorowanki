@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Alle Seiten sind wieder weiß.",
     "about.title": "Über Kolorowanki",
     "about.body": "Ein ruhiges Malbuch für Kinder von 2 bis 6 Jahren. Halte einen Finger auf das Bild, dann erscheinen die Farben. Tippe eine an, und die Fläche wird ausgemalt. Mit zwei Fingern kannst du vergrößern. Alles wird von selbst gespeichert.",
-    "about.promise": "Keine Werbung, keine Käufe, keine Konten, kein Internet. Nichts verlässt dieses Gerät.",
+    "about.promise": "Keine Werbung, keine Konten, kein Internet. Nichts verlässt dieses Gerät.",
     "about.credit": "Die Bilder stammen aus Pastelki ({pastelki}), einer freien Sammlung sanfter Illustrationen für kleine Kinder unter der MIT-Lizenz.",
     "about.source": "Kolorowanki ist Open Source: {repo}",
     "about.version": "Version {v}",

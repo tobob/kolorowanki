@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "所有页面已变回白色。",
     "about.title": "关于 Kolorowanki",
     "about.body": "一本给 2 到 6 岁孩子的安静涂色书。用手指按住图画，颜色就会出现，点一种颜色就能填满那一块。两根手指可以放大。一切都会自动保存。",
-    "about.promise": "没有广告，没有购买，不用账号，也不用联网。任何数据都不会离开这台设备。",
+    "about.promise": "没有广告，不用账号，也不用联网。任何数据都不会离开这台设备。",
     "about.credit": "图画来自 Pastelki（{pastelki}），一个为幼儿准备的温柔插画免费图库，采用 MIT 许可。",
     "about.source": "Kolorowanki 是开源的：{repo}",
     "about.version": "版本 {v}",

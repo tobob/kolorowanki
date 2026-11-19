@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Todas as páginas estão brancas de novo.",
     "about.title": "Sobre o Kolorowanki",
     "about.body": "Um livro de colorir tranquilo para crianças de 2 a 6 anos. Segure um dedo no desenho para ver as cores e toque numa delas para preencher a forma. Use dois dedos para ampliar. Tudo é salvo automaticamente.",
-    "about.promise": "Sem anúncios, sem compras, sem contas e sem internet. Nada sai deste aparelho.",
+    "about.promise": "Sem anúncios, sem contas e sem internet. Nada sai deste aparelho.",
     "about.credit": "Os desenhos vêm do Pastelki ({pastelki}), uma biblioteca gratuita de ilustrações suaves para crianças pequenas, com licença MIT.",
     "about.source": "O Kolorowanki é de código aberto: {repo}",
     "about.version": "Versão {v}",

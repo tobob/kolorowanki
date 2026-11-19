@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Wszystkie strony są znów białe.",
     "about.title": "O Kolorowankach",
     "about.body": "Spokojna kolorowanka dla dzieci w wieku od 2 do 6 lat. Przytrzymaj palec na obrazku, a pojawią się kolory. Stuknij w jeden, a kształt się wypełni. Dwoma palcami możesz powiększyć obrazek. Wszystko zapisuje się samo.",
-    "about.promise": "Bez reklam, zakupów, kont i internetu. Nic nie opuszcza tego urządzenia.",
+    "about.promise": "Bez reklam, kont i internetu. Nic nie opuszcza tego urządzenia.",
     "about.credit": "Obrazki pochodzą z Pastelek ({pastelki}), darmowej biblioteki łagodnych ilustracji dla małych dzieci, udostępnionej na licencji MIT.",
     "about.source": "Kolorowanki mają otwarty kod źródłowy: {repo}",
     "about.version": "Wersja {v}",

@@ -5,7 +5,7 @@
 <h1 align="center">Kolorowanki</h1>
 
 <p align="center">
-  Gentle colouring pages for children aged 2–6. Offline, no ads, no purchases, no data collected.<br/>
+  Gentle colouring pages for children aged 2–6. Offline, no ads, no data collected.<br/>
   <a href="https://tobob.github.io/kolorowanki-site/">Website</a> ·
   <a href="https://tobob.github.io/kolorowanki-site/privacy/">Privacy</a> ·
   <a href="https://tobob.github.io/kolorowanki-site/terms/">Terms</a> ·

@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "すべてのページが白に戻りました。",
     "about.title": "Kolorowanki について",
     "about.body": "2〜6歳の子どものための、おだやかなぬりえです。絵の上で指を押したままにすると色が出てきます。色をタップすると、その部分がぬられます。2本の指で拡大できます。ぬった絵は自動で保存されます。",
-    "about.promise": "広告、課金、アカウント、インターネット接続はありません。データがこの端末の外に出ることはありません。",
+    "about.promise": "広告、アカウント、インターネット接続はありません。データがこの端末の外に出ることはありません。",
     "about.credit": "絵は、小さな子ども向けのやさしいイラストを集めた無料ライブラリ Pastelki（{pastelki}）のもので、MITライセンスで公開されています。",
     "about.source": "Kolorowanki はオープンソースです：{repo}",
     "about.version": "バージョン {v}",

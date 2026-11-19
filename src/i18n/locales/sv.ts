@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Alla sidor är vita igen.",
     "about.title": "Om Kolorowanki",
     "about.body": "En lugn målarbok för barn mellan 2 och 6 år. Håll ett finger på bilden så kommer färgerna fram, tryck sedan på en för att fylla formen. Nyp med två fingrar för att zooma. Allt sparas av sig självt.",
-    "about.promise": "Ingen reklam, inga köp, inga konton och inget internet. Ingenting lämnar den här enheten.",
+    "about.promise": "Ingen reklam, inga konton och inget internet. Ingenting lämnar den här enheten.",
     "about.credit": "Bilderna kommer från Pastelki ({pastelki}), ett gratis bibliotek med mjuka illustrationer för små barn, under MIT-licensen.",
     "about.source": "Kolorowanki har öppen källkod: {repo}",
     "about.version": "Version {v}",

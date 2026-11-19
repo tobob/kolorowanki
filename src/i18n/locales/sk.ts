@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Všetky stránky sú znova biele.",
     "about.title": "O aplikácii Kolorowanki",
     "about.body": "Pokojné omaľovánky pre deti od 2 do 6 rokov. Podrž prst na obrázku a objavia sa farby. Ťukni na jednu a plocha sa vyfarbí. Dvoma prstami si obrázok priblížiš. Všetko sa ukladá samo.",
-    "about.promise": "Žiadne reklamy, nákupy, účty ani internet. Nič neopúšťa toto zariadenie.",
+    "about.promise": "Žiadne reklamy, účty ani internet. Nič neopúšťa toto zariadenie.",
     "about.credit": "Obrázky pochádzajú z Pastelki ({pastelki}), bezplatnej knižnice jemných ilustrácií pre malé deti pod licenciou MIT.",
     "about.source": "Kolorowanki má otvorený zdrojový kód: {repo}",
     "about.version": "Verzia {v}",

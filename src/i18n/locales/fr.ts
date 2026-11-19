@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Toutes les pages sont de nouveau blanches.",
     "about.title": "À propos de Kolorowanki",
     "about.body": "Un livre de coloriage tout doux pour les enfants de 2 à 6 ans. Garde un doigt sur le dessin pour voir les couleurs, puis touches-en une pour remplir la forme. Écarte deux doigts pour zoomer. Tout s'enregistre tout seul.",
-    "about.promise": "Pas de publicité, pas d'achats, pas de compte, pas d'internet. Rien ne quitte cet appareil.",
+    "about.promise": "Pas de publicité, pas de compte, pas d'internet. Rien ne quitte cet appareil.",
     "about.credit": "Les dessins viennent de Pastelki ({pastelki}), une bibliothèque gratuite d'illustrations douces pour les petits, sous licence MIT.",
     "about.source": "Kolorowanki est open source : {repo}",
     "about.version": "Version {v}",

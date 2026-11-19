@@ -30,7 +30,7 @@ export default {
     "settings.restartDone": "Minden oldal újra fehér.",
     "about.title": "A Kolorowanki-ról",
     "about.body": "Nyugodt kifestő 2–6 éves gyerekeknek. Tartsd az ujjad a képen, és megjelennek a színek, aztán koppints egyre, és kitöltöd a formát. Két ujjal nagyíthatsz. Minden magától mentődik.",
-    "about.promise": "Nincs reklám, vásárlás, fiók és internet. Semmi sem hagyja el ezt az eszközt.",
+    "about.promise": "Nincs reklám, fiók és internet. Semmi sem hagyja el ezt az eszközt.",
     "about.credit": "A képek a Pastelki ({pastelki}) gyűjteményből származnak, amely kisgyerekeknek készült szelíd illusztrációk ingyenes, MIT-licencű könyvtára.",
     "about.source": "A Kolorowanki nyílt forráskódú: {repo}",
     "about.version": "Verzió: {v}",
