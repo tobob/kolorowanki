@@ -4,9 +4,15 @@ Piper voices (CC0; https://pastelki.marchew.work/api/tts — 60 lines per hour p
 between requests and back off on 429/503). A female voice is used where Pastelki has one.
 
     python3 tools/voice/fetch_piper.py LINES.json OUT_DIR
+    PY tools/voice/fetch_piper.py LINES.json OUT_DIR --local VOICE_DIR [--takes N]   # same voices, run here
 
 Writes OUT_DIR/<lang>-<line>.wav, line by line in the key order of lines.json (instructions first).
-Existing files are kept.
+Existing files are kept. --local runs the Piper models itself, exactly as pastelki/tts/server.py does
+(piper-tts 1.6.0; length_scale = 1/speed, the voice's speaker, lowercase text for letter-based models) —
+no rate limit. Piper draws phoneme durations at random (noise_w), so --takes N writes extra takes
+<lang>-<line>.t1.wav … for trim_check.py to choose from.
+VOICE_DIR holds <model>.onnx + .onnx.json from https://huggingface.co/rhasspy/piper-voices
+(model names: pastelki/tts/voices.json).
 """
 import json
 import sys
@@ -17,20 +23,63 @@ from pathlib import Path
 
 API = "https://pastelki.marchew.work/api/tts"
 VOICES = {"uk": "uk-tetiana", "cs": "cs-jirka", "sk": "sk-lili", "ro": "ro-mihai", "hu": "hu-anna"}
-SPEED = 0.9  # a little slower for small children
+# slow and clear for 2–4-year-olds (was 0.9 everywhere, which children found too fast): length_scale 1.33; the
+# Czech voice is the slowest of all already (3.6 syllables/s at 0.9), so it is slowed less — at 0.75 the intro
+# line took 11 s
+SPEED = {"cs-jirka": 0.85}
+DEFAULT_SPEED = 0.75
+MODELS = {"uk-tetiana": ("uk_UA-ukrainian_tts-medium", "tetiana"), "cs-jirka": ("cs_CZ-jirka-medium", None),
+          "sk-lili": ("sk_SK-lili-medium", None), "ro-mihai": ("ro_RO-mihai-medium", None), "hu-anna": ("hu_HU-anna-medium", None)}
 GAP_S = 61  # stay under the server's 60 lines per hour
+
+
+
+def local(voice_dir: Path):
+    import io
+    import wave
+
+    from piper import PiperVoice, SynthesisConfig
+
+    cache = {}
+
+    def say(voice: str, text: str) -> bytes:
+        model, speaker = MODELS[voice]
+        if model not in cache:
+            cache[model] = PiperVoice.load(str(voice_dir / f"{model}.onnx"))
+        v = cache[model]
+        sid = v.config.speaker_id_map.get(speaker) if speaker else None
+        cfg = SynthesisConfig(speaker_id=sid, length_scale=1 / SPEED.get(voice, DEFAULT_SPEED))
+        if str(getattr(v.config.phoneme_type, "value", "")) == "text":
+            text = text.lower()
+        buf = io.BytesIO()
+        with wave.open(buf, "wb") as w:
+            v.synthesize_wav(text, w, syn_config=cfg)
+        return buf.getvalue()
+
+    return say
+
 
 spec = json.loads(Path(sys.argv[1]).read_text())
 out = Path(sys.argv[2])
 out.mkdir(parents=True, exist_ok=True)
+args = sys.argv[3:]
+say = local(Path(args[args.index("--local") + 1])) if "--local" in args else None
+takes = int(args[args.index("--takes") + 1]) if "--takes" in args else 1
 keys = list(spec["pl"].keys())
 for key in keys:
     for lang, voice in VOICES.items():
         text = spec[lang][key]
         dest = out / f"{lang}-{key}.wav"
+        if say:
+            for t in range(takes):
+                d = dest if t == 0 else out / f"{lang}-{key}.t{t}.wav"
+                if not d.exists():
+                    d.write_bytes(say(voice, text))
+                    print("ok", d.name, voice, "(local)", flush=True)
+            continue
         if dest.exists():
             continue
-        body = json.dumps({"voice": voice, "text": text, "speed": SPEED}).encode()
+        body = json.dumps({"voice": voice, "text": text, "speed": SPEED.get(voice, DEFAULT_SPEED)}).encode()
         for attempt in range(8):
             req = urllib.request.Request(API, data=body, headers={"Content-Type": "application/json", "User-Agent": "kolorowanki-voice-tool"})
             try:

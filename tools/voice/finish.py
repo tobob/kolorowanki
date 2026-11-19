@@ -5,19 +5,28 @@
           IN_DIR/<lang>-<line>.wav from trim_check.py; a line not trimmed yet is taken from FALLBACK_DIR
           (the raw takes) and only energy-trimmed, so a new language can be heard before Whisper ran.
 
-FX_PY: a Python with pyworld, numpy, soundfile (pastelki/reels/requirements-fx.txt, a scratch venv).
+FX_PY: a Python with pyworld, numpy, soundfile, audiotsm (pastelki/reels/requirements-fx.txt + audiotsm).
 For every clip:
+  0. pace: the dry take's articulation rate (syllables per second of speech, endpoint.py) is brought down
+     to the language's target — 80 % of what the first version spoke (children 2–4 found it too fast) —
+     with WSOLA (audiotsm, time-domain: no pitch change, no phase-vocoder smear), at most 1.35× longer;
+     a take already slow enough is left alone. Done on the dry voice, BEFORE the sheep effect, so the
+     quaver keeps its rate;
   1. pastelki/reels/sheepify.py (WORLD vocoder: +3 semitones, smaller vocal tract, a quaver on held
-     vowels) — imported from the Pastelki repo, not copied, so Edyta sounds like in the reels;
-  2. energy trim (leading/trailing frames 40 dB under the loudest are cut, 60 ms kept) + 15 ms fades;
+     vowels) — imported from the Pastelki repo, not copied, so Edyta sounds like in the reels. It gets
+     the trimmed take, which ends in digital silence, so it has no noise to resynthesise after the words;
+  2. edges again (endpoint.py): speech start/end from energy, +80 ms, 50 ms fade to exactly 0, 60 ms of
+     zeros — nothing after the last word but a short fade;
   3. loudness: speech RMS (frames within 35 dB of the loudest) → −20 dBFS, then a smooth peak limiter
      so no sample exceeds −2.5 dBFS (−1.5 dBFS after AAC is checked);
   4. ffmpeg → assets/voice/edyta/<lang>/<line>.m4a (AAC-LC, mono, 44.1 kHz, 64 kbit/s); a clip newer
      than its source is kept as it is (only re-measured);
   5. a mouth envelope: one digit 0–9 per 80 ms (how open her mouth is), stored in the module;
-then writes src/audio/edyta-voice.ts and prints a table (duration, RMS, peak) with warnings.
+then writes src/audio/edyta-voice.ts and prints a table (duration, rate before → after, stretch, RMS,
+peak) with warnings — including the ending check (endpoint.tail_issues) on the decoded AAC.
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -26,13 +35,25 @@ import numpy as np
 import soundfile as sf
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(Path.home() / ".openclaw/workspace/pastelki/reels"))
+# SHEEPIFY_DIR: where pastelki/reels/sheepify.py is (default: the Pastelki repo next to the studio)
+sys.path.insert(0, os.environ.get("SHEEPIFY_DIR", str(Path.home() / ".openclaw/workspace/pastelki/reels")))
 from sheepify import sheepify  # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).parent))
+from endpoint import speaking_time, speech_bounds, syllables, tail_issues, tidy  # noqa: E402
 
 LANGS = ["pl", "en", "de", "fr", "es", "it", "pt", "nl", "uk", "cs", "sk", "sv", "ro", "hu", "tr", "ja", "zh"]
 TARGET_RMS_DB = -20.0
 PEAK_DB = -2.5
 FRAME_S = 0.08
+# longest sensible clip per line: the greeting has four sentences, undo and the finale three
+MAX_S = {"tray": 11.0, "undo": 8.0, "done": 8.0}
+# articulation rate (syllables/s) of the first version, 2026-11-18, per language (median of 17 lines) …
+RATE_BEFORE = {"pl": 5.57, "en": 6.31, "de": 4.56, "fr": 5.56, "es": 7.59, "it": 6.87, "pt": 7.33, "nl": 5.67, "uk": 4.29,
+               "cs": 3.6, "sk": 5.16, "sv": 5.31, "ro": 5.45, "hu": 5.02, "tr": 5.68, "ja": 9.41, "zh": 6.0}
+# … and the target: 20 % slower, but never under 3.4 syllables/s (Czech already spoke slowest of all)
+TARGET_RATE = {l: max(3.4, round(0.8 * r, 2)) for l, r in RATE_BEFORE.items()}
+MAX_STRETCH = 1.35
 OUT = ROOT / "assets/voice/edyta"
 MODULE = ROOT / "src/audio/edyta-voice.ts"
 
@@ -46,19 +67,20 @@ def frames_rms(x: np.ndarray, sr: int, hop_s: float) -> np.ndarray:
     return np.sqrt(np.mean(pad.reshape(n, hop) ** 2, axis=1) + 1e-12)
 
 
-def energy_trim(x: np.ndarray, sr: int) -> np.ndarray:
-    r = frames_rms(x, sr, 0.01)
-    on = np.where(20 * np.log10(r / r.max()) > -40)[0]
-    if len(on) == 0:
-        return x
-    a = max(0, (on[0] - 6) * int(sr * 0.01))
-    b = min(len(x), (on[-1] + 7) * int(sr * 0.01))
-    y = x[a:b].copy()
-    n = min(len(y) // 2, int(0.015 * sr))
-    ramp = np.linspace(0, 1, n)
-    y[:n] *= ramp
-    y[len(y) - n:] *= ramp[::-1]
-    return y
+def slow_down(x: np.ndarray, sr: int, text: str, lang: str) -> tuple[np.ndarray, float, float]:
+    """WSOLA time-stretch of the dry voice to the language's target rate → (audio, rate before, factor)."""
+    rate = syllables(text, lang) / speaking_time(x, sr)
+    f = float(np.clip(rate / TARGET_RATE[lang], 1.0, MAX_STRETCH))
+    if f < 1.02:
+        return x, rate, 1.0
+    from audiotsm import wsola
+    from audiotsm.io.array import ArrayReader, ArrayWriter
+
+    r = ArrayReader(x.reshape(1, -1).astype(np.float32))
+    w = ArrayWriter(1)
+    # ~40 ms frames, ±10 ms search: speech-sized, so syllables stay intact
+    wsola(1, speed=1 / f, frame_length=int(0.04 * sr), synthesis_hop=int(0.02 * sr), tolerance=int(0.01 * sr)).run(r, w)
+    return w.data[0].astype(np.float64), rate, f
 
 
 def loudness(x: np.ndarray, sr: int) -> np.ndarray:
@@ -103,10 +125,15 @@ def main() -> None:
     spec = json.loads(Path(sys.argv[1]).read_text())
     srcs = [Path(p) for p in sys.argv[2:4]]
     keys = list(spec["pl"].keys())
+    have = {lang: sum(1 for k in keys if any((d / f"{lang}-{k}.wav").exists() for d in srcs)) for lang in LANGS}
+    if not all(have.values()):
+        # never write a module without a whole language (and delete its clips) because a step before failed
+        sys.exit(f"no takes for: {', '.join(l for l, n in have.items() if not n)} — run trim_check.py first")
     clips: dict[str, dict[str, dict]] = {}
     warn = []
     stale: list[Path] = []
-    print(f"{'clip':16} {'dur s':>6} {'rms dB':>7} {'peak dB':>8}")
+    print(f"{'clip':16} {'dur s':>6} {'syl/s':>11} {'×':>5} {'rms dB':>7} {'peak dB':>8}")
+    rates: dict[str, list[tuple[float, float]]] = {}
     for lang in LANGS:
         for key in keys:
             f = next((d / f"{lang}-{key}.wav" for d in srcs if (d / f"{lang}-{key}.wav").exists()), srcs[0] / f"{lang}-{key}.wav")
@@ -116,20 +143,37 @@ def main() -> None:
                     stale.append(dest)  # a clip of a line that changed or was removed
                 warn.append(f"{lang}-{key}: missing")
                 continue
+            text = spec[lang][key]
+            pace = ""
             if not dest.exists() or dest.stat().st_mtime < f.stat().st_mtime:
                 x, sr = sf.read(f, always_2d=False)
                 if x.ndim > 1:
                     x = x.mean(axis=1)
+                a, b = speech_bounds(x, sr)  # a raw fallback take is cut here; a trimmed one is unchanged
+                x, r0, k = slow_down(tidy(x, sr, a, b), sr, text, lang)
                 y = sheepify(x, sr, bleat=False).astype(np.float64)
-                y = loudness(energy_trim(y, sr), sr)
+                a, b = speech_bounds(y, sr)
+                y = loudness(tidy(y, sr, a, b, pause=False), sr)
+                r1 = syllables(text, lang) / speaking_time(y, sr)
+                rates.setdefault(lang, []).append((r0, r1))
+                pace = f"{r0:4.1f}→{r1:4.1f} {k:5.2f}"
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", "-",
-                                "-ar", "44100", "-ac", "1", "-c:a", "aac", "-b:a", "64k", "-movflags", "+faststart", str(dest)],
-                               input=y.astype(np.float32).tobytes(), check=True)
+                for _ in range(3):
+                    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", "-",
+                                    "-ar", "44100", "-ac", "1", "-c:a", "aac", "-b:a", "64k", "-movflags", "+faststart", str(dest)],
+                                   input=y.astype(np.float32).tobytes(), check=True)
+                    # AAC can overshoot the limiter by a few dB on sharp transients: measure the decoded clip
+                    # and, if it peaks over −1.5 dBFS, encode again a little quieter
+                    over = db(np.max(np.abs(decode(dest)))) - (PEAK_DB + 0.5)
+                    if over <= 0:
+                        break
+                    y = y * 10 ** (-(over + 0.3) / 20)
             y = decode(dest)
             dur, rms, peak = len(y) / 44100, speech_rms_db(y, 44100), db(np.max(np.abs(y)))
-            print(f"{lang + '-' + key:16} {dur:6.2f} {rms:7.1f} {peak:8.1f}")
-            if not 0.8 <= dur <= 8.0:
+            print(f"{lang + '-' + key:16} {dur:6.2f} {pace:>17} {rms:7.1f} {peak:8.1f}")
+            issues, _, _ = tail_issues(y, 44100)
+            warn += [f"{lang}-{key}: {i}" for i in issues]
+            if not 0.8 <= dur <= MAX_S.get(key, 6.0):
                 warn.append(f"{lang}-{key}: duration {dur:.2f} s")
             if rms < -26:
                 warn.append(f"{lang}-{key}: quiet ({rms:.1f} dB)")
@@ -165,6 +209,8 @@ def main() -> None:
     print("wrote", MODULE.relative_to(ROOT))
     per = {l: len(clips.get(l, {})) for l in LANGS}
     print("clips per language:", ", ".join(f"{l} {n}/{len(keys)}" for l, n in per.items()), f"— total {sum(per.values())}")
+    print("speech rate, syllables/s (median of the clips made now): " + ", ".join(
+        f"{l} {RATE_BEFORE[l]:.1f}→{np.median([r[1] for r in v]):.1f}" for l, v in rates.items()))
     print("\n".join(["WARN " + w for w in warn if "missing" not in w]) or "no warnings")
 
 
