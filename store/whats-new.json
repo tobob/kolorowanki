@@ -1,6 +1,28 @@
 {
   "_doc": "Store \"What's New\" per store locale (keys = apple.info locales in store.config.json). Edit 'unreleased'; studio build/release moves it to versions[x.y.z] and into store.config.json releaseNotes. Short, friendly, for parents; max 500 characters (Google Play), 4000 (Apple).",
-  "unreleased": {},
+  "unreleased": {
+    "en-US": "Edyta the sheep has a new, warmer and calmer voice. While colouring, a few different gentle tunes play, and the music no longer starts over on each new picture. Save now puts the picture straight into Photos; sharing is still for grown-ups.",
+    "en-GB": "Edyta the sheep has a new, warmer and calmer voice. While colouring, a few different gentle tunes play, and the music no longer starts over on each new picture. Save now puts the picture straight into Photos; sharing is still for grown-ups.",
+    "pl": "Owca Edyta ma nowy, cieplejszy i spokojniejszy głos. Podczas kolorowania grają różne łagodne melodie, a muzyka nie zaczyna się od nowa przy każdym obrazku. Zapisz od razu zapisuje obrazek w Zdjęciach; udostępnianie zostaje dla dorosłych.",
+    "de-DE": "Edyta, das Schaf, hat eine neue, wärmere und ruhigere Stimme. Beim Ausmalen spielen verschiedene sanfte Melodien, und die Musik beginnt nicht bei jedem neuen Bild von vorn. Speichern legt das Bild direkt in Fotos ab; Teilen bleibt für Erwachsene.",
+    "fr-FR": "Edyta la brebis a une nouvelle voix, plus chaleureuse et plus calme. Pendant le coloriage, plusieurs mélodies douces se succèdent et la musique ne recommence plus à chaque nouveau dessin. Enregistrer place le dessin directement dans Photos ; le partage reste réservé aux adultes.",
+    "fr-CA": "Edyta la brebis a une nouvelle voix, plus chaleureuse et plus calme. Pendant le coloriage, plusieurs mélodies douces se succèdent et la musique ne recommence plus à chaque nouveau dessin. Enregistrer place le dessin directement dans Photos ; le partage reste réservé aux adultes.",
+    "es-ES": "La oveja Edyta tiene una voz nueva, más cálida y tranquila. Al colorear suenan varias melodías suaves y la música ya no vuelve a empezar con cada dibujo. Guardar lleva el dibujo directamente a Fotos; compartir sigue siendo para los adultos.",
+    "es-MX": "La oveja Edyta tiene una voz nueva, más cálida y tranquila. Al colorear suenan varias melodías suaves y la música ya no vuelve a comenzar con cada dibujo. Guardar manda el dibujo directamente a Fotos; compartir sigue siendo para los adultos.",
+    "it": "La pecora Edyta ha una voce nuova, più calda e tranquilla. Mentre si colora suonano diverse melodie dolci e la musica non ricomincia più a ogni nuovo disegno. Salva mette il disegno direttamente in Foto; la condivisione resta per gli adulti.",
+    "pt-BR": "A ovelha Edyta tem uma voz nova, mais calorosa e calma. Enquanto a criança pinta, tocam várias melodias suaves, e a música não recomeça a cada novo desenho. Salvar coloca o desenho direto em Fotos; compartilhar continua sendo para adultos.",
+    "pt-PT": "A ovelha Edyta tem uma voz nova, mais calorosa e calma. Enquanto a criança pinta, tocam várias melodias suaves, e a música já não recomeça a cada novo desenho. Guardar coloca o desenho diretamente em Fotografias; partilhar continua a ser para adultos.",
+    "nl-NL": "Edyta het schaap heeft een nieuwe, warmere en rustigere stem. Tijdens het kleuren klinken verschillende zachte melodieën, en de muziek begint niet meer opnieuw bij elke nieuwe kleurplaat. Bewaren zet de tekening meteen in Foto's; delen blijft voor volwassenen.",
+    "uk": "Овечка Едита тепер має новий, тепліший і спокійніший голос. Під час розфарбовування звучать різні лагідні мелодії, і музика не починається спочатку з кожною новою картинкою. «Зберегти» одразу зберігає малюнок у Фото; ділитися, як і раніше, можуть лише дорослі.",
+    "cs": "Ovečka Edyta má nový, vřelejší a klidnější hlas. Při vybarvování hrají různé jemné melodie a hudba už nezačíná znovu u každého nového obrázku. Uložit dá obrázek rovnou do Fotek; sdílení zůstává pro dospělé.",
+    "sk": "Ovečka Edyta má nový, vrúcnejší a pokojnejší hlas. Pri vyfarbovaní hrajú rôzne jemné melódie a hudba sa už nezačína odznova pri každom novom obrázku. Uložiť dá obrázok rovno do Fotiek; zdieľanie zostáva pre dospelých.",
+    "sv": "Fåret Edyta har fått en ny, varmare och lugnare röst. När barnet målar spelas flera mjuka melodier, och musiken börjar inte om vid varje ny bild. Spara lägger bilden direkt i Bilder; delning är fortfarande för vuxna.",
+    "ro": "Oaia Edyta are o voce nouă, mai caldă și mai liniștită. În timpul colorării se aud mai multe melodii blânde, iar muzica nu mai începe de la capăt la fiecare desen nou. Salvează pune desenul direct în Poze; partajarea rămâne pentru adulți.",
+    "hu": "Edyta, a bárány új, melegebb és nyugodtabb hangot kapott. Színezés közben többféle lágy dallam szól, és a zene nem indul újra minden új képnél. A Mentés egyenesen a Fotókba teszi a képet; a megosztás továbbra is a felnőtteké.",
+    "tr": "Koyun Edyta'nın artık yeni, daha sıcak ve sakin bir sesi var. Boyama sırasında farklı yumuşak melodiler çalıyor ve müzik her yeni resimde baştan başlamıyor. Kaydet, resmi doğrudan Fotoğraflar'a kaydediyor; paylaşma yine yetişkinler için.",
+    "ja": "ひつじのエディタが、あたたかく落ち着いた新しい声になりました。ぬりえ中はやさしいメロディーがいくつか流れ、新しい絵にしても音楽が最初から始まりません。「保存」で絵がそのまま写真に保存されます。共有はこれまでどおり大人向けです。",
+    "zh-Hans": "小羊埃迪塔换上了更温暖、更平静的新声音。涂色时会播放几首不同的轻柔乐曲，换新图画时音乐也不会重新开始。“保存”会把图画直接存入照片；分享仍然只供大人使用。"
+  },
   "versions": {
     "1.0.1": {
       "en-US": "New: Edyta the sheep shows your child how to color. In a short, gentle tutorial your child taps, holds and colors along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
