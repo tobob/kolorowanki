@@ -20,6 +20,14 @@
 # Fast way (2026-11): Bob's PC Jacek (RTX 3060) has one venv with all of it: ~/pastelki-voice (source env.sh; $PY for all
 # three; ../gpu_capped.py 0.31 keeps it to a third of the GPU next to the training jobs; GPU_BUSY while it runs).
 # Delete WORK when done (≈ 300 MB of WAVs).
+#
+# Voice candidates (2026-11-19, Bob picks one; empty = the current Edyta, nothing changes):
+#   CB_ARGS      extra render_chatterbox.py options, e.g. "--exaggeration 0.4 --cfg-weight 0.4 --temperature 0.7 --soften"
+#                (+ "--ref voice.wav" for another speaker)
+#   PIPER_ARGS   extra fetch_piper.py --local options, e.g. "--noise-scale 0.5 --noise-w 0.6 --soften"
+#   VC_TARGET    a wav: vc_piper.py converts the Piper takes onto that voice before trim_check
+#   FINISH_ARGS  extra finish.py options, e.g. "--chain natural --pace pauses --lufs -20.5 --piper-match"
+# Exact settings of each candidate: the README next to the sample page (edyta-voice-samples.html).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 WORK=${WORK:-$(mktemp -d)/edyta-voice}
@@ -29,13 +37,14 @@ WHISPER_PY=${WHISPER_PY:-/opt/homebrew/opt/openai-whisper/libexec/bin/python}
 FX_PY=${FX_PY:?set FX_PY to a python with pyworld numpy soundfile audiotsm}
 mkdir -p "$WORK"/{raw,trimmed}
 npx tsx tools/voice/lines.ts > "$WORK/lines.json"
-"$CHATTERBOX_PY" tools/voice/render_chatterbox.py "$WORK/lines.json" "$WORK/raw" --takes "$TAKES"
+"$CHATTERBOX_PY" tools/voice/render_chatterbox.py "$WORK/lines.json" "$WORK/raw" --takes "$TAKES" ${CB_ARGS:-}
 if [ -n "${PIPER_VOICES:-}" ]; then
-  "$FX_PY" tools/voice/fetch_piper.py "$WORK/lines.json" "$WORK/raw" --local "$PIPER_VOICES" --takes "$TAKES"
+  "$FX_PY" tools/voice/fetch_piper.py "$WORK/lines.json" "$WORK/raw" --local "$PIPER_VOICES" --takes "$TAKES" ${PIPER_ARGS:-}
 else
   python3 tools/voice/fetch_piper.py "$WORK/lines.json" "$WORK/raw"
 fi
+[ -n "${VC_TARGET:-}" ] && "$CHATTERBOX_PY" tools/voice/vc_piper.py "$WORK/raw" "$VC_TARGET"
 "$WHISPER_PY" tools/voice/trim_check.py "$WORK/lines.json" "$WORK/raw" "$WORK/trimmed"
-"$FX_PY" tools/voice/finish.py "$WORK/lines.json" "$WORK/trimmed" "$WORK/raw"
+"$FX_PY" tools/voice/finish.py "$WORK/lines.json" "$WORK/trimmed" "$WORK/raw" ${FINISH_ARGS:-}
 "$WHISPER_PY" tools/voice/trim_check.py "$WORK/lines.json" --verify assets/voice/edyta
 echo "work files: $WORK"

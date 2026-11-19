@@ -5,12 +5,19 @@ exaggeration ~0.8; here 0.75 for a calmer teacher tone; cfg_weight 0.3 = slower,
 for 2–4-year-olds — finish.py slows any take that is still too fast).
 
     CHATTERBOX_PY tools/voice/render_chatterbox.py LINES.json OUT_DIR [lang,lang…] [--seed N] [--takes N] [--keys a,b]
+        [--exaggeration 0.75] [--cfg-weight 0.3] [--temperature 0.8] [--ref VOICE.wav] [--soften]
 
 Writes OUT_DIR/<lang>-<line>.wav and, with --takes N > 1, extra takes <lang>-<line>.t1.wav … (other seeds);
 trim_check.py keeps the best take. Existing files are kept (delete one to re-render it). --keys: only these
 lines. Short Chinese lines can loop (the model repeats the sentence): extra takes are the cure.
 Order: all of Polish first, then English, then every other language line by line in the key order of
 lines.json (instructions → praise → hints), so a partial run still covers the important lines everywhere.
+Voice options (defaults = the current Edyta; the calmer candidates of 2026-11-19 are in build.sh):
+  --exaggeration/--cfg-weight/--temperature  Chatterbox's own knobs (lower exaggeration = calmer, flatter
+                 intonation; lower cfg_weight = slower; lower temperature = steadier takes);
+  --ref WAV      clone this reference voice (audio_prompt_path) instead of the built-in one;
+  --soften       the spoken text only (the bubble keeps its "!"): "!" → "." / "！" → "。", which takes the
+                 announcer push out of greetings and praise.
 CUDA when present (Jacek, RTX 3060: a few seconds per line, ~3 GB VRAM), else Apple Silicon (MPS, ~20–40 s).
 """
 import argparse
@@ -35,7 +42,18 @@ ap.add_argument("langs", nargs="?", default=",".join(sorted(CHATTERBOX_LANGS)))
 ap.add_argument("--seed", type=int, default=1000)
 ap.add_argument("--takes", type=int, default=1)
 ap.add_argument("--keys", default="")
+ap.add_argument("--exaggeration", type=float, default=EXAGGERATION)
+ap.add_argument("--cfg-weight", type=float, default=CFG_WEIGHT)
+ap.add_argument("--temperature", type=float, default=0.8)
+ap.add_argument("--ref", default="")
+ap.add_argument("--soften", action="store_true")
 a = ap.parse_args()
+
+
+def spoken(text: str) -> str:
+    if not a.soften:
+        return text
+    return text.replace("！", "。").replace("!", ".").replace("¡", "")
 
 spec = json.loads(Path(a.lines).read_text())
 out = Path(a.out)
@@ -56,7 +74,7 @@ jobs = [(l, k, i) for i in range(a.takes) for l in first for k in keys] + [(l, k
 for lang, key, take in jobs:
     if only and key not in only:
         continue
-    text = spec[lang][key]
+    text = spoken(spec[lang][key])
     dest = out / (f"{lang}-{key}.wav" if take == 0 else f"{lang}-{key}.t{take}.wav")
     if dest.exists():
         continue
@@ -64,7 +82,8 @@ for lang, key, take in jobs:
     t = time.time()
     model.conds = Conditionals.load(BUILTIN, map_location=dev).to(dev)
     try:
-        wav = model.generate(text, language_id=lang, exaggeration=EXAGGERATION, cfg_weight=CFG_WEIGHT)
+        wav = model.generate(text, language_id=lang, audio_prompt_path=a.ref or None, exaggeration=a.exaggeration,
+                             cfg_weight=a.cfg_weight, temperature=a.temperature)
     except torch.OutOfMemoryError:
         # a take that loops keeps generating (up to 1000 tokens) until the GPU share is used up: it would be
         # a bad take anyway — skip it, the other seeds remain

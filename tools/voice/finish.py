@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Turn trimmed lines into Edyta's app clips: sheep voice, tidy edges, equal loudness, AAC, mouth envelope.
 
-    FX_PY tools/voice/finish.py LINES.json IN_DIR [FALLBACK_DIR]
+    FX_PY tools/voice/finish.py LINES.json IN_DIR [FALLBACK_DIR] [--chain sheep] [--pace stretch] [--lufs X] [--piper-match]
           IN_DIR/<lang>-<line>.wav from trim_check.py; a line not trimmed yet is taken from FALLBACK_DIR
           (the raw takes) and only energy-trimmed, so a new language can be heard before Whisper ran.
 
@@ -22,6 +22,14 @@ For every clip:
   4. ffmpeg → assets/voice/edyta/<lang>/<line>.m4a (AAC-LC, mono, 44.1 kHz, 64 kbit/s); a clip newer
      than its source is kept as it is (only re-measured);
   5. a mouth envelope: one digit 0–9 per 80 ms (how open her mouth is), stored in the module;
+Voice options (defaults = the current Edyta; candidates of 2026-11-19, see voicefx.py):
+  --chain sheep|natural|soft-sheep|sheep-calm   step 1 (voicefx.CHAINS);
+  --pace stretch|pauses   step 0: WSOLA (default) or longer pauses between phrases (voicefx.lengthen_pauses)
+                          plus WSOLA only for what is still more than 15 % too fast (max 1.15×);
+  --lufs X                step 3 by integrated loudness (EBU R128, pyloudnorm) instead of speech RMS;
+  --piper-match           Piper languages (uk cs sk ro hu) get the Chatterbox languages' long-term spectrum
+                          (voicefx.match_eq) and median pitch (a WORLD shift, only when ≥ 1.25 semitones apart),
+                          measured on this run's dry takes, so the voice reads as one character.
 then writes src/audio/edyta-voice.ts and prints a table (duration, rate before → after, stretch, RMS,
 peak) with warnings — including the ending check (endpoint.tail_issues) on the decoded AAC.
 """
@@ -41,6 +49,7 @@ from sheepify import sheepify  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent))
 from endpoint import speaking_time, speech_bounds, syllables, tail_issues, tidy  # noqa: E402
+import voicefx  # noqa: E402
 
 LANGS = ["pl", "en", "de", "fr", "es", "it", "pt", "nl", "uk", "cs", "sk", "sv", "ro", "hu", "tr", "ja", "zh"]
 TARGET_RMS_DB = -20.0
@@ -67,10 +76,17 @@ def frames_rms(x: np.ndarray, sr: int, hop_s: float) -> np.ndarray:
     return np.sqrt(np.mean(pad.reshape(n, hop) ** 2, axis=1) + 1e-12)
 
 
-def slow_down(x: np.ndarray, sr: int, text: str, lang: str) -> tuple[np.ndarray, float, float]:
-    """WSOLA time-stretch of the dry voice to the language's target rate → (audio, rate before, factor)."""
+PIPER_LANGS = {"uk", "cs", "sk", "ro", "hu"}
+
+
+def opt(name: str, default=None):
+    return type(default)(sys.argv[sys.argv.index(name) + 1]) if name in sys.argv else default
+
+
+def slow_down(x: np.ndarray, sr: int, text: str, lang: str, slack: float = 1.0, max_stretch: float = MAX_STRETCH) -> tuple[np.ndarray, float, float]:
+    """WSOLA time-stretch of the dry voice to the language's target rate (× slack) → (audio, rate before, factor)."""
     rate = syllables(text, lang) / speaking_time(x, sr)
-    f = float(np.clip(rate / TARGET_RATE[lang], 1.0, MAX_STRETCH))
+    f = float(np.clip(rate / (TARGET_RATE[lang] * slack), 1.0, max_stretch))
     if f < 1.02:
         return x, rate, 1.0
     from audiotsm import wsola
@@ -83,11 +99,16 @@ def slow_down(x: np.ndarray, sr: int, text: str, lang: str) -> tuple[np.ndarray,
     return w.data[0].astype(np.float64), rate, f
 
 
-def loudness(x: np.ndarray, sr: int) -> np.ndarray:
-    r = frames_rms(x, sr, 0.02)
-    speech = r[20 * np.log10(r / r.max()) > -35]
-    rms = np.sqrt(np.mean(speech ** 2))
-    y = x * 10 ** ((TARGET_RMS_DB - db(rms)) / 20)
+def loudness(x: np.ndarray, sr: int, lufs: float | None = None) -> np.ndarray:
+    if lufs is not None:
+        import pyloudnorm as pyln
+
+        y = x * 10 ** ((lufs - pyln.Meter(sr).integrated_loudness(x)) / 20)
+    else:
+        r = frames_rms(x, sr, 0.02)
+        speech = r[20 * np.log10(r / r.max()) > -35]
+        rms = np.sqrt(np.mean(speech ** 2))
+        y = x * 10 ** ((TARGET_RMS_DB - db(rms)) / 20)
     thr = 10 ** (PEAK_DB / 20)
     if np.max(np.abs(y)) > thr:
         # gain = what each sample needs, spread over ±4 ms (min filter) and smoothed, so the limiter
@@ -121,9 +142,80 @@ def speech_rms_db(y: np.ndarray, sr: int) -> float:
     return db(np.sqrt(np.mean(speech ** 2)))
 
 
+def read_dry(f: Path) -> tuple[np.ndarray, int]:
+    x, sr = sf.read(f, always_2d=False)
+    if x.ndim > 1:
+        x = x.mean(axis=1)
+    a, b = speech_bounds(x, sr)  # a raw fallback take is cut here; a trimmed one is unchanged
+    return tidy(x, sr, a, b), sr
+
+
+def median_f0(x: np.ndarray, sr: int) -> float:
+    """Median F0 of a female voice, robust to octave errors and creak (frames folded back to the voice's centre)."""
+    import pyworld as pw  # sheepify (imported above) has installed its pkg_resources shim
+
+    f0, _ = pw.harvest(x.astype(np.float64), sr, f0_floor=110, f0_ceil=700, frame_period=10.0)
+    f0 = f0[f0 > 0]
+    if not len(f0):
+        return 0.0
+    ref = np.percentile(f0, 60)
+    for _ in range(3):
+        f0 = np.where(f0 > 1.6 * ref, f0 / 2, np.where(f0 < 0.62 * ref, f0 * 2, f0))
+        ref = np.median(f0)
+    return float(ref)
+
+
+def piper_match(files: dict[str, list[Path]]) -> dict[str, tuple[np.ndarray, float]]:
+    """--piper-match: per Piper language (spectral correction in dB on voicefx's band centres, semitones),
+    from the dry takes of this run: the Chatterbox languages' average long-term spectrum and median F0."""
+    def stats(fs):
+        sp, f0 = [], []
+        for f in fs:
+            x, sr = read_dry(f)
+            sp.append(voicefx.ltas(x, sr)[1])
+            f0.append(median_f0(x, sr))
+        return np.mean(sp, axis=0), float(np.median(f0))
+
+    ref = [f for lang, fs in files.items() if lang not in PIPER_LANGS for f in fs]
+    if not ref:
+        return {}
+    ref_sp, ref_f0 = stats(ref)
+    out = {}
+    for lang, fs in files.items():
+        if lang in PIPER_LANGS and fs:
+            sp, f0 = stats(fs)
+            st = 12 * np.log2(ref_f0 / f0)
+            out[lang] = (ref_sp - sp, round(st * 2) / 2 if abs(st) >= 1.25 else 0.0)  # smaller gaps are within Chatterbox's own take-to-take spread: no vocoder pass for them
+            c = 100 * 2 ** (np.arange(0, 21) / 3)
+            d = out[lang][0] - np.interp(1000, c, out[lang][0])
+            print(f"piper-match {lang}: pitch {f0:.0f} → {ref_f0:.0f} Hz ({out[lang][1]:+.1f} st), EQ (dB re 1 kHz) "
+                  + " ".join(f"{int(fc)}:{np.interp(fc, c, d):+.1f}" for fc in (200, 500, 2000, 4000, 8000)))
+    return out
+
+
+def process(x: np.ndarray, sr: int, text: str, lang: str, chain: str = "sheep", pace: str = "stretch",
+            lufs: float | None = None, match: tuple[np.ndarray, float] | None = None) -> tuple[np.ndarray, float, float]:
+    """One dry, tidied take → the finished clip (before AAC) → (audio, rate before, stretch)."""
+    if pace == "pauses":
+        x = voicefx.lengthen_pauses(x, sr)
+        x, r0, k = slow_down(x, sr, text, lang, slack=1.15, max_stretch=1.15)
+    else:
+        x, r0, k = slow_down(x, sr, text, lang)
+    shift = 0.0
+    if match is not None:
+        x = voicefx.match_eq(x, sr, match[0], np.zeros_like(match[0]), limit_db=6.0)
+        shift = match[1]
+    y = voicefx.apply(chain, x, sr, piper_shift=shift)
+    a, b = speech_bounds(y, sr)
+    return loudness(tidy(y, sr, a, b, pause=False), sr, lufs), r0, k
+
+
 def main() -> None:
     spec = json.loads(Path(sys.argv[1]).read_text())
-    srcs = [Path(p) for p in sys.argv[2:4]]
+    chain, pace, lufs = opt("--chain", "sheep"), opt("--pace", "stretch"), opt("--lufs", 0.0) if "--lufs" in sys.argv else None
+    assert chain in voicefx.CHAINS and pace in ("stretch", "pauses"), (chain, pace)
+    pos = [a for i, a in enumerate(sys.argv) if not a.startswith("--") and not sys.argv[i - 1] in ("--chain", "--pace", "--lufs")]
+    srcs = [Path(p) for p in pos[2:4]]
     keys = list(spec["pl"].keys())
     have = {lang: sum(1 for k in keys if any((d / f"{lang}-{k}.wav").exists() for d in srcs)) for lang in LANGS}
     if not all(have.values()):
@@ -134,6 +226,10 @@ def main() -> None:
     stale: list[Path] = []
     print(f"{'clip':16} {'dur s':>6} {'syl/s':>11} {'×':>5} {'rms dB':>7} {'peak dB':>8}")
     rates: dict[str, list[tuple[float, float]]] = {}
+    matches = {}
+    if "--piper-match" in sys.argv:
+        found = {lang: [d / f"{lang}-{k}.wav" for k in keys for d in srcs[:1] if (d / f"{lang}-{k}.wav").exists()] for lang in LANGS}
+        matches = piper_match(found)
     for lang in LANGS:
         for key in keys:
             f = next((d / f"{lang}-{key}.wav" for d in srcs if (d / f"{lang}-{key}.wav").exists()), srcs[0] / f"{lang}-{key}.wav")
@@ -146,14 +242,8 @@ def main() -> None:
             text = spec[lang][key]
             pace = ""
             if not dest.exists() or dest.stat().st_mtime < f.stat().st_mtime:
-                x, sr = sf.read(f, always_2d=False)
-                if x.ndim > 1:
-                    x = x.mean(axis=1)
-                a, b = speech_bounds(x, sr)  # a raw fallback take is cut here; a trimmed one is unchanged
-                x, r0, k = slow_down(tidy(x, sr, a, b), sr, text, lang)
-                y = sheepify(x, sr, bleat=False).astype(np.float64)
-                a, b = speech_bounds(y, sr)
-                y = loudness(tidy(y, sr, a, b, pause=False), sr)
+                x, sr = read_dry(f)
+                y, r0, k = process(x, sr, text, lang, chain, pace, lufs, matches.get(lang))
                 r1 = syllables(text, lang) / speaking_time(y, sr)
                 rates.setdefault(lang, []).append((r0, r1))
                 pace = f"{r0:4.1f}→{r1:4.1f} {k:5.2f}"
