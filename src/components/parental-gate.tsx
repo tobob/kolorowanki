@@ -11,10 +11,10 @@
  *   onPass={() => { setAsk(false); save(); }} onCancel={() => setAsk(false)} />`.
  * - `<ParentalGate onPass onFail />` — the same gate inline (used by the grown-ups screen).
  */
-import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { BackHandler, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { cancelAnimation, Easing, FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { AppText } from '@/components/app-text';
 import { BackIcon } from '@/components/icons';
@@ -101,42 +101,45 @@ export function ParentalGate({ onPass, onFail }: { onPass: () => void; onFail: (
 }
 
 /**
- * `onClosed` runs once the modal has fully closed (iOS: Modal onDismiss; Android: right away). Present anything
- * native from there (share sheet, mail…): iOS silently drops a share sheet opened while this modal is still
- * closing.
+ * Full-screen gate drawn as an overlay inside the screen (not a native Modal). Anything native opened right
+ * after `onPass` (the share sheet) therefore never collides with a modal view controller that is still closing:
+ * iOS silently drops a share sheet presented during such a dismissal. Render it last in the screen's root view.
+ * Android back = cancel.
  */
-export function ParentalGateModal({
-  visible,
-  onPass,
-  onCancel,
-  onClosed,
-}: {
-  visible: boolean;
-  onPass: () => void;
-  onCancel: () => void;
-  onClosed?: () => void;
-}) {
+export function ParentalGateModal({ visible, onPass, onCancel }: { visible: boolean; onPass: () => void; onCancel: () => void }) {
   const t = useT();
+  useEffect(() => {
+    if (!visible) return;
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      onCancel();
+      return true;
+    });
+    return () => sub.remove();
+  }, [visible, onCancel]);
+  if (!visible) return null;
   return (
-    <Modal
-      visible={visible}
-      animationType="fade"
-      onRequestClose={onCancel}
-      onDismiss={onClosed}
-      supportedOrientations={['portrait', 'landscape']}>
+    <Animated.View
+      style={styles.overlay}
+      entering={FadeIn.duration(250)}
+      exiting={FadeOut.duration(200)}
+      accessibilityViewIsModal
+      importantForAccessibility="yes">
       <SafeAreaView style={styles.modal}>
         <View style={styles.modalBar}>
           <SoftButton onPress={onCancel} size={52} accessibilityLabel={t('coloring.back')}>
             <BackIcon />
           </SoftButton>
         </View>
-        <View style={styles.modalBody}>{visible ? <ParentalGate onPass={onPass} onFail={onCancel} /> : null}</View>
+        <View style={styles.modalBody}>
+          <ParentalGate onPass={onPass} onFail={onCancel} />
+        </View>
       </SafeAreaView>
-    </Modal>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
+  overlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 100, elevation: 100 },
   modal: { flex: 1, backgroundColor: TONE.bgAlt },
   modalBar: { paddingHorizontal: 20, paddingTop: 8 },
   modalBody: { flex: 1, justifyContent: 'center', paddingBottom: 60 },

@@ -13,7 +13,7 @@ import { File, Paths } from 'expo-file-system';
 import { Asset, requestPermissionsAsync } from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import { useRef, useState } from 'react';
-import { PixelRatio, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { PixelRatio, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import Svg, { Rect } from 'react-native-svg';
 
@@ -99,18 +99,11 @@ export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
     } catch (e) {
       if (__DEV__) console.warn('save picture failed, falling back to share', e);
       setResult(null);
-      if (file) setGate(true); // share instead — a grown-up first (shared after the gate closes)
+      if (file) setGate(true); // share instead — a grown-up first 
     }
   };
 
   const askShare = () => setGate(true);
-  // The gate passed: open the share sheet only once the gate has fully closed (iOS would drop it otherwise).
-  const shareNext = useRef(false);
-  const afterGate = () => {
-    if (!shareNext.current) return;
-    shareNext.current = false;
-    share();
-  };
   const share = async () => {
     try {
       const file = fileRef.current ?? (await getFile());
@@ -134,13 +127,10 @@ export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
       <ParentalGateModal
         visible={gate}
         onPass={() => {
-          shareNext.current = true;
           setGate(false);
-          // Android has no Modal onDismiss: the share intent opens fine over a closing modal
-          if (Platform.OS !== 'ios') afterGate();
+          share(); // the gate is an in-screen overlay, so the share sheet can open right away
         }}
         onCancel={() => setGate(false)}
-        onClosed={afterGate}
       />
       {mounted && (
         <View pointerEvents="none" collapsable={false} onLayout={onSurfaceLayout} style={[styles.offscreen, { left: -pt - 100, width: pt }]}>
