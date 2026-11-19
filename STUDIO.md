@@ -47,3 +47,5 @@ Plik studia: czytaj go zanim zaczniesz pracę nad aplikacją, a po każdej istot
 - 2026-11-19 15:49 — wersja 1.0.4 → 1.0.5 (każdy upload do sklepu = nowa wersja): Edyta the sheep has a new, warmer and calmer voice. While colouring, a few different gentle tunes play, and the music no longer starts over on each new picture. Save now puts the picture straight into Photos; sharing is still for grown-ups. Sharing now opens right away after the grown-up check.
 - 2026-11-19 15:50 — build ios (production) wysłany na EAS
 - 2026-11-19 16:14 — wersja 1.0.5 → 1.0.6 (każdy upload do sklepu = nowa wersja): Edyta the sheep has a new, warmer and calmer voice. While colouring, a few different gentle tunes play, and the music no longer starts over on each new picture. Save now puts the picture straight into Photos; sharing is still for grown-ups. Sharing now opens right away after the grown-up check.
+- 2026-11-19 16:15 — build ios (production) wysłany na EAS
+- 2026-11-19 17:05 — 1.0.6 (8) w ASC: wersja 1.0.6, build 8 dołączony (iris), opisy/słowa kluczowe/promo w 21 językach wgrane (bez obietnicy „bez zakupów”); czeka na „Add for Review” (Bob).
