@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Changed
+- Edyta speaks clearer French in the tutorial
+
 ## [1.0.5] - 2026-11-19
 
 ### Changed
