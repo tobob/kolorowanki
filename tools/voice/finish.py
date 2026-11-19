@@ -23,7 +23,7 @@ For every clip:
      than its source is kept as it is (only re-measured);
   5. a mouth envelope: one digit 0–9 per 80 ms (how open her mouth is), stored in the module;
 Voice options (defaults = the current Edyta; candidates of 2026-11-19, see voicefx.py):
-  --chain sheep|natural|soft-sheep|sheep-calm   step 1 (voicefx.CHAINS);
+  --chain sheep|natural|soft-sheep|sheep-calm|soft|softer   step 1 (voicefx.CHAINS);
   --pace stretch|pauses   step 0: WSOLA (default) or longer pauses between phrases (voicefx.lengthen_pauses)
                           plus WSOLA only for what is still more than 15 % too fast (max 1.15×);
   --lufs X                step 3 by integrated loudness (EBU R128, pyloudnorm) instead of speech RMS;

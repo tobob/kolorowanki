@@ -23,10 +23,12 @@
 #
 # Voice candidates (2026-11-19, Bob picks one; empty = the current Edyta, nothing changes):
 #   CB_ARGS      extra render_chatterbox.py options, e.g. "--exaggeration 0.4 --cfg-weight 0.4 --temperature 0.7 --soften"
-#                (+ "--ref voice.wav" for another speaker)
+#                (+ "--ref tools/voice/ref/heart.wav" for the synthetic reference voices of make_ref.py,
+#                "--sentences 0.45" for sentence-by-sentence synthesis with pauses)
 #   PIPER_ARGS   extra fetch_piper.py --local options, e.g. "--noise-scale 0.5 --noise-w 0.6 --soften"
 #   VC_TARGET    a wav: vc_piper.py converts the Piper takes onto that voice before trim_check
 #   FINISH_ARGS  extra finish.py options, e.g. "--chain natural --pace pauses --lufs -20.5 --piper-match"
+#                (--chain soft / softer: the quieter "bedtime" finish of round 2)
 # Exact settings of each candidate: the README next to the sample page (edyta-voice-samples.html).
 set -euo pipefail
 cd "$(dirname "$0")/../.."

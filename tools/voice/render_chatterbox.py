@@ -5,7 +5,7 @@ exaggeration ~0.8; here 0.75 for a calmer teacher tone; cfg_weight 0.3 = slower,
 for 2–4-year-olds — finish.py slows any take that is still too fast).
 
     CHATTERBOX_PY tools/voice/render_chatterbox.py LINES.json OUT_DIR [lang,lang…] [--seed N] [--takes N] [--keys a,b]
-        [--exaggeration 0.75] [--cfg-weight 0.3] [--temperature 0.8] [--ref VOICE.wav] [--soften]
+        [--exaggeration 0.75] [--cfg-weight 0.3] [--temperature 0.8] [--ref VOICE.wav] [--soften] [--sentences 0.45]
 
 Writes OUT_DIR/<lang>-<line>.wav and, with --takes N > 1, extra takes <lang>-<line>.t1.wav … (other seeds);
 trim_check.py keeps the best take. Existing files are kept (delete one to re-render it). --keys: only these
@@ -17,7 +17,10 @@ Voice options (defaults = the current Edyta; the calmer candidates of 2026-11-19
                  intonation; lower cfg_weight = slower; lower temperature = steadier takes);
   --ref WAV      clone this reference voice (audio_prompt_path) instead of the built-in one;
   --soften       the spoken text only (the bubble keeps its "!"): "!" → "." / "！" → "。", which takes the
-                 announcer push out of greetings and praise.
+                 announcer push out of greetings and praise;
+  --sentences S  speak each sentence on its own and join them with S seconds of silence (each sentence cut
+                 at its energy-based speech edges): a calmer, story-like pace with real pauses instead of a
+                 time-stretch, and short inputs — the cloned voices run out of GPU memory on long lines.
 CUDA when present (Jacek, RTX 3060: a few seconds per line, ~3 GB VRAM), else Apple Silicon (MPS, ~20–40 s).
 """
 import argparse
@@ -47,6 +50,7 @@ ap.add_argument("--cfg-weight", type=float, default=CFG_WEIGHT)
 ap.add_argument("--temperature", type=float, default=0.8)
 ap.add_argument("--ref", default="")
 ap.add_argument("--soften", action="store_true")
+ap.add_argument("--sentences", type=float, default=0.0)
 a = ap.parse_args()
 
 
@@ -54,6 +58,49 @@ def spoken(text: str) -> str:
     if not a.soften:
         return text
     return text.replace("！", "。").replace("!", ".").replace("¡", "")
+
+
+def sentences(text: str) -> list[str]:
+    import re
+
+    out: list[str] = []
+    for p in (p.strip() for p in re.findall(r"[^.!?。！？]+[.!?。！？]*", text)):
+        if not p.strip(" .!?。！？"):
+            continue
+        if out and (len(out[-1].split()) <= 2 and len(out[-1]) <= 12):
+            # a lone "Hello." / "Brawo." is too short to speak on its own: "Hello, I'm Edyta …"
+            prev = out.pop().rstrip(".!?。！？")
+            sep = "、" if re.search(r"[\u3040-\u30ff\u4e00-\u9fff]", prev) else ", "
+            out.append(prev + sep + (p[0].lower() + p[1:] if sep == ", " and p[1:2].islower() else p))
+        else:
+            out.append(p)
+    return out
+
+
+def say(text: str, lang: str):
+    """One take: the whole line, or (--sentences) sentence by sentence joined with pauses."""
+    kw = dict(language_id=lang, exaggeration=a.exaggeration,
+              cfg_weight=a.cfg_weight, temperature=a.temperature)
+    if not a.sentences:
+        return model.generate(text, **kw)
+    import sys as _sys
+
+    _sys.path.insert(0, str(Path(__file__).parent))
+    from endpoint import speech_bounds
+
+    parts = []
+    for i, s in enumerate(sentences(text)):
+        w = model.generate(s, **kw)[0].cpu()
+        if dev == "cuda":
+            torch.cuda.empty_cache()
+        b0, b1 = speech_bounds(w.numpy().astype("float64"), model.sr)
+        w = w[max(0, int((b0 - 0.03) * model.sr)): int((b1 + 0.08) * model.sr)].clone()
+        f = int(0.03 * model.sr)
+        w[-f:] *= torch.linspace(1, 0, f)
+        if parts:
+            parts.append(torch.zeros(int(a.sentences * model.sr)))
+        parts.append(w)
+    return torch.cat(parts).unsqueeze(0)
 
 spec = json.loads(Path(a.lines).read_text())
 out = Path(a.out)
@@ -63,6 +110,11 @@ model = ChatterboxMultilingualTTS.from_pretrained(device=dev)
 # Keep a pristine copy of the built-in voice and restore it for every line (see render_lines.py:
 # generate() reuses model.conds, which a previous reference would have overwritten).
 BUILTIN = os.path.join(tempfile.mkdtemp(), "builtin_conds.pt")
+if a.ref:
+    # the reference voice is analysed once (not on every generate(): that is slow and, next to the training
+    # jobs, fragments the GPU share until long lines run out of memory) and restored for every line like
+    # the built-in voice
+    model.prepare_conditionals(a.ref, exaggeration=a.exaggeration)
 model.conds.save(BUILTIN)
 langs = a.langs.split(",")
 assert all(l in CHATTERBOX_LANGS for l in langs), langs
@@ -82,8 +134,7 @@ for lang, key, take in jobs:
     t = time.time()
     model.conds = Conditionals.load(BUILTIN, map_location=dev).to(dev)
     try:
-        wav = model.generate(text, language_id=lang, audio_prompt_path=a.ref or None, exaggeration=a.exaggeration,
-                             cfg_weight=a.cfg_weight, temperature=a.temperature)
+        wav = say(text, lang)
     except torch.OutOfMemoryError:
         # a take that loops keeps generating (up to 1000 tokens) until the GPU share is used up: it would be
         # a bad take anyway — skip it, the other seeds remain

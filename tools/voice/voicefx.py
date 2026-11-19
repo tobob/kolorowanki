@@ -8,6 +8,10 @@
     soft-sheep   natural, but first a very light WORLD lift (+1 semitone, vocal tract 2 % smaller, NO quaver)
     sheep-calm   the current sheep without the wobble (quaver 0) and with the warm EQ/compression/room
                  (keeps the current source and pace: the conservative fix)
+    soft         round 2 (bedtime voice): natural, with a soft, close finish instead of the warm one: broad
+                 −3.5 dB presence dip (2–5 kHz), gentle low-pass at 7 kHz, stronger de-essing, 2.5:1
+                 compression, almost no room
+    softer       soft, more so: −5.5 dB presence dip, low-pass at 6 kHz, 3:1, no room
 
 All chains share the same building blocks, so every language goes through exactly the same steps; Piper
 languages (uk cs sk ro hu) can additionally be matched to the Chatterbox ones with match_eq() (long-term
@@ -19,7 +23,7 @@ from __future__ import annotations
 import numpy as np
 from scipy import signal
 
-CHAINS = ("sheep", "natural", "soft-sheep", "sheep-calm")
+CHAINS = ("sheep", "natural", "soft-sheep", "sheep-calm", "soft", "softer")
 
 
 # ---------------------------------------------------------------- filters (RBJ biquads)
@@ -52,6 +56,14 @@ def _biquad(kind: str, f: float, sr: int, gain_db: float = 0.0, q: float = 0.707
 
 # warm EQ: rumble out, a little low-mid body, the nasal/boxy 1 kHz and the harsh 3–4 kHz eased, air softened
 WARM_EQ = [("highpass", 85, 0.0, 0.707), ("peak", 260, 2.0, 0.8), ("peak", 3300, -2.5, 1.2), ("highshelf", 7500, -3.0, 0.707)]
+
+
+# soft / close: a little body, the 2–5 kHz presence (where "projected" and "bright" live) dipped broadly,
+# the top rolled off gently; consonants stay (the dip is wide but shallow, the low-pass 12 dB/oct)
+SOFT_EQ = [("highpass", 80, 0.0, 0.707), ("lowshelf", 220, 1.5, 0.707), ("peak", 3000, -3.5, 0.6),
+           ("highshelf", 5000, -2.0, 0.707), ("lowpass", 7000, 0.0, 0.6)]
+SOFTER_EQ = [("highpass", 80, 0.0, 0.707), ("lowshelf", 220, 2.0, 0.707), ("peak", 3000, -5.5, 0.6),
+             ("highshelf", 5000, -2.5, 0.707), ("lowpass", 6000, 0.0, 0.55)]
 
 
 def eq(x: np.ndarray, sr: int, bands=WARM_EQ) -> np.ndarray:
@@ -198,6 +210,14 @@ def polish(y: np.ndarray, sr: int) -> np.ndarray:
     return room(y, sr)
 
 
+def soft_polish(y: np.ndarray, sr: int, more: bool = False) -> np.ndarray:
+    """The round-2 'bedtime' finish (see SOFT_EQ): EQ → de-ess → even compression → (a whisper of) room."""
+    y = eq(y, sr, SOFTER_EQ if more else SOFT_EQ)
+    y = deess(y, sr, f=5000, max_cut_db=8.0, thr_db=-14.0)
+    y = compress(y, sr, ratio=3.0 if more else 2.5, thr_rel_db=-12.0, attack_ms=15, release_ms=200)
+    return y if more else room(y, sr, rt60=0.2, wet_db=-28.0)
+
+
 def apply(chain: str, x: np.ndarray, sr: int, *, piper_shift: float = 0.0) -> np.ndarray:
     """x: the dry, trimmed (and, for the sheep chains, already paced) take. piper_shift: semitones for a
     Piper language (pitch match), applied in the same WORLD pass as the soft sheep or on its own."""
@@ -209,6 +229,9 @@ def apply(chain: str, x: np.ndarray, sr: int, *, piper_shift: float = 0.0) -> np
         return polish(world_shift(x, sr, 3.0 + piper_shift, warp=1.04), sr)
     if chain == "soft-sheep":
         return polish(world_shift(x, sr, 1.0 + piper_shift, warp=1.02), sr)
+    if chain in ("soft", "softer"):
+        y = world_shift(x, sr, piper_shift) if abs(piper_shift) >= 0.25 else x
+        return soft_polish(y, sr, more=chain == "softer")
     if chain == "natural":
         y = world_shift(x, sr, piper_shift) if abs(piper_shift) >= 0.25 else x
         return polish(y, sr)
