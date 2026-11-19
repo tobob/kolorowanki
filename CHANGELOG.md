@@ -12,6 +12,7 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 ### Changed
 - Calmer, slower music (soft piano and flute)
 - New app icon and softer splash screen
+- Edyta speaks more slowly, and in the tutorial the back and undo buttons sit exactly where they are on every page
 
 ### Fixed
 - Edyta's voice: cleaner endings, no bleat in the last line
