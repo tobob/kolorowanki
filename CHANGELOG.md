@@ -6,6 +6,11 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-11-19
+
+### Changed
+- Maintenance release, no user-facing changes.
+
 ## [1.0.4] - 2026-11-19
 
 ### Fixed
