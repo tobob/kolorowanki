@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Added
+- Grown-ups area: rate Kolorowanki on the App Store and send us feedback (opens a form on pastelki.club in the browser); after a few visits a gentle one-time question asks grown-ups whether they like the app.
+
 ## [1.0.6] - 2026-11-19
 
 ### Changed
