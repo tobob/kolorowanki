@@ -8,7 +8,7 @@
 #   2. render_chatterbox   pl en de fr es it pt nl sv tr ja zh: Chatterbox Multilingual (MIT) cloning the reference
 #                          voice (CB_ARGS below), TAKES takes per line (other seeds)
 #   3. fetch_piper         uk cs sk ro hu: Pastelki Piper voices (CC0), speed 0.75; PIPER_VOICES=dir → run the same
-#                          models locally (TAKES takes) instead of https://pastelki.marchew.work/api/tts
+#                          models locally (TAKES takes) instead of https://pastelki.club/api/tts
 #                          (3b. vc_piper: only cs is converted onto Edyta's voice, see VC_LANGS below)
 #   4. trim_check          Whisper: best take per line, cut at the energy-based speech end (endpoint.py: +80 ms, 50 ms
 #                          fade to 0, digital silence — no breath, mumble or garbage after the last word)

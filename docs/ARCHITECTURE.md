@@ -1,8 +1,8 @@
 # Kolorowanki — architecture
 
 Gentle colouring pages for children 2–6, drawn from the Pastelki picture library
-(https://pastelki.marchew.work, MIT). Offline, no accounts, no ads, no data leaves the device.
-Must pass the Pastelki manifest (https://pastelki.marchew.work/en/about#manifest).
+(https://pastelki.club, MIT). Offline, no accounts, no ads, no data leaves the device.
+Must pass the Pastelki manifest (https://pastelki.club/en/about#manifest).
 
 ## How colouring works
 Open a page → pinch to zoom, drag to move → **press and hold** a spot → a ring of the page's 7 colours

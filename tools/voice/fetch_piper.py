@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Speak Edyta's lines for the languages Chatterbox does not know (uk cs sk ro hu) with the Pastelki
-Piper voices (CC0; https://pastelki.marchew.work/api/tts — 60 lines per hour per visitor, so we wait
+Piper voices (CC0; https://pastelki.club/api/tts — 60 lines per hour per visitor, so we wait
 between requests and back off on 429/503). A female voice is used where Pastelki has one.
 
     python3 tools/voice/fetch_piper.py LINES.json OUT_DIR
@@ -26,7 +26,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-API = "https://pastelki.marchew.work/api/tts"
+API = "https://pastelki.club/api/tts"
 VOICES = {"uk": "uk-tetiana", "cs": "cs-jirka", "sk": "sk-lili", "ro": "ro-mihai", "hu": "hu-anna"}
 # slow and clear for 2–4-year-olds (was 0.9 everywhere, which children found too fast): length_scale 1.33; the
 # Czech voice is the slowest of all already (3.6 syllables/s at 0.9), so it is slowed less — at 0.75 the intro

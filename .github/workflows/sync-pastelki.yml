@@ -1,4 +1,4 @@
-# Pulls newer approved pictures from Pastelki (https://pastelki.marchew.work) and rebuilds the colouring pages.
+# Pulls newer approved pictures from Pastelki (https://pastelki.club) and rebuilds the colouring pages.
 # Runs hourly, on demand, and when Pastelki (or `studio sync-art --dispatch`) sends a `pastelki-updated` event.
 # Commits to master only when something changed and every check passes; children get it with the next build.
 name: Sync pictures from Pastelki

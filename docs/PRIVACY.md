@@ -15,7 +15,7 @@ Short version: **Kolorowanki does not collect, send or share any personal data. 
 
 **Children.** Kolorowanki is designed for children aged 2–6. Because it collects no personal information, it doesn't need, and doesn't ask for, a child's or parent's personal details. The settings, this policy and all information for adults are behind a parental gate. We follow the requirements of the Children's Online Privacy Protection Act (COPPA), the GDPR (including Article 8) and the UK Age Appropriate Design Code.
 
-**Third parties.** We don't share data with anyone, because we don't have any. The app is downloaded through the App Store or Google Play; Apple and Google handle download information under their own privacy policies. The pictures come from the Pastelki library (https://pastelki.marchew.work) and are built into the app, so nothing is downloaded from there while your child plays.
+**Third parties.** We don't share data with anyone, because we don't have any. The app is downloaded through the App Store or Google Play; Apple and Google handle download information under their own privacy policies. The pictures come from the Pastelki library (https://pastelki.club) and are built into the app, so nothing is downloaded from there while your child plays.
 
 **Your rights and deletion.** As we hold no data about you, there is nothing to access, correct or delete on our side. To remove the colourings stored on your device, use "Start all pages again" or delete the app.
 

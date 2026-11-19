@@ -9,7 +9,7 @@
   <a href="https://tobob.github.io/kolorowanki-site/">Website</a> ·
   <a href="https://tobob.github.io/kolorowanki-site/privacy/">Privacy</a> ·
   <a href="https://tobob.github.io/kolorowanki-site/terms/">Terms</a> ·
-  <a href="https://pastelki.marchew.work">Pictures from Pastelki</a>
+  <a href="https://pastelki.club">Pictures from Pastelki</a>
 </p>
 
 <!-- Screenshots: add docs/images/screen-*.png (home, a level, colouring, finished page) -->
@@ -20,7 +20,7 @@
 A calm colouring book. A short, animated "how to play" opens on the first launch (and from the "?" button). The child opens a picture, holds a finger on it, and a ring of seven soft colours appears around the finger. Tapping a colour fills the part under the finger. A quick tap afterwards reuses the last colour. Pinch to zoom, drag to move, undo, and everything saves by itself.
 
 - **Four kinds of pages,** from easy to busy: one big picture, a few friends together, a little scene with a background, and a full collage. The home screen shows a small 1–4 dot cue for each.
-- **Calm by design** (the [Pastelki manifest](https://pastelki.marchew.work/en/about#manifest)):
+- **Calm by design** (the [Pastelki manifest](https://pastelki.club/en/about#manifest)):
   - Pastel colours, slow eased motion, nothing flashing and no loud sounds.
   - No timers, no streaks, no scores and no rewards for playing longer.
   - Nothing can be coloured "wrong".
@@ -30,7 +30,7 @@ A calm colouring book. A short, animated "how to play" opens on the first launch
   - Settings, the about page, the privacy policy and sharing a picture sit behind a parental gate: hold for 3 seconds, then answer a multiplication written in words.
   - "Save picture" adds a finished picture to Photos with one tap, no gate, so a child can keep their own picture. The app only ever adds pictures to Photos; it never reads the photo library.
 - **17 languages:** Polish, English, German, French, Spanish, Italian, Portuguese, Dutch, Ukrainian, Czech, Slovak, Swedish, Romanian, Hungarian, Turkish, Japanese and Chinese. It follows the device language; grown-ups can override it in the app.
-- **Pictures from [Pastelki](https://pastelki.marchew.work),** a free (MIT) library of gentle SVG illustrations for small children, turned into colouring pages by a script.
+- **Pictures from [Pastelki](https://pastelki.club),** a free (MIT) library of gentle SVG illustrations for small children, turned into colouring pages by a script.
 
 ## Tech stack
 
@@ -38,7 +38,7 @@ A calm colouring book. A short, animated "how to play" opens on the first launch
 - [Expo Router](https://docs.expo.dev/router/introduction/) for the screens.
 - [`react-native-svg`](https://github.com/software-mansion/react-native-svg) to draw the pages.
 - [`react-native-gesture-handler`](https://docs.swmansion.com/react-native-gesture-handler/) and [`react-native-reanimated`](https://docs.swmansion.com/react-native-reanimated/) for zoom, pan and the colour ring.
-- [`expo-audio`](https://docs.expo.dev/versions/latest/sdk/audio/) for the soft theme and the music-box tune (made with [Pastelki Music](https://pastelki.marchew.work/studio/music)); it respects the silent switch and never plays in the background.
+- [`expo-audio`](https://docs.expo.dev/versions/latest/sdk/audio/) for the soft theme and the music-box tune (made with [Pastelki Music](https://pastelki.club/studio/music)); it respects the silent switch and never plays in the background.
 - [`expo-sqlite/kv-store`](https://docs.expo.dev/versions/latest/sdk/sqlite/) for saved colourings and settings.
 - [`expo-localization`](https://docs.expo.dev/versions/latest/sdk/localization/) to pick the device language.
 - [EAS Build and Submit](https://docs.expo.dev/eas/) for store releases.
@@ -124,7 +124,7 @@ npm run site -- ../kolorowanki-site
 
 ## Contributing
 
-Bug reports and ideas are welcome as [issues](https://github.com/tobob/kolorowanki/issues). Before you send a change, run `npm run check`, try it in the simulator, and keep the [Pastelki manifest](https://pastelki.marchew.work/en/about#manifest) in mind: gentle, private, no tricks.
+Bug reports and ideas are welcome as [issues](https://github.com/tobob/kolorowanki/issues). Before you send a change, run `npm run check`, try it in the simulator, and keep the [Pastelki manifest](https://pastelki.club/en/about#manifest) in mind: gentle, private, no tricks.
 
 ## Third-party notices
 
@@ -142,10 +142,10 @@ person. It was made offline with `tools/voice/build.sh`; the app only ships the 
 | a slower, child-friendly pace (WSOLA time-stretch) | [audiotsm](https://github.com/Muges/audiotsm) by Muges | MIT |
 | "sheep" voice effect (`sheepify.py` from Pastelki) | [pyworld](https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder) with the [WORLD](https://github.com/mmorise/World) vocoder by Masanori Morise | MIT; WORLD: modified BSD |
 
-Edyta herself, the pictures and the music come from [Pastelki](https://pastelki.marchew.work) (MIT); see its
-[licence and credits](https://pastelki.marchew.work/en/license). The app's own open-source dependencies
+Edyta herself, the pictures and the music come from [Pastelki](https://pastelki.club) (MIT); see its
+[licence and credits](https://pastelki.club/en/license). The app's own open-source dependencies
 (Expo, React Native and friends) are listed in `package.json` with their licences in `node_modules/*/LICENSE`.
 
 ## License
 
-[MIT](LICENSE). The pictures come from [Pastelki](https://pastelki.marchew.work), also MIT.
+[MIT](LICENSE). The pictures come from [Pastelki](https://pastelki.club), also MIT.
