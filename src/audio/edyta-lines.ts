@@ -10,17 +10,20 @@ export const EDYTA_LINES = [
   'holdPick',
   'bg',
   'undo',
+  'zoom',
   'done',
   'trayOk',
   'tapOk',
   'holdOk',
   'bgOk',
   'undoOk',
+  'zoomOk',
   'trayHint',
   'tapHint',
   'holdHint',
   'bgHint',
   'undoHint',
+  'zoomHint',
 ] as const;
 
 export type EdytaLine = (typeof EDYTA_LINES)[number];

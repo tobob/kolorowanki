@@ -13,6 +13,7 @@
  *     bitmap stays screen-sized (rendering the whole page at 5× would be ~180 MB on a 3× phone).
  *     It hides instantly when a new gesture begins.
  *
+ * The picture with its gestures is src/coloring/ZoomCanvas.tsx (shared with the tutorial).
  * Gestures (react-native-gesture-handler v3 hooks, worklets on the UI thread):
  *   Competing( Simultaneous(pinch, pan), longPress, Exclusive(doubleTap, tap) )
  * The first one to activate cancels the rest, so moving a finger (pan ≥ 10 pt) or pinching can never fill,
@@ -25,21 +26,9 @@ import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
-import {
-  GestureDetector,
-  useCompetingGestures,
-  useExclusiveGestures,
-  useLongPressGesture,
-  usePanGesture,
-  usePinchGesture,
-  useSimultaneousGestures,
-  useTapGesture,
-} from 'react-native-gesture-handler';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, makeMutable, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { ClipPath, Defs, G, Rect } from 'react-native-svg';
-import { scheduleOnRN } from 'react-native-worklets';
 
 import { MusicToggle } from '@/components/music-toggle';
 import { useT } from '@/i18n';
@@ -47,15 +36,16 @@ import { goBack } from '@/shell/nav';
 
 import { samplePage } from './__fixtures__/sample-page';
 import { regionAt, warmHitMap } from './hit';
-import { PageShapes, type Fade, type Highlight } from './PageShapes';
+import { type Fade, type Highlight } from './PageShapes';
 import { getPage, pagesOfLevel } from './pages';
 import { PaletteRing } from './PaletteRing';
 import { isHintDone, loadFills, loadLastColor, markHintDone, saveFills, saveLastColor } from './store';
-import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from './types';
+import { PAPER, type Fills, type Page } from './types';
 import { BackButton, Toolbar, toolbarSizes, UndoButton } from './Toolbar';
 import { FONT, HandIcon, MOTION, NextIcon, RoundButton, SaveIcon, SHADOW, TONE } from './ui';
 import { PaletteTray } from './PaletteTray';
 import { DoneCard } from './DoneCard';
+import { ZoomCanvas } from './ZoomCanvas';
 import { useSavePicture } from './SavePicture';
 
 /** Wall-clock ms (event handlers only). */
@@ -63,8 +53,6 @@ function nowMs() {
   return Date.now();
 }
 
-const MAX_ZOOM = 5;
-const MARGIN = 14;
 const RADIUS = 22;
 const HISTORY_MAX = 200;
 
@@ -105,23 +93,7 @@ function Missing() {
   return <Toolbar sizes={bar} inset={insets} left={<BackButton size={bar.big} onPress={goBack} />} />;
 }
 
-/** Clamp a translation so the page never leaves the area (centred while smaller than the area). */
-function clampT(t: number, s: number, size: number, area: number, origin: number) {
-  'worklet';
-  const scaled = size * s;
-  if (scaled <= area) return (area - scaled) / 2 - origin;
-  return Math.min(-origin, Math.max(area - scaled - origin, t));
-}
-
-type Geo = { aw: number; ah: number; pw: number; ph: number; ox: number; oy: number };
-type View3 = { s: number; tx: number; ty: number };
 type Ring = { r: number; x: number; y: number };
-
-function fitGeo(aw: number, ah: number): Geo {
-  const pw = Math.max(1, Math.min(aw - 2 * MARGIN, ((ah - 2 * MARGIN) * PAGE_W) / PAGE_H));
-  const ph = (pw * PAGE_H) / PAGE_W;
-  return { aw, ah, pw, ph, ox: (aw - pw) / 2, oy: (ah - ph) / 2 };
-}
 
 function Coloring({ page }: { page: Page }) {
   const t = useT();
@@ -137,8 +109,6 @@ function Coloring({ page }: { page: Page }) {
   const [fade, setFade] = useState<Fade | null>(null);
   const [highlight, setHighlight] = useState<Highlight | null>(null);
   const [ring, setRing] = useState<Ring | null>(null);
-  const [crisp, setCrisp] = useState<View3 | null>(null);
-  const [area, setArea] = useState<{ geo: Geo } | null>(null);
   // Height of the toolbar = top of the drawing area in screen coordinates (the area's own onLayout is
   // relative to the GestureDetector's wrapper, so it can't be used for that).
   const [areaTop, setAreaTop] = useState(0);
@@ -154,55 +124,6 @@ function Coloring({ page }: { page: Page }) {
   };
 
   useEffect(() => warmHitMap(page), [page]);
-
-  // ----- transform (UI thread) -----
-  const s = useSharedValue(1);
-  const tx = useSharedValue(0);
-  const ty = useSharedValue(0);
-  const geo = useSharedValue<Geo>(fitGeo(1, 1));
-  const pinchOn = useSharedValue(0);
-  const panOn = useSharedValue(0);
-  const crispOpacity = useSharedValue(0);
-
-  const onAreaLayout = (e: LayoutChangeEvent) => {
-    const { width, height } = e.nativeEvent.layout;
-    const g = fitGeo(width, height);
-    geo.set(g);
-    s.set(1);
-    tx.set(0);
-    ty.set(0);
-    crispOpacity.set(0);
-    setCrisp(null);
-    setArea({ geo: g });
-  };
-
-  /** JS: the transform settled — draw the crisp layer for it (or drop it at 1×). */
-  const commitView = (cs: number, ctx: number, cty: number) => {
-    setCrisp(cs > 1.01 ? { s: cs, tx: ctx, ty: cty } : null);
-  };
-
-  useEffect(() => {
-    if (!crisp) return;
-    // Reveal only if nothing moved since the commit (a new gesture would have hidden it).
-    const same = !pinchOn.get() && !panOn.get() && Math.abs(s.get() - crisp.s) < 1e-4 && Math.abs(tx.get() - crisp.tx) < 0.01 && Math.abs(ty.get() - crisp.ty) < 0.01;
-    if (same) crispOpacity.set(withTiming(1, { duration: 160, easing: MOTION.easing }));
-  }, [crisp, crispOpacity, pinchOn, panOn, s, tx, ty]);
-
-  const beginTransform = () => {
-    'worklet';
-    crispOpacity.set(0);
-  };
-  const endTransform = () => {
-    'worklet';
-    if (pinchOn.get() || panOn.get()) return;
-    scheduleOnRN(commitView, s.get(), tx.get(), ty.get());
-  };
-  const toPage = (x: number, y: number) => {
-    'worklet';
-    const g = geo.get();
-    const k = (s.get() * g.pw) / PAGE_W; // screen points per page unit
-    return { px: (x - g.ox - tx.get()) / k, py: (y - g.oy - ty.get()) / k };
-  };
 
   // ----- JS handlers -----
   const fill = (r: number, color: string) => {
@@ -237,7 +158,7 @@ function Coloring({ page }: { page: Page }) {
   };
 
   const onHold = (px: number, py: number, x: number, y: number) => {
-    if (suppressed() || !area) return;
+    if (suppressed()) return;
     const r = regionAt(page, px, py);
     if (r === null) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
@@ -286,104 +207,8 @@ function Coloring({ page }: { page: Page }) {
     Haptics.selectionAsync().catch(() => {});
   };
 
-  // ----- gestures -----
-  const zoomed = crisp !== null;
   // While the ring is open only the ring reacts (its veil closes it).
   const pageActive = ring === null;
-
-  const pinch = usePinchGesture({
-    enabled: pageActive,
-    onActivate: () => {
-      pinchOn.set(1);
-      beginTransform();
-    },
-    onUpdate: (e) => {
-      const g = geo.get();
-      const cur = s.get();
-      const ns = Math.min(MAX_ZOOM, Math.max(1, cur * e.scaleChange));
-      const k = ns / cur;
-      const fx = e.focalX - g.ox;
-      const fy = e.focalY - g.oy;
-      s.set(ns);
-      tx.set(clampT(fx - (fx - tx.get()) * k, ns, g.pw, g.aw, g.ox));
-      ty.set(clampT(fy - (fy - ty.get()) * k, ns, g.ph, g.ah, g.oy));
-    },
-    onFinalize: () => {
-      if (!pinchOn.get()) return;
-      pinchOn.set(0);
-      endTransform();
-    },
-  });
-
-  const pan = usePanGesture({
-    enabled: pageActive,
-    minDistance: 10,
-    maxPointers: 2,
-    onActivate: () => {
-      panOn.set(1);
-      beginTransform();
-    },
-    onUpdate: (e) => {
-      const g = geo.get();
-      const cs = s.get();
-      tx.set(clampT(tx.get() + e.changeX, cs, g.pw, g.aw, g.ox));
-      ty.set(clampT(ty.get() + e.changeY, cs, g.ph, g.ah, g.oy));
-    },
-    onFinalize: () => {
-      if (!panOn.get()) return;
-      panOn.set(0);
-      endTransform();
-    },
-  });
-
-  const doubleTap = useTapGesture({
-    numberOfTaps: 2,
-    enabled: zoomed && pageActive,
-    maxDelay: 260,
-    maxDistance: 24,
-    onActivate: () => {
-      crispOpacity.set(0);
-      const cfg = { duration: 420, easing: MOTION.easing, reduceMotion: MOTION.reduce };
-      s.set(withTiming(1, cfg));
-      tx.set(withTiming(0, cfg));
-      ty.set(
-        withTiming(0, cfg, (finished) => {
-          if (finished) scheduleOnRN(commitView, 1, 0, 0);
-        }),
-      );
-    },
-  });
-
-  const tap = useTapGesture({
-    enabled: pageActive,
-    maxDuration: 320,
-    maxDistance: 12,
-    onActivate: (e) => {
-      const { px, py } = toPage(e.x, e.y);
-      scheduleOnRN(onTap, px, py);
-    },
-  });
-
-  const hold = useLongPressGesture({
-    enabled: pageActive,
-    minDuration: 380,
-    maxDistance: 10,
-    onActivate: (e) => {
-      const { px, py } = toPage(e.x, e.y);
-      scheduleOnRN(onHold, px, py, e.x, e.y);
-    },
-  });
-
-  const transform = useSimultaneousGestures(pinch, pan);
-  const taps = useExclusiveGestures(doubleTap, tap);
-  const gesture = useCompetingGestures(transform, hold, taps);
-
-  const pageStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: tx.get() }, { translateY: ty.get() }, { scale: s.get() }],
-  }));
-  const crispStyle = useAnimatedStyle(() => ({ opacity: crispOpacity.get() }));
-
-  const g = area?.geo;
   const w = screen.w || 390;
   const bar = toolbarSizes(w);
   return (
@@ -414,25 +239,9 @@ function Coloring({ page }: { page: Page }) {
         }
       />
 
-      <GestureDetector gesture={gesture}>
-        <View style={styles.area} onLayout={onAreaLayout} collapsable={false}>
-          {g && (
-            <>
-              <Animated.View style={[styles.page, { left: g.ox, top: g.oy, width: g.pw, height: g.ph }, pageStyle]}>
-                <Svg width={g.pw} height={g.ph} viewBox={`0 0 ${PAGE_W} ${PAGE_H}`}>
-                  <PageShapes page={page} fills={fills} fade={fade} highlight={highlight} />
-                </Svg>
-              </Animated.View>
-              {crisp && (
-                <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, crispStyle]}>
-                  <CrispLayer page={page} fills={fills} fade={fade} highlight={highlight} geo={g} view={crisp} />
-                </Animated.View>
-              )}
-            </>
-          )}
-          {showHint && <FirstHint text={t('coloring.hint')} />}
-        </View>
-      </GestureDetector>
+      <ZoomCanvas page={page} fills={fills} fade={fade} highlight={highlight} onTap={onTap} onHold={onHold} active={pageActive} radius={RADIUS} shadow={SHADOW.soft} style={styles.area}>
+        {showHint && <FirstHint text={t('coloring.hint')} />}
+      </ZoomCanvas>
 
       {/* When the picture is finished the "All done!" card takes the tray's place (never covering the picture). */}
       {done && !ring ? (
@@ -476,27 +285,6 @@ function Coloring({ page }: { page: Page }) {
   );
 }
 
-/** Screen-sized SVG showing exactly the visible part of the page (vector-sharp at any zoom). */
-function CrispLayer({ page, fills, fade, highlight, geo, view }: { page: Page; fills: Fills; fade: Fade | null; highlight: Highlight | null; geo: Geo; view: View3 }) {
-  const k = (view.s * geo.pw) / PAGE_W; // screen points per page unit
-  const vx = -(geo.ox + view.tx) / k;
-  const vy = -(geo.oy + view.ty) / k;
-  const rx = (RADIUS * PAGE_W) / geo.pw; // the card's corner radius, in page units
-  return (
-    <Svg width={geo.aw} height={geo.ah} viewBox={`${vx} ${vy} ${geo.aw / k} ${geo.ah / k}`} preserveAspectRatio="none">
-      <Defs>
-        <ClipPath id="paper">
-          <Rect x={0} y={0} width={PAGE_W} height={PAGE_H} rx={rx} ry={rx} />
-        </ClipPath>
-      </Defs>
-      <G clipPath="url(#paper)">
-        <Rect x={0} y={0} width={PAGE_W} height={PAGE_H} fill={PAPER} />
-        <PageShapes page={page} fills={fills} fade={fade} highlight={highlight} />
-      </G>
-    </Svg>
-  );
-}
-
 /**
  * First-use hint, picture-first: a small hand glides up from the colour tray towards the picture twice
  * (slow, soft, then it rests), above one short line of text. Disappears after the first fill.
@@ -528,14 +316,6 @@ function FirstHint({ text }: { text: string }) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: TONE.bg },
   area: { flex: 1, overflow: 'hidden' },
-  page: {
-    position: 'absolute',
-    backgroundColor: PAPER,
-    borderRadius: RADIUS,
-    overflow: 'hidden',
-    transformOrigin: 'top left',
-    boxShadow: SHADOW.soft,
-  },
   hintWrap: {
     position: 'absolute',
     left: 24,

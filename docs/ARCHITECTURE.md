@@ -21,6 +21,10 @@ A quick tap fills with the last colour used (after the first hold). Undo. Everyt
 - `src/coloring/pages/index.ts`: `PAGES`, `pagesOfLevel(level)`, `getPage(id)`.
 - `src/coloring/ColoringScreen.tsx`: `export function ColoringScreen({ pageId }: { pageId: string })` — full-screen page with
   zoom/pan, hold-for-palette, undo, back button (`router.back()`), autosave.
+- `src/coloring/ZoomCanvas.tsx`: the interactive picture — pinch-zoom, pan, double-tap to fit, tap, hold, crisp layer
+  (`onTap`/`onHold` get page units + canvas points, `onSettle(scale)`, `active`, `zoomable`). Used by ColoringScreen and the
+  tutorial, so the tutorial teaches the real gestures.
+- `src/coloring/Toolbar.tsx`: the top bar (sizes per width, Back, Undo) — the same in ColoringScreen and the tutorial.
 - `src/coloring/PageView.tsx`: `export function PageView({ page, fills, size }: { page: Page; fills: Fills; size: number })` —
   static, non-interactive render (width = size, height = size*4/3), for thumbnails.
 - `src/coloring/store.ts`: `useFills(pageId): Fills` (live), `loadFills(pageId)`, `saveFills(pageId, fills)`,
@@ -30,7 +34,10 @@ A quick tap fills with the last colour used (after the first hold). Undo. Everyt
 
 ## Tutorial: Edyta the sheep (interactive)
 - `src/app/tutorial.tsx` (route, Skip) → `src/components/tutorial/game.tsx`: a real mini colouring page (l1-apple: PageShapes,
-  PaletteTray, PaletteRing, hit map). Steps: tray → tap → hold (→ holdPick) → bg → undo → done. Each step: Edyta says the
+  PaletteTray, PaletteRing, hit map; the picture is the real ZoomCanvas, the top bar the real Toolbar). Steps: tray → tap →
+  hold (→ holdPick) → bg → undo → zoom (spread two fingers; ≥ 1.3× counts, the picture stays zoomed; pinch/pan are on only
+  from this step; taps colour nothing in it) → done. The tray stays under the picture (Edyta stands where the real tray
+  is), so she says "under the picture"; Undo is in the top bar "next to the back button". Each step: Edyta says the
   instruction (voice + bubble), a soft hand points, she waits; the right touch ("close enough" counts) → praise + hop →
   next step after ~1 s; ~8 s idle or a wrong touch → one gentle hint. Finish or Skip → `markTutorialSeen()` + `goBack()`.
 - `src/components/tutorial/edyta.tsx`: the Pastelki sheep (shared values: mouth, look, hop, tilt; idle breathing).

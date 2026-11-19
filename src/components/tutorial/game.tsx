@@ -8,7 +8,13 @@
  *   hold → press and hold (the leaf) → ring  → holdPick: tap a colour in the ring · "Ale pięknie!"
  *   bg   → tap the background, it fills       · "Cudownie!"
  *   undo → tap the undo arrow                 · "Widzisz? Nic się nie stało!"
- *   done → "Umiesz już kolorować! …" + the big "Let's colour!" button
+ *   zoom → spread two fingers on the picture  · "Brawo! Obrazek jest większy!" (zoom passes 1.3×)
+ *   done → "Umiesz już kolorować! Miłej zabawy!" + the big "Let's colour!" button
+ *
+ * The picture is the colouring screen's own ZoomCanvas (src/coloring/ZoomCanvas.tsx): the same tap, hold,
+ * pinch and pan. Pinch/pan are switched on only from the zoom step, so the hand's targets before it stay
+ * where they are; after the praise the picture simply stays zoomed (no motion the child did not make —
+ * the last step's button is outside the picture). Taps during the zoom step colour nothing.
  *
  * The top bar is the colouring screen's own (src/coloring/Toolbar.tsx): Back and, from the undo step, Undo
  * sit exactly where they will be on every page; Skip for grown-ups on the right. The tray stays under the
@@ -20,7 +26,7 @@
  * there for grown-ups. Calm: eased 250–600 ms moves, nothing flashes, Reduce Motion respected.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View, type GestureResponderEvent } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
   FadeIn,
@@ -42,11 +48,12 @@ import { AppText } from '@/components/app-text';
 import { SpeakerIcon } from '@/components/icons';
 import { SoftButton } from '@/components/soft-button';
 import { hitGrid, regionAt, warmHitMap } from '@/coloring/hit';
-import { PageShapes, type Fade, type Highlight } from '@/coloring/PageShapes';
+import { type Fade, type Highlight } from '@/coloring/PageShapes';
 import { getPage, pagesOfLevel } from '@/coloring/pages';
 import { PaletteRing } from '@/coloring/PaletteRing';
 import { PaletteTray, traySwatchSize } from '@/coloring/PaletteTray';
 import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from '@/coloring/types';
+import { ZoomCanvas } from '@/coloring/ZoomCanvas';
 import { BackButton, Toolbar, toolbarHeight, toolbarSizes, undoCenter, UndoButton } from '@/coloring/Toolbar';
 import { HandIcon } from '@/coloring/ui';
 import { RADIUS, SHADOW, TONE } from '@/constants/ui';
@@ -55,13 +62,15 @@ import { usePrefs } from '@/shell/prefs';
 
 import { Edyta } from './edyta';
 
-type Phase = 'tray' | 'tap' | 'hold' | 'holdPick' | 'bg' | 'undo' | 'done';
-const ORDER: Phase[] = ['tray', 'tap', 'hold', 'bg', 'undo', 'done'];
-const PRAISE: Partial<Record<Phase, EdytaLine>> = { tray: 'trayOk', tap: 'tapOk', holdPick: 'holdOk', bg: 'bgOk', undo: 'undoOk' };
-const HINT: Partial<Record<Phase, EdytaLine>> = { tray: 'trayHint', tap: 'tapHint', hold: 'holdHint', holdPick: 'holdHint', bg: 'bgHint', undo: 'undoHint' };
-const NEXT: Partial<Record<Phase, Phase>> = { tray: 'tap', tap: 'hold', holdPick: 'bg', bg: 'undo', undo: 'done' };
+type Phase = 'tray' | 'tap' | 'hold' | 'holdPick' | 'bg' | 'undo' | 'zoom' | 'done';
+const ORDER: Phase[] = ['tray', 'tap', 'hold', 'bg', 'undo', 'zoom', 'done'];
+const PRAISE: Partial<Record<Phase, EdytaLine>> = { tray: 'trayOk', tap: 'tapOk', holdPick: 'holdOk', bg: 'bgOk', undo: 'undoOk', zoom: 'zoomOk' };
+const HINT: Partial<Record<Phase, EdytaLine>> = { tray: 'trayHint', tap: 'tapHint', hold: 'holdHint', holdPick: 'holdHint', bg: 'bgHint', undo: 'undoHint', zoom: 'zoomHint' };
+const NEXT: Partial<Record<Phase, Phase>> = { tray: 'tap', tap: 'hold', holdPick: 'bg', bg: 'undo', undo: 'zoom', zoom: 'done' };
 /** After the instruction: this long without the right touch → one gentle hint. */
 const HINT_AFTER_MS = 8000;
+/** The zoom step counts once the picture is this much bigger. */
+const ZOOM_OK = 1.3;
 /** After the praise: a short breath before the next step. */
 const NEXT_AFTER_MS = 1000;
 const TAIL = 18;
@@ -290,6 +299,8 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
         return onPic(role.bgAt);
       case 'undo':
         return undoCenter(bar, NO_INSET);
+      case 'zoom':
+        return { x: picLeft + size / 2, y: picTop + picH / 2 };
       default:
         return null;
     }
@@ -309,12 +320,10 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
     if (phaseRef.current === 'tray') praise('tray');
   };
   const current = () => color ?? page.palette[0];
-  const toPage = (e: GestureResponderEvent) => ({ px: e.nativeEvent.locationX / k, py: e.nativeEvent.locationY / k, x: e.nativeEvent.locationX, y: e.nativeEvent.locationY });
 
-  const onPicTap = (e: GestureResponderEvent) => {
+  const onPicTap = (px: number, py: number, x: number, y: number) => {
     const p = phaseRef.current;
-    if (busy.current || ring) return;
-    const { px, py } = toPage(e);
+    if (busy.current || ring || p === 'zoom' || p === 'done') return; // spreading fingers never colours
     const r = regionAt(page, px, py);
     if (p === 'tap') {
       // close enough: a tap on the paper still colours the apple
@@ -328,13 +337,12 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
       praise('bg');
     } else if (p === 'hold' && hinted.current) {
       // a second quick tap still opens the ring — never block a small child
-      openRing(e);
-    } else if (p !== 'done') {
+      openRing(px, py, x, y);
+    } else {
       hint();
     }
   };
-  const openRing = (e: GestureResponderEvent) => {
-    const { px, py, x, y } = toPage(e);
+  const openRing = (px: number, py: number, x: number, y: number) => {
     let r = regionAt(page, px, py);
     // close enough: near the leaf counts as the leaf; the paper too
     const near = Math.hypot(px - role.smallAt.x, py - role.smallAt.y) < 60;
@@ -351,11 +359,14 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
       if (phaseRef.current === 'holdPick') timer.current = setTimeout(hint, HINT_AFTER_MS);
     });
   };
-  const onPicHold = (e: GestureResponderEvent) => {
+  const onPicHold = (px: number, py: number, x: number, y: number) => {
     if (busy.current || ring) return;
     const p = phaseRef.current;
-    if (p === 'hold') openRing(e);
-    else onPicTap(e);
+    if (p === 'hold') openRing(px, py, x, y);
+    else onPicTap(px, py, x, y);
+  };
+  const onZoomSettle = (scale: number) => {
+    if (phaseRef.current === 'zoom' && scale >= ZOOM_OK) praise('zoom');
   };
   const pickRing = (c: string) => {
     if (!ring) return;
@@ -407,21 +418,21 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
 
   return (
     <View style={StyleSheet.absoluteFill} onLayout={(e) => setRootH(e.nativeEvent.layout.height)}>
-      {/* picture */}
-      <View style={[styles.pic, { left: picLeft, top: picTop, width: size, height: picH }]}>
-        <Pressable
-          onPress={onPicTap}
-          onLongPress={onPicHold}
-          delayLongPress={450}
-          accessibilityRole="button"
-          accessibilityLabel={page.title[lang]}
-          style={StyleSheet.absoluteFill}
-        >
-          <Svg width={size} height={picH} viewBox={`0 0 ${PAGE_W} ${PAGE_H}`} style={{ backgroundColor: PAPER }}>
-            <PageShapes page={page} fills={fills} fade={fade} highlight={highlight} />
-          </Svg>
-        </Pressable>
-      </View>
+      {/* picture: the colouring screen's own zoomable canvas */}
+      <ZoomCanvas
+        page={page}
+        fills={fills}
+        fade={fade}
+        highlight={highlight}
+        onTap={onPicTap}
+        onHold={onPicHold}
+        onSettle={onZoomSettle}
+        active={!ring}
+        zoomable={phase === 'zoom' || phase === 'done'}
+        margin={0}
+        radius={RADIUS.tile}
+        style={[styles.pic, { left: picLeft, top: picTop, width: size, height: picH }]}
+      />
       {/* the colouring screen's top bar: same Back and Undo, same place */}
       <Toolbar
         sizes={bar}
@@ -429,7 +440,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
         left={
           <>
             <BackButton size={bar.big} onPress={onFinish} />
-            {phase === 'undo' || phase === 'done' ? (
+            {phase === 'undo' || phase === 'zoom' || phase === 'done' ? (
               <Animated.View entering={FadeIn.duration(400)}>
                 <UndoButton size={bar.big} onPress={onUndo} />
               </Animated.View>
@@ -449,7 +460,8 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
       </View>
 
       {/* the pointing hand */}
-      {target && !ring ? (
+      {phase === 'zoom' && !praising && target ? <SpreadHint x={target.x} y={target.y} size={handSize} /> : null}
+      {target && !ring && phase !== 'zoom' ? (
         <View pointerEvents="none" style={[styles.pointer, { left: target.x, top: target.y }]}>
           <Animated.View style={[styles.glow, { width: handSize * 1.3, height: handSize * 1.3, borderRadius: handSize, left: -handSize * 0.65, top: -handSize * 0.65 }, glowStyle]} />
           <Animated.View style={[{ position: 'absolute', left: -handSize * 0.44, top: -handSize * 0.08 }, handStyle]}>
@@ -475,7 +487,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
         </Svg>
         {/* invisible copies of every line: the tallest sets the bubble height, so nothing jumps */}
         <View style={styles.measure} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          {(['tray', 'trayOk', 'trayHint', 'tap', 'tapOk', 'tapHint', 'hold', 'holdPick', 'holdOk', 'holdHint', 'bg', 'bgOk', 'bgHint', 'undo', 'undoOk', 'undoHint', 'done'] as const).map((l) => (
+          {(['tray', 'trayOk', 'trayHint', 'tap', 'tapOk', 'tapHint', 'hold', 'holdPick', 'holdOk', 'holdHint', 'bg', 'bgOk', 'bgHint', 'undo', 'undoOk', 'undoHint', 'zoom', 'zoomOk', 'zoomHint', 'done'] as const).map((l) => (
             <AppText
               key={l}
               style={[styles.measureText, { fontSize: font, lineHeight: lineH, width: bubbleW - 2 * 18 - 30 }]}
@@ -546,6 +558,8 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
 const styles = StyleSheet.create({
   pic: { position: 'absolute', borderRadius: RADIUS.tile, overflow: 'hidden', backgroundColor: PAPER, boxShadow: SHADOW.lifted },
   pointer: { position: 'absolute', width: 0, height: 0, zIndex: 2 },
+  // fingertips: white with a blue rim, so they read on any colour the apple has by now
+  tip: { position: 'absolute', backgroundColor: 'rgba(255,255,255,0.9)', borderWidth: 3, borderColor: '#4A6FA5', boxShadow: SHADOW.soft },
   glow: { position: 'absolute', backgroundColor: '#FCE3A0', borderWidth: 3, borderColor: '#F6C945' },
   bubble: { position: 'absolute', borderRadius: 28, backgroundColor: TONE.card, boxShadow: SHADOW.lifted },
   bubbleInner: { flex: 1, justifyContent: 'center', paddingHorizontal: 18, paddingRight: 18 + 30 },
@@ -576,3 +590,32 @@ const styles = StyleSheet.create({
   skip: { paddingVertical: 10, paddingHorizontal: 16, borderRadius: RADIUS.pill, backgroundColor: 'rgba(255,255,255,0.7)' },
   skipText: { fontSize: 17, color: TONE.muted, fontWeight: '600' },
 });
+
+/**
+ * The zoom step's guide: two soft fingertips on the picture that slowly move apart (and fade), again and
+ * again — "spread two fingers". Calm: 1.6 s per spread, eased; Reduce Motion: they stay apart, still.
+ */
+function SpreadHint({ x, y, size }: { x: number; y: number; size: number }) {
+  const p = useSharedValue(0);
+  useEffect(() => {
+    p.set(
+      withRepeat(
+        withSequence(withTiming(1, { duration: 1600, easing: Easing.inOut(Easing.quad), reduceMotion: ReduceMotion.System }), withTiming(0, { duration: 500, reduceMotion: ReduceMotion.System })),
+        -1,
+        false,
+      ),
+    );
+  }, [p]);
+  const d = size * 0.35;
+  const spread = size * 1.1;
+  const a = useAnimatedStyle(() => ({ opacity: 0.85 - p.value * 0.35, transform: [{ translateX: -d - p.value * spread }, { translateY: d + p.value * spread * 0.9 }] }));
+  const b = useAnimatedStyle(() => ({ opacity: 0.85 - p.value * 0.35, transform: [{ translateX: d + p.value * spread }, { translateY: -d - p.value * spread * 0.9 }] }));
+  const tip = { width: size * 0.62, height: size * 0.62, borderRadius: size, left: -size * 0.31, top: -size * 0.31 };
+  return (
+    <View pointerEvents="none" style={[styles.pointer, { left: x, top: y }]}>
+      <Animated.View style={[styles.tip, tip, a]} />
+      <Animated.View style={[styles.tip, tip, b]} />
+    </View>
+  );
+}
+

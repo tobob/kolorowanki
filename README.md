@@ -135,9 +135,10 @@ person. It was made offline with `tools/voice/build.sh`; the app only ships the 
 |---|---|---|
 | speech in pl, en, de, fr, es, it, pt, nl, sv, tr, ja, zh | [Chatterbox Multilingual](https://github.com/resemble-ai/chatterbox) by Resemble AI ([model](https://huggingface.co/ResembleAI/chatterbox)) | MIT, Copyright (c) 2025 Resemble AI |
 | AI watermark in every Chatterbox clip (imperceptible; marks the audio as AI-generated — we keep it) | [Perth](https://github.com/resemble-ai/Perth) by Resemble AI | MIT |
-| speech in uk, cs, sk, ro, hu | [Piper](https://github.com/OHF-Voice/piper1-gpl) (run on the Pastelki server; only its output is used) with the voices uk_UA ukrainian_tts (tetiana), cs_CZ jirka, sk_SK lili, ro_RO mihai, hu_HU anna from [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) | Piper: GPL-3.0-or-later; voices: CC0 |
+| speech in uk, cs, sk, ro, hu | [Piper](https://github.com/OHF-Voice/piper1-gpl) (piper-tts, run offline on the Pastelki server or a build machine; only its output is used) with the voices uk_UA ukrainian_tts (tetiana), cs_CZ jirka, sk_SK lili, ro_RO mihai, hu_HU anna from [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) | Piper: GPL-3.0-or-later; voices: CC0 |
 | base model of cs_CZ jirka, sk_SK lili, hu_HU anna | speaker 92 of the Hi-Fi Multi-Speaker English TTS Dataset, [OpenSLR 109](https://www.openslr.org/109/) — Bakhturina, E., Lavrukhin, V., Ginsburg, B., Zhang, Y. (2021), *Hi-Fi Multi-Speaker English TTS Dataset*, arXiv:2104.01497 | CC BY 4.0 |
 | trimming and checking the lines | [Whisper](https://github.com/openai/whisper) by OpenAI | MIT, Copyright (c) 2022 OpenAI |
+| a slower, child-friendly pace (WSOLA time-stretch) | [audiotsm](https://github.com/Muges/audiotsm) by Muges | MIT |
 | "sheep" voice effect (`sheepify.py` from Pastelki) | [pyworld](https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder) with the [WORLD](https://github.com/mmorise/World) vocoder by Masanori Morise | MIT; WORLD: modified BSD |
 
 Edyta herself, the pictures and the music come from [Pastelki](https://pastelki.marchew.work) (MIT); see its
