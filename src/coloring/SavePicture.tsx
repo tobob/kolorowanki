@@ -1,8 +1,9 @@
 /**
- * "Save picture" for grown-ups: parental gate → save to Photos (add-only permission) → a calm result card
- * that also offers Share. If Photos access is denied, the card explains it and offers Share; if saving fails
- * for another reason (e.g. an old Android that would need the blocked legacy storage permission), the system
- * share sheet opens instead.
+ * "Save picture": saves straight to Photos (add-only permission; the child may save too — Bob, 2026-11-19)
+ * → a calm result card that also offers Share. Share opens the system share sheet, which leads out of the
+ * app, so it stays behind the parental gate (Kids Category). If Photos access is denied, the card explains
+ * it and offers Share; if saving fails for another reason (e.g. an old Android that would need the blocked
+ * legacy storage permission), the gate and then the share sheet open instead.
  *
  * The picture is rendered offscreen by react-native-svg at 1500×2000 px (white paper, vector-crisp lines) with
  * Svg.toDataURL, written to the cache as PNG, then added to Photos (expo-media-library Asset.create) or
@@ -48,16 +49,33 @@ async function shareFile(file: File, title: string) {
  */
 export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
   const t = useT();
-  const [gate, setGate] = useState(false);
+  const [gate, setGate] = useState(false); // parental gate before sharing
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<Result>(null);
   const svgRef = useRef<Svg>(null);
   const fileRef = useRef<File | null>(null);
 
+  const busy = useRef(false); // a save is running: further taps wait for it
+  const pending = useRef(false); // save once the export surface has laid out
+  const run = () => {
+    save().finally(() => {
+      busy.current = false;
+    });
+  };
   const ask = () => {
-    setResult(null);
-    setMounted(true); // lay the export surface out while the grown-up passes the gate
-    setGate(true);
+    if (busy.current) return;
+    busy.current = true;
+    if (svgRef.current) {
+      run(); // the surface is still there from the last save
+    } else {
+      pending.current = true;
+      setMounted(true); // onSurfaceLayout runs the save
+    }
+  };
+  const onSurfaceLayout = () => {
+    if (!pending.current) return;
+    pending.current = false;
+    setTimeout(run, 50); // let the SVG paint before toDataURL
   };
 
   const getFile = async () => {
@@ -81,10 +99,11 @@ export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
     } catch (e) {
       if (__DEV__) console.warn('save picture failed, falling back to share', e);
       setResult(null);
-      if (file) await shareFile(file, t('coloring.share')).catch(() => {});
+      if (file) setGate(true); // share instead — a grown-up first
     }
   };
 
+  const askShare = () => setGate(true);
   const share = async () => {
     try {
       const file = fileRef.current ?? (await getFile());
@@ -109,15 +128,12 @@ export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
         visible={gate}
         onPass={() => {
           setGate(false);
-          save();
+          share();
         }}
-        onCancel={() => {
-          setGate(false);
-          setMounted(false);
-        }}
+        onCancel={() => setGate(false)}
       />
       {mounted && (
-        <View pointerEvents="none" collapsable={false} style={[styles.offscreen, { left: -pt - 100, width: pt }]}>
+        <View pointerEvents="none" collapsable={false} onLayout={onSurfaceLayout} style={[styles.offscreen, { left: -pt - 100, width: pt }]}>
           <Svg ref={svgRef} width={pt} height={(pt * EXPORT_H) / EXPORT_W} viewBox={`0 0 ${PAGE_W} ${PAGE_H}`}>
             <Rect x={-50} y={-50} width={PAGE_W + 100} height={PAGE_H + 100} fill={PAPER} />
             <PageShapes page={page} fills={fills} />
@@ -128,7 +144,7 @@ export function useSavePicture(page: Page, fills: Fills, bottomInset: number) {
         <Animated.View style={[styles.card, { bottom: bottomInset + 16 }]} entering={FadeIn.duration(350)} exiting={FadeOut.duration(250)}>
           <Text style={styles.text}>{result === 'saved' ? t('coloring.saved') : t('coloring.saveDenied')}</Text>
           <View style={styles.row}>
-            <Pressable accessibilityRole="button" onPress={share} style={({ pressed }) => [styles.pill, pressed && styles.pressed]}>
+            <Pressable accessibilityRole="button" onPress={askShare} style={({ pressed }) => [styles.pill, pressed && styles.pressed]}>
               <Text style={styles.pillText}>{t('coloring.share')}</Text>
             </Pressable>
             <RoundButton accessibilityLabel={t('coloring.back')} onPress={close} size={52}>

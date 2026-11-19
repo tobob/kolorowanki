@@ -1,7 +1,7 @@
 /**
  * The colouring screen (docs/ARCHITECTURE.md): zoom/pan, press-and-hold for the palette ring,
  * quick tap with the last colour, multi-step undo, autosave.
- * Toolbar: Back · Save picture (behind the parental gate) · current colour · Undo · Next page (explicit only —
+ * Toolbar: Back · Save picture (straight to Photos; Share behind the parental gate) · current colour · Undo · Next page (explicit only —
  * the page area itself never navigates). When every region is coloured a calm, dismissable "All done!" card
  * offers Next / Save / Keep colouring; nothing happens by itself.
  *
@@ -226,7 +226,7 @@ function Coloring({ page }: { page: Page }) {
         right={
           <>
             <MusicToggle size={bar.music} />
-            {/* grown-ups action: smaller and quieter, opens the parental gate */}
+            {/* save to Photos: smaller and quieter (Share on its result card is behind the parental gate) */}
             <RoundButton accessibilityLabel={t('coloring.save')} onPress={saver.ask} size={bar.save} color="#F3EEFF">
               <SaveIcon size={bar.save * 0.5} />
             </RoundButton>
