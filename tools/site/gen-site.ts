@@ -190,7 +190,7 @@ function appPrivacy(lang: Lang): Policy {
   const p5 = fill(s['privacy.p5'], { developer: DEVELOPER, contact: CONTACT, url: `${BASE}privacy/` });
   return {
     title: s['privacy.title'],
-    sections: [s['privacy.p1'], s['privacy.p2'], s['privacy.p3'], s['privacy.photos'], s['privacy.p4'], p5].map((body) => ({ body })),
+    sections: [s['privacy.p1'], s['privacy.p2'], s['privacy.p3'], s['privacy.photos'], s['privacy.feedback'], s['privacy.p4'], p5].map((body) => ({ body })),
   };
 }
 
