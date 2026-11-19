@@ -50,7 +50,7 @@ L["en"] = dict(
         "Works fully offline.",
         "We collect no data. Colorings stay on the device.",
         "Settings and the privacy policy are behind a parental gate. There you can pick one of 17 languages or start all pages again.",
-        'A grown-up can save a finished picture to Photos or share it, behind the parental gate. The app never reads your photo library.',
+        'A finished picture can be saved to Photos with one tap. Sharing it is behind the parental gate. The app only adds pictures and never reads your photo library.',
     ],
     credit="The pictures come from Pastelki, a free library of gentle illustrations for small children.",
 )
@@ -74,7 +74,7 @@ L["en-GB"] = dict(
         "Works fully offline.",
         "We collect no data. Colourings stay on the device.",
         "Settings and the privacy policy are behind a parental gate. There you can pick one of 17 languages or start all pages again.",
-        'A grown-up can save a finished picture to Photos or share it, behind the parental gate. The app never reads your photo library.',
+        'A finished picture can be saved to Photos with one tap. Sharing it is behind the parental gate. The app only adds pictures and never reads your photo library.',
     ],
 )
 
@@ -100,7 +100,7 @@ L["pl"] = dict(
         "Działa całkowicie offline.",
         "Nie zbieramy żadnych danych. Kolorowanki zostają na urządzeniu.",
         "Ustawienia i polityka prywatności są za bramką rodzicielską. Możesz tam wybrać jeden z 17 języków albo zacząć wszystkie strony od nowa.",
-        'Dorosły może zapisać gotowy obrazek w Zdjęciach albo go udostępnić, za bramką rodzicielską. Aplikacja nigdy nie czyta biblioteki zdjęć.',
+        'Gotowy obrazek można jednym stuknięciem zapisać w Zdjęciach. Udostępnianie jest za bramką rodzicielską. Aplikacja tylko dodaje obrazki i nigdy nie czyta biblioteki zdjęć.',
     ],
     credit="Obrazki pochodzą z Pastelek, darmowej biblioteki łagodnych ilustracji dla małych dzieci.",
 )
@@ -127,7 +127,7 @@ L["de"] = dict(
         "Funktioniert komplett offline.",
         "Wir erheben keine Daten. Die Bilder bleiben auf dem Gerät.",
         "Einstellungen und Datenschutzerklärung liegen hinter einer Elternsperre. Dort lässt sich eine von 17 Sprachen wählen oder alles neu beginnen.",
-        'Erwachsene können ein fertiges Bild hinter der Elternsperre in Fotos sichern oder teilen. Die App liest die Fotomediathek nie.',
+        'Ein fertiges Bild lässt sich mit einem Tippen in Fotos sichern. Teilen liegt hinter der Elternsperre. Die App fügt nur Bilder hinzu und liest die Fotomediathek nie.',
     ],
     credit="Die Bilder stammen aus Pastelki, einer freien Sammlung sanfter Illustrationen für kleine Kinder.",
 )
@@ -154,7 +154,7 @@ L["fr"] = dict(
         "Fonctionne entièrement hors ligne.",
         "Nous ne collectons aucune donnée. Les coloriages restent sur l'appareil.",
         "Les réglages et la politique de confidentialité sont protégés par un contrôle parental. On peut y choisir l'une des 17 langues ou tout recommencer.",
-        "Un adulte peut enregistrer un dessin fini dans Photos ou le partager, derrière le contrôle parental. L'application ne lit jamais la photothèque.",
+        "Un dessin fini s'enregistre dans Photos d'un seul toucher. Le partage est protégé par le contrôle parental. L'application ajoute seulement des dessins et ne lit jamais la photothèque.",
     ],
     credit="Les dessins viennent de Pastelki, une bibliothèque gratuite d'illustrations douces pour les petits.",
 )
@@ -181,7 +181,7 @@ L["es"] = dict(
         "Funciona totalmente sin conexión.",
         "No recogemos ningún dato. Los dibujos se quedan en el dispositivo.",
         "Los ajustes y la política de privacidad están protegidos por un control parental. Allí puedes elegir uno de 17 idiomas o empezar todo de nuevo.",
-        'Un adulto puede guardar un dibujo terminado en Fotos o compartirlo, tras el control parental. La app nunca lee tu fototeca.',
+        'Un dibujo terminado se guarda en Fotos con un toque. Compartirlo está tras el control parental. La app solo añade dibujos y nunca lee tu fototeca.',
     ],
     credit="Los dibujos vienen de Pastelki, una biblioteca gratuita de ilustraciones suaves para niños pequeños.",
 )
@@ -208,7 +208,7 @@ L["it"] = dict(
         "Funziona completamente offline.",
         "Non raccogliamo alcun dato. I disegni restano sul dispositivo.",
         "Le impostazioni e l'informativa sulla privacy sono protette da un controllo per adulti. Lì puoi scegliere una di 17 lingue o ricominciare tutto.",
-        "Un adulto può salvare un disegno finito in Foto o condividerlo, dietro il controllo per adulti. L'app non legge mai la libreria foto.",
+        "Un disegno finito si salva in Foto con un tocco. La condivisione è dietro il controllo per adulti. L'app aggiunge solo disegni e non legge mai la libreria foto.",
     ],
     credit="I disegni vengono da Pastelki, una raccolta gratuita di illustrazioni delicate per bambini piccoli.",
 )
@@ -235,7 +235,7 @@ L["pt-BR"] = dict(
         "Funciona totalmente offline.",
         "Não coletamos nenhum dado. Os desenhos ficam no aparelho.",
         "As configurações e a política de privacidade ficam atrás de um controle para adultos. Lá você escolhe um de 17 idiomas ou recomeça tudo.",
-        'Um adulto pode salvar um desenho pronto em Fotos ou compartilhá-lo, atrás do controle para adultos. O app nunca lê sua biblioteca de fotos.',
+        'Um desenho pronto é salvo em Fotos com um toque. Compartilhar fica atrás do controle para adultos. O app só adiciona desenhos e nunca lê sua biblioteca de fotos.',
     ],
     credit="Os desenhos vêm do Pastelki, uma biblioteca gratuita de ilustrações suaves para crianças pequenas.",
 )
@@ -255,7 +255,7 @@ L["pt-PT"] = dict(
         "Funciona totalmente offline.",
         "Não recolhemos nenhum dado. Os desenhos ficam no dispositivo.",
         "As definições e a política de privacidade estão protegidas por um controlo para adultos. Aí podes escolher um de 17 idiomas ou recomeçar tudo.",
-        'Um adulto pode guardar um desenho pronto em Fotografias ou partilhá-lo, atrás do controlo para adultos. A app nunca lê a sua biblioteca de fotografias.',
+        'Um desenho pronto é guardado em Fotografias com um toque. Partilhar fica atrás do controlo para adultos. A app só adiciona desenhos e nunca lê a sua biblioteca de fotografias.',
     ],
 )
 
@@ -281,7 +281,7 @@ L["nl"] = dict(
         "Werkt volledig offline.",
         "We verzamelen geen gegevens. De kleurplaten blijven op het apparaat.",
         "Instellingen en het privacybeleid zitten achter een ouderslot. Daar kies je een van 17 talen of begin je alles opnieuw.",
-        "Een volwassene kan een klare tekening achter het ouderslot in Foto's bewaren of delen. De app leest je fotobibliotheek nooit.",
+        "Een klare tekening bewaar je met één tik in Foto's. Delen zit achter het ouderslot. De app voegt alleen tekeningen toe en leest je fotobibliotheek nooit.",
     ],
     credit="De tekeningen komen uit Pastelki, een gratis verzameling zachte illustraties voor jonge kinderen.",
 )
@@ -308,7 +308,7 @@ L["uk"] = dict(
         "Працює повністю офлайн.",
         "Ми не збираємо жодних даних. Розмальовки залишаються на пристрої.",
         "Налаштування та політика конфіденційності захищені батьківським замком. Там можна вибрати одну з 17 мов або почати все заново.",
-        'Дорослий може зберегти готовий малюнок у Фото або поділитися ним за батьківським замком. Застосунок ніколи не читає медіатеку.',
+        'Готовий малюнок зберігається у Фото одним дотиком. Поділитися ним можна лише за батьківським замком. Застосунок лише додає малюнки й ніколи не читає медіатеку.',
     ],
     credit="Малюнки взято з Pastelki — безкоштовної бібліотеки лагідних ілюстрацій для малят.",
 )
@@ -335,7 +335,7 @@ L["cs"] = dict(
         "Funguje úplně offline.",
         "Nesbíráme žádná data. Omalovánky zůstávají v zařízení.",
         "Nastavení a zásady ochrany soukromí jsou za rodičovským zámkem. Tam vyberete jeden ze 17 jazyků nebo začnete vše znovu.",
-        'Dospělý může hotový obrázek za rodičovským zámkem uložit do Fotek nebo sdílet. Aplikace nikdy nečte knihovnu fotek.',
+        'Hotový obrázek se jedním klepnutím uloží do Fotek. Sdílení je za rodičovským zámkem. Aplikace obrázky jen přidává a nikdy nečte knihovnu fotek.',
     ],
     credit="Obrázky pocházejí z Pastelki, bezplatné knihovny jemných ilustrací pro malé děti.",
 )
@@ -362,7 +362,7 @@ L["sk"] = dict(
         "Funguje úplne offline.",
         "Nezbierame žiadne údaje. Omaľovánky zostávajú v zariadení.",
         "Nastavenia a zásady ochrany súkromia sú za rodičovským zámkom. Tam vyberiete jeden zo 17 jazykov alebo začnete všetko odznova.",
-        'Dospelý môže hotový obrázok za rodičovským zámkom uložiť do Fotiek alebo zdieľať. Aplikácia nikdy nečíta knižnicu fotiek.',
+        'Hotový obrázok sa jedným ťuknutím uloží do Fotiek. Zdieľanie je za rodičovským zámkom. Aplikácia obrázky len pridáva a nikdy nečíta knižnicu fotiek.',
     ],
     credit="Obrázky pochádzajú z Pastelki, bezplatnej knižnice jemných ilustrácií pre malé deti.",
 )
@@ -389,7 +389,7 @@ L["sv"] = dict(
         "Fungerar helt offline.",
         "Vi samlar inte in några data. Målningarna stannar på enheten.",
         "Inställningar och integritetspolicy ligger bakom ett föräldralås. Där kan du välja ett av 17 språk eller börja om alla sidor.",
-        'En vuxen kan spara en färdig bild i Bilder eller dela den, bakom föräldralåset. Appen läser aldrig ditt bildbibliotek.',
+        'En färdig bild sparas i Bilder med ett tryck. Delning finns bakom föräldralåset. Appen lägger bara till bilder och läser aldrig ditt bildbibliotek.',
     ],
     credit="Bilderna kommer från Pastelki, ett gratis bibliotek med mjuka illustrationer för små barn.",
 )
@@ -416,7 +416,7 @@ L["ro"] = dict(
         "Funcționează complet offline.",
         "Nu colectăm niciun fel de date. Desenele rămân pe dispozitiv.",
         "Setările și politica de confidențialitate sunt protejate de o barieră pentru părinți. Acolo poți alege una din 17 limbi sau poți lua totul de la capăt.",
-        'Un adult poate salva un desen terminat în Poze sau îl poate distribui, după bariera pentru părinți. Aplicația nu citește niciodată biblioteca foto.',
+        'Un desen terminat se salvează în Poze cu o singură atingere. Distribuirea este după bariera pentru părinți. Aplicația doar adaugă desene și nu citește niciodată biblioteca foto.',
     ],
     credit="Desenele vin din Pastelki, o bibliotecă gratuită de ilustrații blânde pentru copii mici.",
 )
@@ -443,7 +443,7 @@ L["hu"] = dict(
         "Teljesen offline működik.",
         "Semmilyen adatot nem gyűjtünk. A színezések az eszközön maradnak.",
         "A beállítások és az adatvédelmi tájékoztató szülői zár mögött vannak. Ott 17 nyelv közül választhatsz, vagy újrakezdheted az összes oldalt.",
-        'Egy felnőtt a szülői zár mögött a Fotókba mentheti vagy megoszthatja a kész képet. Az alkalmazás soha nem olvassa a fotókönyvtárat.',
+        'A kész kép egy koppintással a Fotókba menthető. A megosztás a szülői zár mögött van. Az alkalmazás csak hozzáad képeket, és soha nem olvassa a fotókönyvtárat.',
     ],
     credit="A képek a Pastelki gyűjteményből származnak, amely kisgyerekeknek készült szelíd illusztrációk ingyenes könyvtára.",
 )
@@ -470,7 +470,7 @@ L["tr"] = dict(
         "Tamamen çevrimdışı çalışır.",
         "Hiçbir veri toplamıyoruz. Boyamalar cihazda kalır.",
         "Ayarlar ve gizlilik politikası bir ebeveyn kilidinin arkasındadır. Orada 17 dilden birini seçebilir ya da tüm sayfalara yeniden başlayabilirsiniz.",
-        "Bir büyük, ebeveyn kilidinin arkasından biten resmi Fotoğraflar'a kaydedebilir veya paylaşabilir. Uygulama fotoğraf arşivinizi asla okumaz.",
+        "Biten resim tek dokunuşla Fotoğraflar'a kaydedilir. Paylaşma ebeveyn kilidinin arkasındadır. Uygulama yalnızca resim ekler ve fotoğraf arşivinizi asla okumaz.",
     ],
     credit="Resimler, küçük çocuklar için yumuşak çizimlerden oluşan ücretsiz Pastelki kütüphanesinden geliyor.",
 )
@@ -497,7 +497,7 @@ L["ja"] = dict(
         "完全にオフラインで動作します。",
         "データは一切収集しません。ぬりえは端末の中だけに保存されます。",
         "設定とプライバシーポリシーは保護者向けのロックの先にあります。17の言語から選んだり、すべてのページを最初からやり直したりできます。",
-        'できあがった絵は、保護者向けのロックの先で大人が写真に保存したり共有したりできます。アプリがフォトライブラリを読むことはありません。',
+        'できあがった絵は、ワンタップで写真に保存できます。共有は保護者向けのロックの先にあります。アプリは絵を追加するだけで、フォトライブラリを読むことはありません。',
     ],
     credit="絵は、小さな子ども向けのやさしいイラストを集めた無料ライブラリ Pastelki のものです。",
 )
@@ -524,7 +524,7 @@ L["zh"] = dict(
         "完全离线使用。",
         "我们不收集任何数据。涂色作品只保存在设备上。",
         "设置和隐私政策在家长验证之后。您可以在那里选择 17 种语言之一，或让所有页面重新开始。",
-        '大人可以在家长验证后，把完成的图画保存到照片或分享。应用从不读取您的照片图库。',
+        '完成的图画轻点一下即可保存到照片。分享需先通过家长验证。应用只添加图画，从不读取您的照片图库。',
     ],
     credit="图画来自 Pastelki，一个为幼儿准备的温柔插画免费图库。",
 )
@@ -575,7 +575,7 @@ ADVISORY = {
     "koreaAgeRatingOverride": "NONE", "developerAgeRatingInfoUrl": None,
 }
 
-REVIEW_NOTES = """Kolorowanki is a calm, fully offline colouring book for children aged 2-6 (Made for Kids, 5 and under). Free, no in-app purchases, no ads, no accounts, no network requests, no data collection. The only permission prompt is add-only Photos access, shown when a grown-up saves a picture behind the parental gate.
+REVIEW_NOTES = """Kolorowanki is a calm, fully offline colouring book for children aged 2-6 (Made for Kids, 5 and under). Free, no in-app purchases, no ads, no accounts, no network requests, no data collection. The only permission prompt is iOS add-only Photos access, shown once, the first time "Save picture" is tapped.
 
 NO LOGIN NEEDED
 Launch the app. The home screen shows four large cards (one big picture / a few friends / a little scene / a busy page). Tap a card, then tap a picture.
@@ -592,10 +592,10 @@ PARENTAL GATE / GROWN-UPS AREA
 - Inside: language (follows the device by default; 17 languages can be chosen), "Start all pages again" (with a confirmation), About (including the credit for the Pastelki picture library, MIT) and the full privacy policy shown in-app. There are no links out of the app.
 
 AUDIO
-Soft music: the theme plays once on the home screen, the colouring tune up to three times per page, then silence. The note button (home screen and colouring toolbar) and a switch in the grown-ups area turn it off. Audio follows the ring/silent switch and stops when the app goes to the background. No microphone, no background audio.
+Soft music: the theme plays once on the home screen. On the colouring screen one of 11 calm tunes is picked at random; when it ends a different one follows, up to 3 tunes in a row (about 3 minutes), then silence. Moving to the next page keeps the current tune playing. The note button (home screen and colouring toolbar) and a switch in the grown-ups area turn it off. Audio follows the ring/silent switch and stops when the app goes to the background. No microphone, no background audio.
 
 OFFLINE / PRIVACY
-The app works entirely in airplane mode. Colourings and the language choice are stored only on the device (local key-value storage). Saving a finished picture to Photos or sharing it is only offered behind the parental gate; the app asks only for add-only Photos access at that moment and never reads the photo library. No external links, web views, purchases, review prompts, notifications or social features anywhere in the app."""
+The app works entirely in airplane mode. Colourings and the language choice are stored only on the device (local key-value storage). "Save picture" (colouring toolbar and the "All done!" card) adds the picture straight to Photos with no gate, so a child can keep their own picture; the app asks only for add-only Photos access (once, on the first save) and never reads the photo library. Share, which opens the system share sheet and leads out of the app, is always behind the parental gate: it is offered on the result card and opens only after the gate is passed. If Photos access is denied, the card explains how to allow it in Settings and offers Share; if saving fails for another reason, the parental gate opens and then the share sheet. No external links, web views, purchases, review prompts, notifications or social features anywhere in the app."""
 
 
 def main():

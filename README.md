@@ -27,7 +27,8 @@ A calm colouring book. A short, animated "how to play" opens on the first launch
   - Quiet music: the theme plays once on the home screen, the colouring tune a few times and then rests. A big note button turns it off.
 - **Made for kids:**
   - Fully offline, with no network requests, no analytics and no accounts. Colourings stay on the device.
-  - Settings, the about page, the privacy policy and saving a picture to Photos sit behind a parental gate: hold for 3 seconds, then answer a multiplication written in words. The app only ever adds pictures to Photos; it never reads the photo library.
+  - Settings, the about page, the privacy policy and sharing a picture sit behind a parental gate: hold for 3 seconds, then answer a multiplication written in words.
+  - "Save picture" adds a finished picture to Photos with one tap, no gate, so a child can keep their own picture. The app only ever adds pictures to Photos; it never reads the photo library.
 - **17 languages:** Polish, English, German, French, Spanish, Italian, Portuguese, Dutch, Ukrainian, Czech, Slovak, Swedish, Romanian, Hungarian, Turkish, Japanese and Chinese. It follows the device language; grown-ups can override it in the app.
 - **Pictures from [Pastelki](https://pastelki.marchew.work),** a free (MIT) library of gentle SVG illustrations for small children, turned into colouring pages by a script.
 

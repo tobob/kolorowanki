@@ -1,6 +1,6 @@
 # Privacy Policy — Kolorowanki
 
-_Last updated: 18 November 2026_
+_Last updated: 19 November 2026_
 
 Kolorowanki is a colouring app for young children, made by tobob ("we"). This policy explains how the app handles information.
 Short version: **Kolorowanki does not collect, send or share any personal data. It works completely offline.**
@@ -9,9 +9,9 @@ Short version: **Kolorowanki does not collect, send or share any personal data. 
 
 **What stays on the device.** To keep your child's colourings (which colour each part of each picture has) and the language chosen in the grown-ups' area, the app saves a small amount of data **only on your device**. We can't access it. "Start all pages again" in the grown-ups' area clears the colourings, and deleting the app deletes everything. If you use your device's own backup (for example iCloud or Google backup), that copy is managed by Apple or Google under your account and their privacy policies.
 
-**Photos.** In the grown-ups' area (behind the parental gate) an adult can save a finished picture to the device's Photos or share it. Only then does the system ask for permission to **add** to Photos. The app never reads your photo library, and a shared picture goes only where you send it, through the system share sheet.
+**Photos.** "Save picture" adds a finished picture to the device's Photos with one tap, so a child can keep their own picture. The first time, the system asks once for permission to **add** to Photos. The app only adds pictures and never reads your photo library. Sharing a picture opens the system share sheet, which leads out of the app, so it is behind the parental gate; a shared picture goes only where you send it.
 
-**Permissions.** Apart from adding pictures to Photos when a grown-up asks, Kolorowanki doesn't ask for access to your camera, microphone, contacts or location, and doesn't send notifications.
+**Permissions.** Apart from adding pictures to Photos when a picture is saved, Kolorowanki doesn't ask for access to your camera, microphone, contacts or location, and doesn't send notifications.
 
 **Children.** Kolorowanki is designed for children aged 2–6. Because it collects no personal information, it doesn't need, and doesn't ask for, a child's or parent's personal details. The settings, this policy and all information for adults are behind a parental gate. We follow the requirements of the Children's Online Privacy Protection Act (COPPA), the GDPR (including Article 8) and the UK Age Appropriate Design Code.
 

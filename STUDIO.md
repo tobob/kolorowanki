@@ -13,7 +13,7 @@ Plik studia: czytaj go zanim zaczniesz pracę nad aplikacją, a po każdej istot
 
 ## Co robi
 
-Łagodne kolorowanki dla dzieci 2–6 lat z obrazków Pastelek: 48 stron na 4 poziomach (jeden obrazek → dwa, trzy → scenka → kolaż). Przytrzymanie palca = pierścień 7 kolorów, stuknięcie = ostatni kolor, tacka kolorów na dole, zoom/przesuwanie, cofanie, zapis do Zdjęć za bramką rodzica. Samouczek przy pierwszym uruchomieniu, muzyka z Pastelki Muzyka, 17 języków. Całość offline, zero zbieranych danych.
+Łagodne kolorowanki dla dzieci 2–6 lat z obrazków Pastelek: 48 stron na 4 poziomach (jeden obrazek → dwa, trzy → scenka → kolaż). Przytrzymanie palca = pierścień 7 kolorów, stuknięcie = ostatni kolor, tacka kolorów na dole, zoom/przesuwanie, cofanie, zapis do Zdjęć jednym stuknięciem (udostępnianie za bramką rodzica). Samouczek przy pierwszym uruchomieniu, muzyka z Pastelki Muzyka, 17 języków. Całość offline, zero zbieranych danych.
 
 ## Architektura i pułapki
 
