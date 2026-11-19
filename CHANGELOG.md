@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Added
+- Tutorial: a new step where your child spreads two fingers to make the picture bigger, just like on every page
+
 ### Changed
 - Calmer, slower music (soft piano and flute)
 - New app icon and softer splash screen
