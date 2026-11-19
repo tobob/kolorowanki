@@ -6,6 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
 import { useMusic } from '@/audio/music';
 import { AppText } from '@/components/app-text';
+import { AskCard, RateCard } from '@/components/feedback';
 import { CheckIcon } from '@/components/icons';
 import { ParentalGate } from '@/components/parental-gate';
 import { Screen } from '@/components/screen';
@@ -15,14 +16,19 @@ import { resetAll } from '@/coloring/store';
 import { LANGS } from '@/coloring/types';
 import { CONTACT, DEVELOPER, PASTELKI, PASTELKI_MUSIC, PRIVACY_URL, REPO } from '@/constants/contact';
 import { RADIUS, TONE } from '@/constants/ui';
+import { countGrownUpsVisit } from '@/shell/feedback';
 import { setMusicOn, setVoiceOn, usePrefs } from '@/shell/prefs';
 import { LANG_NAMES, setLangSetting, useDeviceLang, useLangSetting, useT, type LangSetting } from '@/i18n';
 
 export default function GrownUps() {
   const t = useT();
-  // Dev builds only: `kolorowanki:///grown-ups?dev=open` skips the gate for screenshots. Ignored in release.
+  // Dev builds only: `kolorowanki:///grown-ups?dev=open` skips the gate for screenshots (`dev=ask` also shows the
+  // "Do you like Kolorowanki?" card). Ignored in release.
   const { dev } = useLocalSearchParams<{ dev?: string }>();
-  const [passed, setPassed] = useState(__DEV__ && dev === 'open');
+  const devOpen = __DEV__ && (dev === 'open' || dev === 'ask');
+  const [passed, setPassed] = useState(devOpen);
+  // Each pass through the gate is one grown-ups visit; the card shows on the 3rd (rules: shell/feedback-logic).
+  const [ask, setAsk] = useState(() => devOpen && (dev === 'ask' || countGrownUpsVisit()));
   useMusic(null);
 
   return (
@@ -30,11 +36,18 @@ export default function GrownUps() {
       <TopBar onBack={goBack} />
       {!passed ? (
         <View style={styles.gate}>
-          <ParentalGate onPass={() => setPassed(true)} onFail={goBack} />
+          <ParentalGate
+            onPass={() => {
+              setAsk(countGrownUpsVisit());
+              setPassed(true);
+            }}
+            onFail={goBack}
+          />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.content}>
           <AppText style={styles.h1}>{t('settings.title')}</AppText>
+          {ask ? <AskCard /> : null}
           <LanguageCard />
           <MusicCard />
           <VoiceCard />
@@ -61,11 +74,13 @@ export default function GrownUps() {
             <AppText style={styles.p}>{t('privacy.p2')}</AppText>
             <AppText style={styles.p}>{t('privacy.p3')}</AppText>
             <AppText style={styles.p}>{t('privacy.photos')}</AppText>
+            <AppText style={styles.p}>{t('privacy.feedback')}</AppText>
             <AppText style={styles.p}>{t('privacy.p4')}</AppText>
             <AppText style={styles.muted} selectable>
               {t('privacy.p5', { developer: DEVELOPER, contact: CONTACT, url: PRIVACY_URL })}
             </AppText>
           </Card>
+          <RateCard />
         </ScrollView>
       )}
     </Screen>

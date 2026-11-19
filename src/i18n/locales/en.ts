@@ -45,7 +45,7 @@ const strings = {
   "privacy.p1": "Kolorowanki does not collect, send or share any personal data. The app works fully offline and makes no internet connections.",
   "privacy.p2": "Your child's colorings and the language setting are saved only on this device. We can't see them. Deleting the app deletes them.",
   "privacy.p3": "There are no accounts, ads, analytics, tracking or third-party services. The only permission the app may ask for is adding pictures to Photos, the first time a picture is saved.",
-  "privacy.p4": "The settings and this policy are behind a parental gate.",
+  "privacy.p4": "The settings, this policy and the rating and feedback links are behind a parental gate.",
   "coloring.save": "Save picture",
   "coloring.share": "Share",
   "coloring.saved": "Saved to Photos",
@@ -90,6 +90,22 @@ const strings = {
   "settings.voice": "Edyta's voice",
   "settings.voiceHint": "Edyta the sheep reads the “How to play” steps aloud. She is only heard when the phone is not on silent.",
   "about.voice": "Edyta's voice is synthetic (computer-generated): Chatterbox Multilingual by Resemble AI (MIT; the audio carries Resemble AI's inaudible Perth watermark marking it as AI-made) and, for Ukrainian, Czech, Slovak, Romanian and Hungarian, Piper with CC0 voices (some trained from Hi-Fi TTS, CC BY 4.0). Sheep effect: the WORLD vocoder (BSD) via pyworld (MIT).",
+  // Rating and feedback (grown-ups area only)
+  "feedback.title": "Your opinion",
+  "feedback.rate.ios": "Rate Kolorowanki on the App Store",
+  "feedback.rate.android": "Rate Kolorowanki on Google Play",
+  "feedback.open": "Send us feedback",
+  "feedback.note": "Both open outside the app: the store, or a short form on pastelki.club in your browser. The app itself sends nothing.",
+  "feedback.askTitle": "Do you like Kolorowanki?",
+  "feedback.askYes": "Yes",
+  "feedback.askNo": "Not really",
+  "feedback.askLater": "Not now",
+  "feedback.thanks": "Thank you! That means a lot to us.",
+  "feedback.sorry": "Thank you for being honest. We'd love to know what to improve.",
+  "feedback.better": "Tell us what could be better",
+  "feedback.rateSmall.ios": "Rate on the App Store",
+  "feedback.rateSmall.android": "Rate on Google Play",
+  "privacy.feedback": "At the bottom of this area, “Rate Kolorowanki” opens the app store and “Send us feedback” opens a short form on pastelki.club in your browser. The app itself sends nothing: the app version, system and language are only added to that link, so the form knows which app it is about.",
 };
 
 export type Key = keyof typeof strings;
