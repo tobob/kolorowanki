@@ -24,11 +24,14 @@ For every clip:
   5. a mouth envelope: one digit 0–9 per 80 ms (how open her mouth is), stored in the module;
 Voice options (defaults = the current Edyta; candidates of 2026-11-19, see voicefx.py):
   --chain sheep|natural|soft-sheep|sheep-calm|soft|softer   step 1 (voicefx.CHAINS);
-  --pace stretch|pauses   step 0: WSOLA (default) or longer pauses between phrases (voicefx.lengthen_pauses)
-                          plus WSOLA only for what is still more than 15 % too fast (max 1.15×);
+  --pace stretch|pauses|natural   step 0: WSOLA (default); pauses = longer pauses between phrases
+                          (voicefx.lengthen_pauses) plus WSOLA only for what is still more than 15 % too fast
+                          (max 1.15×); natural = that WSOLA only, pauses as spoken (trim_check already caps
+                          any pause inside a line at 0.35 s), never lengthened;
   --lufs X                step 3 by integrated loudness (EBU R128, pyloudnorm) instead of speech RMS;
   --piper-match           Piper languages (uk cs sk ro hu) get the Chatterbox languages' long-term spectrum
-                          (voicefx.match_eq) and median pitch (a WORLD shift, only when ≥ 1.25 semitones apart),
+                          (voicefx.match_eq) and median pitch (a WORLD shift, only when ≥ 1.25 semitones apart,
+                          at most ±3 st, with a matching vocal-tract warp),
                           measured on this run's dry takes, so the voice reads as one character.
 then writes src/audio/edyta-voice.ts and prints a table (duration, rate before → after, stretch, RMS,
 peak) with warnings — including the ending check (endpoint.tail_issues) on the decoded AAC.
@@ -185,7 +188,7 @@ def piper_match(files: dict[str, list[Path]]) -> dict[str, tuple[np.ndarray, flo
         if lang in PIPER_LANGS and fs:
             sp, f0 = stats(fs)
             st = 12 * np.log2(ref_f0 / f0)
-            out[lang] = (ref_sp - sp, round(st * 2) / 2 if abs(st) >= 1.25 else 0.0)  # smaller gaps are within Chatterbox's own take-to-take spread: no vocoder pass for them
+            out[lang] = (ref_sp - sp, float(np.clip(round(st * 2) / 2, -3, 3)) if abs(st) >= 1.25 else 0.0)  # smaller gaps are within Chatterbox's own take-to-take spread: no vocoder pass for them
             c = 100 * 2 ** (np.arange(0, 21) / 3)
             d = out[lang][0] - np.interp(1000, c, out[lang][0])
             print(f"piper-match {lang}: pitch {f0:.0f} → {ref_f0:.0f} Hz ({out[lang][1]:+.1f} st), EQ (dB re 1 kHz) "
@@ -196,8 +199,9 @@ def piper_match(files: dict[str, list[Path]]) -> dict[str, tuple[np.ndarray, flo
 def process(x: np.ndarray, sr: int, text: str, lang: str, chain: str = "sheep", pace: str = "stretch",
             lufs: float | None = None, match: tuple[np.ndarray, float] | None = None) -> tuple[np.ndarray, float, float]:
     """One dry, tidied take → the finished clip (before AAC) → (audio, rate before, stretch)."""
-    if pace == "pauses":
-        x = voicefx.lengthen_pauses(x, sr)
+    if pace in ("pauses", "natural"):
+        if pace == "pauses":
+            x = voicefx.lengthen_pauses(x, sr)
         x, r0, k = slow_down(x, sr, text, lang, slack=1.15, max_stretch=1.15)
     else:
         x, r0, k = slow_down(x, sr, text, lang)
@@ -213,7 +217,7 @@ def process(x: np.ndarray, sr: int, text: str, lang: str, chain: str = "sheep", 
 def main() -> None:
     spec = json.loads(Path(sys.argv[1]).read_text())
     chain, pace, lufs = opt("--chain", "sheep"), opt("--pace", "stretch"), opt("--lufs", 0.0) if "--lufs" in sys.argv else None
-    assert chain in voicefx.CHAINS and pace in ("stretch", "pauses"), (chain, pace)
+    assert chain in voicefx.CHAINS and pace in ("stretch", "pauses", "natural"), (chain, pace)
     pos = [a for i, a in enumerate(sys.argv) if not a.startswith("--") and not sys.argv[i - 1] in ("--chain", "--pace", "--lufs")]
     srcs = [Path(p) for p in pos[2:4]]
     keys = list(spec["pl"].keys())
@@ -240,13 +244,13 @@ def main() -> None:
                 warn.append(f"{lang}-{key}: missing")
                 continue
             text = spec[lang][key]
-            pace = ""
+            shown = ""
             if not dest.exists() or dest.stat().st_mtime < f.stat().st_mtime:
                 x, sr = read_dry(f)
                 y, r0, k = process(x, sr, text, lang, chain, pace, lufs, matches.get(lang))
                 r1 = syllables(text, lang) / speaking_time(y, sr)
                 rates.setdefault(lang, []).append((r0, r1))
-                pace = f"{r0:4.1f}→{r1:4.1f} {k:5.2f}"
+                shown = f"{r0:4.1f}→{r1:4.1f} {k:5.2f}"
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 for _ in range(3):
                     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", "-",
@@ -260,7 +264,7 @@ def main() -> None:
                     y = y * 10 ** (-(over + 0.3) / 20)
             y = decode(dest)
             dur, rms, peak = len(y) / 44100, speech_rms_db(y, 44100), db(np.max(np.abs(y)))
-            print(f"{lang + '-' + key:16} {dur:6.2f} {pace:>17} {rms:7.1f} {peak:8.1f}")
+            print(f"{lang + '-' + key:16} {dur:6.2f} {shown:>17} {rms:7.1f} {peak:8.1f}")
             issues, _, _ = tail_issues(y, 44100)
             warn += [f"{lang}-{key}: {i}" for i in issues]
             if not 0.8 <= dur <= MAX_S.get(key, 6.0):

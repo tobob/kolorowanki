@@ -80,7 +80,7 @@ out.mkdir(parents=True, exist_ok=True)
 args = sys.argv[3:]
 say = local(Path(args[args.index("--local") + 1])) if "--local" in args else None
 takes = int(args[args.index("--takes") + 1]) if "--takes" in args else 1
-keys = [k for k in spec["pl"].keys() if "--keys" not in args or k in opt("--keys", "").split(",")]
+keys = [k for k in next(iter(spec.values())).keys() if "--keys" not in args or k in opt("--keys", "").split(",")]
 langs = opt("--langs", ",".join(VOICES)).split(",")
 for key in keys:
     for lang, voice in VOICES.items():

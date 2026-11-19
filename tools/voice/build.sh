@@ -26,9 +26,14 @@
 #                (+ "--ref tools/voice/ref/heart.wav" for the synthetic reference voices of make_ref.py,
 #                "--sentences 0.45" for sentence-by-sentence synthesis with pauses)
 #   PIPER_ARGS   extra fetch_piper.py --local options, e.g. "--noise-scale 0.5 --noise-w 0.6 --soften"
-#   VC_TARGET    a wav: vc_piper.py converts the Piper takes onto that voice before trim_check
+#   VC_TARGET    a wav: vc_piper.py converts the Piper takes (VC_LANGS, default all five) onto that voice
 #   FINISH_ARGS  extra finish.py options, e.g. "--chain natural --pace pauses --lufs -20.5 --piper-match"
-#                (--chain soft / softer: the quieter "bedtime" finish of round 2)
+#                (--chain soft / softer: the quieter "bedtime" finish of round 2; --pace natural: pauses as spoken)
+# Edyta B5a (2026-11-19, the app voice since 1.0.3):
+#   CB_ARGS="--exaggeration 0.3 --cfg-weight 0.3 --temperature 0.55 --soften --ref tools/voice/ref/heart.wav"
+#   PIPER_ARGS="--noise-scale 0.5 --noise-w 0.6 --soften" VC_TARGET=tools/voice/ref/heart.wav
+#   FINISH_ARGS="--chain soft --pace natural --lufs -20.5 --piper-match"
+#   VC_LANGS=cs: only the male cs voice is converted; uk sk ro hu stay plain Piper (VC hurt Whisper there)
 # Exact settings of each candidate: the README next to the sample page (edyta-voice-samples.html).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -45,7 +50,7 @@ if [ -n "${PIPER_VOICES:-}" ]; then
 else
   python3 tools/voice/fetch_piper.py "$WORK/lines.json" "$WORK/raw"
 fi
-[ -n "${VC_TARGET:-}" ] && "$CHATTERBOX_PY" tools/voice/vc_piper.py "$WORK/raw" "$VC_TARGET"
+[ -n "${VC_TARGET:-}" ] && "$CHATTERBOX_PY" tools/voice/vc_piper.py "$WORK/raw" "$VC_TARGET" --langs "${VC_LANGS:-uk,cs,sk,ro,hu}"
 "$WHISPER_PY" tools/voice/trim_check.py "$WORK/lines.json" "$WORK/raw" "$WORK/trimmed"
 "$FX_PY" tools/voice/finish.py "$WORK/lines.json" "$WORK/trimmed" "$WORK/raw" ${FINISH_ARGS:-}
 "$WHISPER_PY" tools/voice/trim_check.py "$WORK/lines.json" --verify assets/voice/edyta

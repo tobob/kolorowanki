@@ -230,7 +230,9 @@ def apply(chain: str, x: np.ndarray, sr: int, *, piper_shift: float = 0.0) -> np
     if chain == "soft-sheep":
         return polish(world_shift(x, sr, 1.0 + piper_shift, warp=1.02), sr)
     if chain in ("soft", "softer"):
-        y = world_shift(x, sr, piper_shift) if abs(piper_shift) >= 0.25 else x
+        # a Piper voice far from Edyta's pitch (ro: a male voice) is lifted at most 3 semitones, with the vocal
+        # tract scaled along (≈ 1.3 % per semitone, as sheepify's 4 % at +3) so it does not sound like a sped-up tape
+        y = world_shift(x, sr, piper_shift, warp=1 + 0.013 * piper_shift) if abs(piper_shift) >= 0.25 else x
         return soft_polish(y, sr, more=chain == "softer")
     if chain == "natural":
         y = world_shift(x, sr, piper_shift) if abs(piper_shift) >= 0.25 else x
