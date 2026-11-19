@@ -8,6 +8,8 @@
  *   onSettle(scale)       a pinch/pan/reset has ended at this zoom (1 = fit)
  *   active                false: no gestures (e.g. while the colour ring is open)
  *   zoomable              false: taps and holds only (the tutorial before its zoom step)
+ *   tapZooms              true: a tap at 1× gently zooms in there instead of calling onTap (the tutorial's
+ *                         fallback for a child who can't pinch yet)
  *   margin, radius        space around the fitted page, corner radius of the paper card
  *
  * Touch points are converted to page units by inverting the zoom/pan transform ourselves (toPage). While
@@ -36,6 +38,8 @@ import { PAGE_H, PAGE_W, PAPER, type Fills, type Page } from './types';
 import { MOTION } from './ui';
 
 export const MAX_ZOOM = 5;
+/** tapZooms: how far one tap zooms in. */
+const TAP_ZOOM = 1.6;
 
 type Geo = { aw: number; ah: number; pw: number; ph: number; ox: number; oy: number };
 type View3 = { s: number; tx: number; ty: number };
@@ -64,6 +68,7 @@ export function ZoomCanvas({
   onSettle,
   active = true,
   zoomable = true,
+  tapZooms = false,
   margin = 14,
   radius = 22,
   shadow,
@@ -79,6 +84,7 @@ export function ZoomCanvas({
   onSettle?: (scale: number) => void;
   active?: boolean;
   zoomable?: boolean;
+  tapZooms?: boolean;
   margin?: number;
   radius?: number;
   shadow?: string;
@@ -209,6 +215,24 @@ export function ZoomCanvas({
     maxDuration: 320,
     maxDistance: 12,
     onActivate: (e) => {
+      if (tapZooms && s.get() < 1.01) {
+        const g = geo.get();
+        const ns = TAP_ZOOM;
+        const fx = e.x - g.ox;
+        const fy = e.y - g.oy;
+        const ntx = clampT(fx - (fx - tx.get()) * ns, ns, g.pw, g.aw, g.ox);
+        const nty = clampT(fy - (fy - ty.get()) * ns, ns, g.ph, g.ah, g.oy);
+        const cfg = { duration: 600, easing: MOTION.easing, reduceMotion: MOTION.reduce };
+        crispOpacity.set(0);
+        s.set(withTiming(ns, cfg));
+        tx.set(withTiming(ntx, cfg));
+        ty.set(
+          withTiming(nty, cfg, (finished) => {
+            if (finished) scheduleOnRN(commitView, ns, ntx, nty);
+          }),
+        );
+        return;
+      }
       const { px, py } = toPage(e.x, e.y);
       scheduleOnRN(onTap, px, py, e.x, e.y);
     },

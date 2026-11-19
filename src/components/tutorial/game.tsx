@@ -8,7 +8,8 @@
  *   hold → press and hold (the leaf) → ring  → holdPick: tap a colour in the ring · "Ale pięknie!"
  *   bg   → tap the background, it fills       · "Cudownie!"
  *   undo → tap the undo arrow                 · "Widzisz? Nic się nie stało!"
- *   zoom → spread two fingers on the picture  · "Brawo! Obrazek jest większy!" (zoom passes 1.3×)
+ *   zoom → spread two fingers on the picture  · "Brawo! Obrazek jest większy!" (zoom passes 1.3×;
+ *          after the hint a plain tap zooms in gently too, so a child who can't pinch yet isn't stuck)
  *   done → "Umiesz już kolorować! Miłej zabawy!" + the big "Let's colour!" button
  *
  * The picture is the colouring screen's own ZoomCanvas (src/coloring/ZoomCanvas.tsx): the same tap, hold,
@@ -205,6 +206,8 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
   const busy = useRef(false); // praising: inputs do not count until the next step starts
   const [praising, setPraising] = useState(false);
   const hinted = useRef(false);
+  // zoom step, after the hint: a plain tap zooms in too (never block a child who can't pinch yet)
+  const [zoomHelp, setZoomHelp] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const clearTimer = () => {
@@ -235,6 +238,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
     const h = HINT[phaseRef.current];
     if (!h || hinted.current || busy.current) return;
     hinted.current = true;
+    if (phaseRef.current === 'zoom') setZoomHelp(true);
     clearTimer();
     sway(3, 1);
     say(h);
@@ -245,6 +249,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
     busy.current = false;
     setPraising(false);
     hinted.current = false;
+    setZoomHelp(false);
     clearTimer();
     say(p, () => {
       if (phaseRef.current === p && p !== 'done') timer.current = setTimeout(hint, HINT_AFTER_MS);
@@ -323,7 +328,8 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
 
   const onPicTap = (px: number, py: number, x: number, y: number) => {
     const p = phaseRef.current;
-    if (busy.current || ring || p === 'zoom' || p === 'done') return; // spreading fingers never colours
+    if (busy.current || ring || p === 'done') return;
+    if (p === 'zoom') return hint(); // taps never colour here; a first tap brings the hint (then taps zoom)
     const r = regionAt(page, px, py);
     if (p === 'tap') {
       // close enough: a tap on the paper still colours the apple
@@ -429,6 +435,7 @@ function Game({ page, onFinish }: { page: Page; onFinish: () => void }) {
         onSettle={onZoomSettle}
         active={!ring}
         zoomable={phase === 'zoom' || phase === 'done'}
+        tapZooms={phase === 'zoom' && zoomHelp && !praising}
         margin={0}
         radius={RADIUS.tile}
         style={[styles.pic, { left: picLeft, top: picTop, width: size, height: picH }]}
