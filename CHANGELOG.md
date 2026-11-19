@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Changed
+- A few different calm tunes while colouring, and the music no longer starts over on the next picture
+
 ## [1.0.2] - 2026-11-19
 
 ### Added
