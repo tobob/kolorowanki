@@ -8,6 +8,7 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ### Changed
 - A few different calm tunes while colouring, and the music no longer starts over on the next picture
+- Save picture saves straight to Photos; sharing is still for grown-ups
 
 ## [1.0.2] - 2026-11-19
 
