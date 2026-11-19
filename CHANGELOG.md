@@ -6,6 +6,8 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-11-19
+
 ### Fixed
 - Share opens the share sheet on the first try after the grown-up check
 
