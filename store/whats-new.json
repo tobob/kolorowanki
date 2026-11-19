@@ -1,28 +1,6 @@
 {
   "_doc": "Store \"What's New\" per store locale (keys = apple.info locales in store.config.json). Edit 'unreleased'; studio build/release moves it to versions[x.y.z] and into store.config.json releaseNotes. Short, friendly, for parents; max 500 characters (Google Play), 4000 (Apple).",
-  "unreleased": {
-    "en-US": "Edyta the sheep now speaks more slowly and shows your child how to make a picture bigger with two fingers. Calmer music, a new icon, and the tutorial buttons now sit exactly where they are on every page.",
-    "en-GB": "Edyta the sheep now speaks more slowly and shows your child how to make a picture bigger with two fingers. Calmer music, a new icon, and the tutorial buttons now sit exactly where they are on every page.",
-    "pl": "Owca Edyta mówi teraz wolniej i pokazuje dziecku, jak powiększyć obrazek dwoma palcami. Spokojniejsza muzyka, nowa ikona, a przyciski w samouczku są dokładnie tam, gdzie na każdej stronie.",
-    "de-DE": "Edyta, das Schaf, spricht jetzt langsamer und zeigt Ihrem Kind, wie es ein Bild mit zwei Fingern vergrößert. Ruhigere Musik, ein neues Symbol, und die Knöpfe in der Anleitung sitzen genau dort, wo sie auf jeder Seite sind.",
-    "fr-FR": "Edyta la brebis parle maintenant plus lentement et montre à votre enfant comment agrandir un dessin avec deux doigts. Une musique plus calme, une nouvelle icône, et les boutons du tutoriel sont à la même place que sur chaque page.",
-    "fr-CA": "Edyta la brebis parle maintenant plus lentement et montre à votre enfant comment agrandir un dessin avec deux doigts. Une musique plus calme, une nouvelle icône, et les boutons du tutoriel sont à la même place que sur chaque page.",
-    "es-ES": "La oveja Edyta ahora habla más despacio y enseña a tu hijo a agrandar un dibujo con dos dedos. Música más tranquila, un icono nuevo y los botones del tutorial están en el mismo sitio que en cada página.",
-    "es-MX": "La oveja Edyta ahora habla más despacio y le enseña a tu hijo a agrandar un dibujo con dos dedos. Música más tranquila, un ícono nuevo y los botones del tutorial están en el mismo lugar que en cada página.",
-    "it": "La pecora Edyta ora parla più lentamente e mostra al bambino come ingrandire un disegno con due dita. Musica più calma, una nuova icona e i pulsanti del tutorial sono nello stesso punto di ogni pagina.",
-    "pt-BR": "A ovelha Edyta agora fala mais devagar e mostra à criança como aumentar o desenho com dois dedos. Música mais calma, ícone novo, e os botões do tutorial ficam no mesmo lugar que em todas as páginas.",
-    "pt-PT": "A ovelha Edyta fala agora mais devagar e mostra à criança como aumentar o desenho com dois dedos. Música mais calma, ícone novo, e os botões do tutorial ficam no mesmo sítio que em todas as páginas.",
-    "nl-NL": "Edyta het schaap praat nu langzamer en laat je kind zien hoe je een plaatje met twee vingers groter maakt. Rustigere muziek, een nieuw icoon, en de knoppen in de uitleg staan precies waar ze op elke pagina staan.",
-    "uk": "Вівця Едита тепер говорить повільніше й показує дитині, як збільшити малюнок двома пальцями. Спокійніша музика, нова іконка, а кнопки в навчанні там само, де й на кожній сторінці.",
-    "cs": "Ovečka Edyta teď mluví pomaleji a ukáže dítěti, jak dvěma prsty zvětšit obrázek. Klidnější hudba, nová ikona a tlačítka v návodu jsou tam, kde na každé stránce.",
-    "sk": "Ovečka Edyta teraz hovorí pomalšie a ukáže dieťaťu, ako dvoma prstami zväčšiť obrázok. Pokojnejšia hudba, nová ikona a tlačidlá v návode sú tam, kde na každej stránke.",
-    "sv": "Fåret Edyta pratar nu långsammare och visar barnet hur man gör bilden större med två fingrar. Lugnare musik, en ny ikon, och knapparna i guiden sitter precis där de sitter på varje sida.",
-    "ro": "Oița Edyta vorbește acum mai rar și îi arată copilului cum să mărească desenul cu două degete. Muzică mai liniștită, o pictogramă nouă, iar butoanele din tutorial sunt în același loc ca pe fiecare pagină.",
-    "hu": "Edyta, a bárány most lassabban beszél, és megmutatja a gyereknek, hogyan nagyíthatja a képet két ujjal. Nyugodtabb zene, új ikon, és a bemutató gombjai ugyanott vannak, mint minden oldalon.",
-    "tr": "Koyun Edyta artık daha yavaş konuşuyor ve çocuğunuza resmi iki parmakla nasıl büyüteceğini gösteriyor. Daha sakin müzik, yeni bir simge; eğitimdeki düğmeler de her sayfadaki yerlerinde.",
-    "ja": "ひつじのエディタがゆっくり話すようになり、2本の指で絵を大きくする方法も教えてくれます。音楽はよりおだやかに、アイコンも新しくなり、チュートリアルのボタンは各ページと同じ位置になりました。",
-    "zh-Hans": "小羊伊迪塔现在说话更慢了，还会教孩子用两根手指把图画放大。音乐更舒缓，图标焕然一新，引导中的按钮也和每一页的位置完全一样。"
-  },
+  "unreleased": {},
   "versions": {
     "1.0.1": {
       "en-US": "New: Edyta the sheep shows your child how to color. In a short, gentle tutorial your child taps, holds and colors along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
@@ -46,6 +24,29 @@
       "tr": "Yeni: Koyun Edyta çocuğunuza nasıl boyanacağını gösteriyor. Kısa ve sakin bir eğitimde çocuğunuz kendisi dokunur, parmağını basılı tutar ve boyar; Edyta da onun dilinde konuşup onu över. Edyta'nın sesi “Büyükler için” bölümünden kapatılabilir.",
       "ja": "新しく、ひつじのエディタがぬりえのしかたを教えてくれるようになりました。短くておだやかなチュートリアルで、お子さまが自分でタップしたり長押ししたりしながらぬっていき、エディタがお子さまの言語で話しかけ、ほめてくれます。エディタの声は「おとなのかたへ」でオフにできます。",
       "zh-Hans": "新功能：小羊伊迪塔教孩子怎么涂色。在简短、轻松的引导中，孩子亲手点一点、按住、涂颜色，伊迪塔会用孩子的语言说话并夸奖他。可以在“家长专区”关闭伊迪塔的声音。"
+    },
+    "1.0.2": {
+      "en-US": "Edyta the sheep now speaks more slowly and shows your child how to make a picture bigger with two fingers. Calmer music, a new icon, and the tutorial buttons now sit exactly where they are on every page.",
+      "en-GB": "Edyta the sheep now speaks more slowly and shows your child how to make a picture bigger with two fingers. Calmer music, a new icon, and the tutorial buttons now sit exactly where they are on every page.",
+      "pl": "Owca Edyta mówi teraz wolniej i pokazuje dziecku, jak powiększyć obrazek dwoma palcami. Spokojniejsza muzyka, nowa ikona, a przyciski w samouczku są dokładnie tam, gdzie na każdej stronie.",
+      "de-DE": "Edyta, das Schaf, spricht jetzt langsamer und zeigt Ihrem Kind, wie es ein Bild mit zwei Fingern vergrößert. Ruhigere Musik, ein neues Symbol, und die Knöpfe in der Anleitung sitzen genau dort, wo sie auf jeder Seite sind.",
+      "fr-FR": "Edyta la brebis parle maintenant plus lentement et montre à votre enfant comment agrandir un dessin avec deux doigts. Une musique plus calme, une nouvelle icône, et les boutons du tutoriel sont à la même place que sur chaque page.",
+      "fr-CA": "Edyta la brebis parle maintenant plus lentement et montre à votre enfant comment agrandir un dessin avec deux doigts. Une musique plus calme, une nouvelle icône, et les boutons du tutoriel sont à la même place que sur chaque page.",
+      "es-ES": "La oveja Edyta ahora habla más despacio y enseña a tu hijo a agrandar un dibujo con dos dedos. Música más tranquila, un icono nuevo y los botones del tutorial están en el mismo sitio que en cada página.",
+      "es-MX": "La oveja Edyta ahora habla más despacio y le enseña a tu hijo a agrandar un dibujo con dos dedos. Música más tranquila, un ícono nuevo y los botones del tutorial están en el mismo lugar que en cada página.",
+      "it": "La pecora Edyta ora parla più lentamente e mostra al bambino come ingrandire un disegno con due dita. Musica più calma, una nuova icona e i pulsanti del tutorial sono nello stesso punto di ogni pagina.",
+      "pt-BR": "A ovelha Edyta agora fala mais devagar e mostra à criança como aumentar o desenho com dois dedos. Música mais calma, ícone novo, e os botões do tutorial ficam no mesmo lugar que em todas as páginas.",
+      "pt-PT": "A ovelha Edyta fala agora mais devagar e mostra à criança como aumentar o desenho com dois dedos. Música mais calma, ícone novo, e os botões do tutorial ficam no mesmo sítio que em todas as páginas.",
+      "nl-NL": "Edyta het schaap praat nu langzamer en laat je kind zien hoe je een plaatje met twee vingers groter maakt. Rustigere muziek, een nieuw icoon, en de knoppen in de uitleg staan precies waar ze op elke pagina staan.",
+      "uk": "Вівця Едита тепер говорить повільніше й показує дитині, як збільшити малюнок двома пальцями. Спокійніша музика, нова іконка, а кнопки в навчанні там само, де й на кожній сторінці.",
+      "cs": "Ovečka Edyta teď mluví pomaleji a ukáže dítěti, jak dvěma prsty zvětšit obrázek. Klidnější hudba, nová ikona a tlačítka v návodu jsou tam, kde na každé stránce.",
+      "sk": "Ovečka Edyta teraz hovorí pomalšie a ukáže dieťaťu, ako dvoma prstami zväčšiť obrázok. Pokojnejšia hudba, nová ikona a tlačidlá v návode sú tam, kde na každej stránke.",
+      "sv": "Fåret Edyta pratar nu långsammare och visar barnet hur man gör bilden större med två fingrar. Lugnare musik, en ny ikon, och knapparna i guiden sitter precis där de sitter på varje sida.",
+      "ro": "Oița Edyta vorbește acum mai rar și îi arată copilului cum să mărească desenul cu două degete. Muzică mai liniștită, o pictogramă nouă, iar butoanele din tutorial sunt în același loc ca pe fiecare pagină.",
+      "hu": "Edyta, a bárány most lassabban beszél, és megmutatja a gyereknek, hogyan nagyíthatja a képet két ujjal. Nyugodtabb zene, új ikon, és a bemutató gombjai ugyanott vannak, mint minden oldalon.",
+      "tr": "Koyun Edyta artık daha yavaş konuşuyor ve çocuğunuza resmi iki parmakla nasıl büyüteceğini gösteriyor. Daha sakin müzik, yeni bir simge; eğitimdeki düğmeler de her sayfadaki yerlerinde.",
+      "ja": "ひつじのエディタがゆっくり話すようになり、2本の指で絵を大きくする方法も教えてくれます。音楽はよりおだやかに、アイコンも新しくなり、チュートリアルのボタンは各ページと同じ位置になりました。",
+      "zh-Hans": "小羊伊迪塔现在说话更慢了，还会教孩子用两根手指把图画放大。音乐更舒缓，图标焕然一新，引导中的按钮也和每一页的位置完全一样。"
     }
   }
 }

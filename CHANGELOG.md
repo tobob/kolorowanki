@@ -6,6 +6,8 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-11-19
+
 ### Added
 - Tutorial: a new step where your child spreads two fingers to make the picture bigger, just like on every page
 
