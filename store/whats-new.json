@@ -1,28 +1,6 @@
 {
   "_doc": "Store \"What's New\" per store locale (keys = apple.info locales in store.config.json). Edit 'unreleased'; studio build/release moves it to versions[x.y.z] and into store.config.json releaseNotes. Short, friendly, for parents; max 500 characters (Google Play), 4000 (Apple).",
-  "unreleased": {
-    "en-US": "In the grown-ups area you can now send us feedback or leave a rating. Both stay behind the grown-up check, and the app itself still sends nothing.",
-    "en-GB": "In the grown-ups area you can now send us feedback or leave a rating. Both stay behind the grown-up check, and the app itself still sends nothing.",
-    "pl": "W części dla dorosłych możesz teraz napisać do nas albo ocenić aplikację. Obie rzeczy są za bramką dla dorosłych, a sama aplikacja nadal niczego nie wysyła.",
-    "de-DE": "Im Bereich für Erwachsene können Sie uns jetzt Feedback senden oder die App bewerten. Beides liegt hinter der Elternsperre, und die App selbst sendet weiterhin nichts.",
-    "fr-FR": "Dans l'espace des adultes, vous pouvez maintenant nous donner votre avis ou noter l'application. Les deux restent derrière le contrôle parental, et l'application elle-même n'envoie toujours rien.",
-    "fr-CA": "Dans l'espace des adultes, vous pouvez maintenant nous donner votre avis ou noter l'application. Les deux restent derrière le contrôle parental, et l'application elle-même n'envoie toujours rien.",
-    "es-ES": "En la zona para adultos ahora puedes enviarnos tu opinión o valorar la app. Ambas cosas están detrás del control parental, y la app en sí sigue sin enviar nada.",
-    "es-MX": "En la zona para adultos ahora puedes enviarnos tu opinión o calificar la app. Ambas cosas están detrás del control parental, y la app en sí sigue sin enviar nada.",
-    "it": "Nell'area per gli adulti ora puoi inviarci un commento o valutare l'app. Entrambi sono dietro il controllo parentale, e l'app stessa continua a non inviare nulla.",
-    "pt-BR": "Na área dos adultos, agora você pode nos enviar um comentário ou avaliar o app. Os dois ficam atrás do controle parental, e o próprio app continua sem enviar nada.",
-    "pt-PT": "Na área dos adultos, agora pode enviar-nos um comentário ou avaliar a app. Ambos ficam atrás do controlo parental, e a própria app continua a não enviar nada.",
-    "nl-NL": "In het gedeelte voor volwassenen kun je ons nu feedback sturen of de app beoordelen. Beide zitten achter de oudercontrole, en de app zelf verstuurt nog steeds niets.",
-    "uk": "У розділі для дорослих тепер можна надіслати нам відгук або оцінити застосунок. Обидва варіанти захищені батьківським замком, а сам застосунок і далі нічого не надсилає.",
-    "cs": "V části pro dospělé nám teď můžete napsat nebo aplikaci ohodnotit. Obojí je za rodičovskou bránou a aplikace sama dál nic neodesílá.",
-    "sk": "V časti pre dospelých nám teraz môžete napísať alebo aplikáciu ohodnotiť. Oboje je za rodičovskou bránou a aplikácia sama naďalej nič neodosiela.",
-    "sv": "I delen för vuxna kan du nu skicka feedback till oss eller betygsätta appen. Båda ligger bakom föräldralåset, och appen själv skickar fortfarande ingenting.",
-    "ro": "În zona pentru adulți ne poți trimite acum o părere sau poți evalua aplicația. Ambele sunt în spatele controlului parental, iar aplicația însăși tot nu trimite nimic.",
-    "hu": "A felnőtteknek szóló részben most már visszajelzést küldhet nekünk, vagy értékelheti az alkalmazást. Mindkettő a szülői zár mögött van, és maga az alkalmazás továbbra sem küld semmit.",
-    "tr": "Yetişkinler bölümünden artık bize görüş gönderebilir veya uygulamayı değerlendirebilirsiniz. İkisi de ebeveyn kilidinin arkasındadır ve uygulamanın kendisi hâlâ hiçbir şey göndermez.",
-    "ja": "保護者向けのページから、ご意見を送ったりアプリを評価したりできるようになりました。どちらも保護者向けのロックの先にあり、アプリ自体は引き続き何も送信しません。",
-    "zh-Hans": "现在可以在家长区给我们反馈或为应用评分。两者都在家长验证之后，应用本身仍然不发送任何内容。"
-  },
+  "unreleased": {},
   "versions": {
     "1.0.1": {
       "en-US": "New: Edyta the sheep shows your child how to color. In a short, gentle tutorial your child taps, holds and colors along while Edyta talks in their language and cheers them on. Her voice can be turned off in “For grown-ups”.",
@@ -161,6 +139,29 @@
       "tr": "Koyun Edyta'nın artık yeni, daha sıcak ve sakin bir sesi var. Boyama sırasında farklı yumuşak melodiler çalıyor ve müzik her yeni resimde baştan başlamıyor. Kaydet, resmi doğrudan Fotoğraflar'a kaydediyor; paylaşma yine yetişkinler için. Paylaşma artık yetişkin kontrolünden hemen sonra açılıyor.",
       "ja": "ひつじのエディタが、あたたかく落ち着いた新しい声になりました。ぬりえ中はやさしいメロディーがいくつか流れ、新しい絵にしても音楽が最初から始まりません。「保存」で絵がそのまま写真に保存されます。共有はこれまでどおり大人向けです。大人の確認のあと、共有画面がすぐに開くようになりました。",
       "zh-Hans": "小羊埃迪塔换上了更温暖、更平静的新声音。涂色时会播放几首不同的轻柔乐曲，换新图画时音乐也不会重新开始。“保存”会把图画直接存入照片；分享仍然只供大人使用。通过大人验证后，分享界面现在会立即打开。"
+    },
+    "1.0.7": {
+      "en-US": "In the grown-ups area you can now send us feedback or leave a rating. Both stay behind the grown-up check, and the app itself still sends nothing.",
+      "en-GB": "In the grown-ups area you can now send us feedback or leave a rating. Both stay behind the grown-up check, and the app itself still sends nothing.",
+      "pl": "W części dla dorosłych możesz teraz napisać do nas albo ocenić aplikację. Obie rzeczy są za bramką dla dorosłych, a sama aplikacja nadal niczego nie wysyła.",
+      "de-DE": "Im Bereich für Erwachsene können Sie uns jetzt Feedback senden oder die App bewerten. Beides liegt hinter der Elternsperre, und die App selbst sendet weiterhin nichts.",
+      "fr-FR": "Dans l'espace des adultes, vous pouvez maintenant nous donner votre avis ou noter l'application. Les deux restent derrière le contrôle parental, et l'application elle-même n'envoie toujours rien.",
+      "fr-CA": "Dans l'espace des adultes, vous pouvez maintenant nous donner votre avis ou noter l'application. Les deux restent derrière le contrôle parental, et l'application elle-même n'envoie toujours rien.",
+      "es-ES": "En la zona para adultos ahora puedes enviarnos tu opinión o valorar la app. Ambas cosas están detrás del control parental, y la app en sí sigue sin enviar nada.",
+      "es-MX": "En la zona para adultos ahora puedes enviarnos tu opinión o calificar la app. Ambas cosas están detrás del control parental, y la app en sí sigue sin enviar nada.",
+      "it": "Nell'area per gli adulti ora puoi inviarci un commento o valutare l'app. Entrambi sono dietro il controllo parentale, e l'app stessa continua a non inviare nulla.",
+      "pt-BR": "Na área dos adultos, agora você pode nos enviar um comentário ou avaliar o app. Os dois ficam atrás do controle parental, e o próprio app continua sem enviar nada.",
+      "pt-PT": "Na área dos adultos, agora pode enviar-nos um comentário ou avaliar a app. Ambos ficam atrás do controlo parental, e a própria app continua a não enviar nada.",
+      "nl-NL": "In het gedeelte voor volwassenen kun je ons nu feedback sturen of de app beoordelen. Beide zitten achter de oudercontrole, en de app zelf verstuurt nog steeds niets.",
+      "uk": "У розділі для дорослих тепер можна надіслати нам відгук або оцінити застосунок. Обидва варіанти захищені батьківським замком, а сам застосунок і далі нічого не надсилає.",
+      "cs": "V části pro dospělé nám teď můžete napsat nebo aplikaci ohodnotit. Obojí je za rodičovskou bránou a aplikace sama dál nic neodesílá.",
+      "sk": "V časti pre dospelých nám teraz môžete napísať alebo aplikáciu ohodnotiť. Oboje je za rodičovskou bránou a aplikácia sama naďalej nič neodosiela.",
+      "sv": "I delen för vuxna kan du nu skicka feedback till oss eller betygsätta appen. Båda ligger bakom föräldralåset, och appen själv skickar fortfarande ingenting.",
+      "ro": "În zona pentru adulți ne poți trimite acum o părere sau poți evalua aplicația. Ambele sunt în spatele controlului parental, iar aplicația însăși tot nu trimite nimic.",
+      "hu": "A felnőtteknek szóló részben most már visszajelzést küldhet nekünk, vagy értékelheti az alkalmazást. Mindkettő a szülői zár mögött van, és maga az alkalmazás továbbra sem küld semmit.",
+      "tr": "Yetişkinler bölümünden artık bize görüş gönderebilir veya uygulamayı değerlendirebilirsiniz. İkisi de ebeveyn kilidinin arkasındadır ve uygulamanın kendisi hâlâ hiçbir şey göndermez.",
+      "ja": "保護者向けのページから、ご意見を送ったりアプリを評価したりできるようになりました。どちらも保護者向けのロックの先にあり、アプリ自体は引き続き何も送信しません。",
+      "zh-Hans": "现在可以在家长区给我们反馈或为应用评分。两者都在家长验证之后，应用本身仍然不发送任何内容。"
     }
   }
 }
