@@ -44,3 +44,10 @@ example
 assets/revise-before-after.png
 assets/pages-contact-sheet-*.png
 store.push.json
+
+# secrets (never commit)
+.env
+.env.*
+!.env.example
+credentials.json
+credentials/

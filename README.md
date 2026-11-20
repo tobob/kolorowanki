@@ -135,6 +135,7 @@ person. It was made offline with `tools/voice/build.sh`; the app only ships the 
 | Used for | Project | Licence |
 |---|---|---|
 | speech in pl, en, de, fr, es, it, pt, nl, sv, tr, ja, zh | [Chatterbox Multilingual](https://github.com/resemble-ai/chatterbox) by Resemble AI ([model](https://huggingface.co/ResembleAI/chatterbox)) | MIT, Copyright (c) 2025 Resemble AI |
+| timbre reference for Edyta's voice (`tools/voice/ref/*.wav`, synthetic — spoken by Kokoro voices af_heart / af_bella, not a recording of a person; `tools/voice/make_ref.py`) | [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) by hexgrad, [kokoro](https://github.com/hexgrad/kokoro) | Apache-2.0 |
 | AI watermark in every Chatterbox clip (imperceptible; marks the audio as AI-generated — we keep it) | [Perth](https://github.com/resemble-ai/Perth) by Resemble AI | MIT |
 | speech in uk, cs, sk, ro, hu | [Piper](https://github.com/OHF-Voice/piper1-gpl) (piper-tts, run offline on the Pastelki server or a build machine; only its output is used) with the voices uk_UA ukrainian_tts (tetiana), cs_CZ jirka, sk_SK lili, ro_RO mihai, hu_HU anna from [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) | Piper: GPL-3.0-or-later; voices: CC0 |
 | base model of cs_CZ jirka, sk_SK lili, hu_HU anna | speaker 92 of the Hi-Fi Multi-Speaker English TTS Dataset, [OpenSLR 109](https://www.openslr.org/109/) — Bakhturina, E., Lavrukhin, V., Ginsburg, B., Zhang, Y. (2021), *Hi-Fi Multi-Speaker English TTS Dataset*, arXiv:2104.01497 | CC BY 4.0 |
