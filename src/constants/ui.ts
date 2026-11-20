@@ -12,7 +12,7 @@ export const TONE = {
   bgAlt: '#F7F1F8',
   card: '#FFFFFF',
   text: '#4B4453',
-  muted: '#8A8291',
+  muted: '#6E6677', // Pastelki ink-soft (docs/BRAND.md): 5.2:1 on cream, AA
   line: '#EDE6EF',
   /** One soft pastel per level card (1..4), and a deeper tone of the same hue for its dots. */
   level: ['#FCE3D9', '#DDEFDB', '#DCEAF7', '#ECE1F6'],

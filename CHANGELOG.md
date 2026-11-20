@@ -6,6 +6,9 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ## [Unreleased]
 
+### Changed
+- Grey helper text is darker and easier to read (Pastelki brand colours, WCAG AA contrast).
+
 ## [1.0.7] - 2026-11-20
 
 ### Added
