@@ -50,3 +50,5 @@ Plik studia: czytaj go zanim zaczniesz pracę nad aplikacją, a po każdej istot
 - 2026-11-19 16:15 — build ios (production) wysłany na EAS
 - 2026-11-19 17:05 — 1.0.6 (8) w ASC: wersja 1.0.6, build 8 dołączony (iris), opisy/słowa kluczowe/promo w 21 językach wgrane (bez obietnicy „bez zakupów”); czeka na „Add for Review” (Bob).
 - 2026-11-20 10:27 — wersja 1.0.6 → 1.0.7 (każdy upload do sklepu = nowa wersja): In the grown-ups area you can now send us feedback or leave a rating. Both stay behind the grown-up check, and the app itself still sends nothing.
+- 2026-11-20 10:28 — build ios (production) wysłany na EAS
+- 2026-11-20 13:40 — 1.0.6 (8): Apple poprosił o odpowiedzi z wytycznej 1.3 (Kids); odpowiedź w Messages, sekcja KIDS CATEGORY w notatkach, „Update Review” + „Resubmit” → Waiting for Review. 1.0.7 (9) wgrane do ASC, czeka na decyzję w sprawie 1.0.6.
