@@ -6,16 +6,16 @@ import { FEEDBACK_DEFAULTS, feedbackUrl, MAX_ASKS, onVisit, SNOOZE_DAYS, type Fe
 const DAY = 24 * 60 * 60 * 1000;
 const t0 = Date.UTC(2026, 10, 19);
 
-// Visits 1 and 2: no card. Visit 3: card, once.
+// Visits 1–5: no card. Visit 6: card, once.
 let s: FeedbackState = FEEDBACK_DEFAULTS;
 const seen: boolean[] = [];
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 9; i++) {
   const r = onVisit(s, t0 + i * 1000);
   s = r.next;
   seen.push(r.ask);
 }
-assert.deepEqual(seen, [false, false, true, false, false, false]);
-assert.equal(s.visits, 6);
+assert.deepEqual(seen, [false, false, false, false, false, true, false, false, false]);
+assert.equal(s.visits, 9);
 assert.equal(s.asks, 1);
 
 // Not now / left without answering: quiet for SNOOZE_DAYS, then one more time, then never.

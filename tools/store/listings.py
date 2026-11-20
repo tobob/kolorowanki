@@ -596,7 +596,7 @@ PARENTAL GATE / GROWN-UPS AREA
 RATING AND FEEDBACK (grown-ups area only)
 - "Rate Kolorowanki on the App Store" opens the App Store write-review page.
 - "Send us feedback" opens our own feedback form on pastelki.club in Safari (not a web view). The app sends nothing itself; version, build, platform and UI language are only part of that link.
-- On the 3rd entry into the grown-ups area (once; at most once more 180 days later if unanswered) a small card asks the parent "Do you like Kolorowanki?". Yes: the system rating prompt (SKStoreReviewController; iOS decides whether it appears). Not really: "Tell us what could be better" (the same form) and "Rate on the App Store" side by side, so rating is offered either way. "Not now" closes it. Children never see this.
+- On the 6th entry into the grown-ups area (once; at most once more 180 days later if unanswered) a small card asks the parent "Do you like Kolorowanki?". Yes: the system rating prompt (SKStoreReviewController; iOS decides whether it appears). Not really: "Tell us what could be better" (the same form) and "Rate on the App Store" side by side, so rating is offered either way. "Not now" closes it. Children never see this.
 
 AUDIO
 Soft music: a theme on the home screen; on the colouring screen up to 3 of 11 calm tunes in a row (about 3 minutes), then silence. The note button and a grown-ups switch turn it off. Follows the silent switch, stops in the background. No microphone, no background audio.

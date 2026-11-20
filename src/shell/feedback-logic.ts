@@ -3,14 +3,14 @@
  * checked by `npx tsx src/shell/__checks__/feedback.check.ts`).
  *
  * - Every pass through the parental gate into the grown-ups area counts one visit (on this device only).
- * - The card shows on the 3rd visit. Showing it counts as asking: a grown-up who leaves, taps "Not now" or
+ * - The card shows on the 6th visit. Showing it counts as asking: a grown-up who leaves, taps "Not now" or
  *   answers is not asked again for SNOOZE_DAYS, and never more than MAX_ASKS times in total. Any answer
  *   (Yes / Not really) ends it for good.
  * - The app itself sends nothing: feedback is a web form on pastelki.club opened in the browser.
  * - Children never see any of this: it all lives behind the parental gate.
  */
 
-export const ASK_ON_VISIT = 3;
+export const ASK_ON_VISIT = 6;
 export const SNOOZE_DAYS = 180;
 export const MAX_ASKS = 2;
 const DAY_MS = 24 * 60 * 60 * 1000;

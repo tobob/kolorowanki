@@ -1,7 +1,7 @@
 /**
  * Grown-ups area only (behind the parental gate): rating and feedback. The app sends nothing itself.
  *
- * - `<AskCard>`: the gentle "Do you like Kolorowanki?" card, shown on the 3rd visit (rules: shell/feedback-logic).
+ * - `<AskCard>`: the gentle "Do you like Kolorowanki?" card, shown on the 6th visit (rules: shell/feedback-logic).
  *   Yes → iOS system rating prompt (fallback: the App Store write-review page). On Android, Google Play forbids
  *   asking before its in-app review card, so Yes there offers the Google Play link instead.
  *   Not really → "Tell us what could be better" (the pastelki.club feedback page with liked=0) and, just as
