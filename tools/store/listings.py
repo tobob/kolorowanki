@@ -575,7 +575,7 @@ ADVISORY = {
     "koreaAgeRatingOverride": "NONE", "developerAgeRatingInfoUrl": None,
 }
 
-REVIEW_NOTES = """SCREEN RECORDING (attached): physical iPhone, latest iOS. Starts at app launch: tutorial, colouring, parental gate, grown-ups area, language switch, save to Photos, share after the gate. No accounts, login, user content or paid content.
+REVIEW_NOTES = """SCREEN RECORDING (attached): physical iPhone, latest iOS, from app launch: tutorial, colouring, gate, grown-ups area, language, save, share.
 
 PURPOSE AND AUDIENCE
 A calm first colouring book for children aged 2-6: big simple pictures, one tap fills a space, no reading, no time pressure, no failure. Made for Kids (5 and under). No in-app purchases, ads, accounts or data collection, and the app makes no network requests. The only permission prompt is iOS add-only Photos access, shown once, the first time "Save picture" is tapped.
@@ -605,7 +605,13 @@ OFFLINE / PRIVACY
 Works entirely in airplane mode (only the two links above need a connection, and they open outside the app). Colourings and settings are stored only on the device. "Save picture" adds the picture straight to Photos with no gate, so a child can keep it (add-only access; the library is never read). Share (system share sheet) is always behind the parental gate. If Photos access is denied, the card explains how to allow it and offers Share. No web views, purchases, notifications or social features; the only links out of the app are the two above, both behind the gate.
 
 EXTERNAL SERVICES, REGIONS, REGULATION
-No third-party services, SDKs, analytics or payments; the app contacts no server. Same in every region (only the UI language changes); not a regulated industry."""
+No third-party services, SDKs, analytics or payments; the app contacts no server. Same in every region (only the UI language changes); not a regulated industry.
+
+KIDS CATEGORY (GUIDELINE 1.3)
+- Third-party analytics: none (no analytics of any kind).
+- Third-party advertising: none.
+- Data shared with third parties: none; the app sends nothing (links open Safari/App Store only behind the gate).
+- Other user/device data: none; all stays on the device; no accounts, IDs or IDFA. App Privacy: Data Not Collected."""
 assert len(REVIEW_NOTES) <= 4000, f"review notes {len(REVIEW_NOTES)}/4000"
 
 
