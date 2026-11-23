@@ -8,7 +8,7 @@ versions are the store versions (`expo.version`). Store "What's New" texts per l
 
 ### Changed
 - Grey helper text is darker and easier to read (Pastelki brand colours, WCAG AA contrast).
-- Newer versions of a few pictures from Pastelki (penguin on the ice, seahorse and others); every picture is still in the Pastelki library after its clean-up of duplicates.
+- Newer versions of a few pictures from Pastelki (doghouse, penguin on the ice, seahorse); every picture is still in the Pastelki library after its clean-up of duplicates.
 
 ## [1.0.7] - 2026-11-20
 
